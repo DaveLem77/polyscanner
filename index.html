@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polymarket Scanner</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d0f13; --bg2: #161a22; --bg3: #1e2330;
+    --border: #2a2f3d; --border2: #363d52;
+    --text1: #f0f2f5; --text2: #8b92a8; --text3: #4a5168;
+    --green: #00c074; --green-bg: rgba(0,192,116,0.08); --green-border: rgba(0,192,116,0.25);
+    --red: #f05c5c; --purple: #6366f1; --gold: #f5a623;
+  }
+  body { background: var(--bg); color: var(--text1); font-family: 'Inter', sans-serif; font-size: 14px; }
+  .wrap { padding: 28px 32px; max-width: 880px; margin: 0 auto; }
+
+  .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); display: inline-block; margin-right: 10px; }
+  .logo-text { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; }
+  .logo-sub { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text3); margin-top: 3px; }
+  .ts { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text3); }
+  .reload { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text2); background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 6px 14px; cursor: pointer; margin-left: 12px; transition: all 0.15s; }
+  .reload:hover { border-color: var(--border2); color: var(--text1); }
+
+  .note { font-size: 12px; color: var(--text3); background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 20px; line-height: 1.7; }
+  .note strong { color: var(--text2); font-weight: 500; }
+
+  .filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .f-btn { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text2); background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; cursor: pointer; transition: all 0.15s; }
+  .f-btn.on { color: var(--green); border-color: var(--green-border); background: var(--green-bg); }
+  .f-btn:hover:not(.on) { border-color: var(--border2); color: var(--text1); }
+
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 10px; transition: border-color 0.15s; }
+  .card:hover { border-color: var(--border2); }
+  .card.hot { border-color: rgba(245,166,35,0.4); }
+  .card.solid { border-color: rgba(0,192,116,0.3); }
+
+  .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 14px; }
+  .q { font-size: 14px; font-weight: 500; color: var(--text1); line-height: 1.4; flex: 1; }
+
+  /* Big odds on right */
+  .odds-block { flex-shrink: 0; text-align: right; }
+  .odds-market { font-family: 'IBM Plex Mono', monospace; font-size: 30px; font-weight: 500; color: var(--text1); line-height: 1; }
+  .odds-est { font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: var(--green); margin-top: 3px; }
+  .odds-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--text3); margin-top: 2px; letter-spacing: 0.06em; }
+
+  /* Odds comparison boxes */
+  .cotes { display: flex; gap: 10px; margin-bottom: 14px; }
+  .cote-box { flex: 1; border-radius: 8px; padding: 12px 14px; }
+  .cote-box.market { background: var(--bg3); border: 1px solid var(--border); }
+  .cote-box.est    { background: var(--green-bg); border: 1px solid var(--green-border); }
+  .cb-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--text3); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+  .cb-lbl.g { color: rgba(0,192,116,0.7); }
+  .cb-main { display: flex; align-items: baseline; gap: 8px; }
+  .cb-odds { font-family: 'IBM Plex Mono', monospace; font-size: 26px; font-weight: 500; color: var(--text1); line-height: 1; }
+  .cb-odds.g { color: var(--green); }
+  .cb-pct { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--text3); }
+  .cb-pct.g { color: rgba(0,192,116,0.6); }
+  .cb-sub { font-size: 11px; color: var(--text3); margin-top: 5px; }
+  .cb-sub.g { color: rgba(0,192,116,0.55); }
+
+  /* Profit sim */
+  .sim { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-bottom: 12px; }
+  .sim-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--text3); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 10px; }
+  .sim-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+  .sg-val { font-family: 'IBM Plex Mono', monospace; font-size: 16px; font-weight: 500; color: var(--text1); line-height: 1; }
+  .sg-val.g { color: var(--green); }
+  .sg-val.r { color: var(--red); }
+  .sg-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+  .why { font-size: 12px; color: var(--text3); line-height: 1.65; padding: 10px 14px; background: var(--bg3); border-radius: 7px; margin-bottom: 12px; }
+  .why strong { color: var(--text2); font-weight: 500; }
+
+  .meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .tag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text3); }
+  .see { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text3); text-decoration: none; transition: color 0.15s; }
+  .see:hover { color: var(--green); }
+
+  .badge { display: inline-flex; align-items: center; gap: 5px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 4px; margin-bottom: 12px; }
+  .badge.gold   { background: rgba(245,166,35,0.1); color: var(--gold); border: 1px solid rgba(245,166,35,0.3); }
+  .badge.green  { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .badge.purple { background: rgba(99,102,241,0.1); color: var(--purple); border: 1px solid rgba(99,102,241,0.25); }
+
+  .status { padding: 56px 20px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--text3); line-height: 2; }
+  .spin { display: inline-block; width: 14px; height: 14px; border: 1.5px solid var(--border2); border-top-color: var(--green); border-radius: 50%; animation: rot 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+  @keyframes rot { to { transform: rotate(360deg); } }
+  .debug { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text3); background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 10px; margin-top: 12px; white-space: pre-wrap; word-break: break-all; text-align: left; max-height: 160px; overflow-y: auto; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <div><span class="logo-dot"></span><span class="logo-text">Polymarket Edge Scanner</span></div>
+      <div class="logo-sub">Odds ≥1.50 · underpriced vs real probability · sorted by value</div>
+    </div>
+    <div style="display:flex;align-items:center">
+      <div class="ts" id="ts">Loading...</div>
+      <button class="reload" onclick="load()">↻ Refresh</button>
+    </div>
+  </div>
+
+  <div class="note">
+    Only markets with <strong>odds ≥ 1.50</strong> (price ≤ 0.67 on Polymarket) where <strong>my estimated probability says you should win more often than the odds imply</strong>.
+    A cote of 2.00 = you double your money. The edge = how much more likely I think it is vs what you're paying for.
+  </div>
+
+  <div class="filters">
+    <button class="f-btn on" onclick="filt('all',this)">All</button>
+    <button class="f-btn" onclick="filt('big',this)">Odds ≥ 2.00</button>
+    <button class="f-btn" onclick="filt('edge',this)">Edge ≥ 5%</button>
+    <button class="f-btn" onclick="filt('urgent',this)">Expires ≤ 14d</button>
+  </div>
+
+  <div id="list"><div class="status"><span class="spin"></span>Connecting to Polymarket...</div></div>
+</div>
+
+<script>
+let markets = [];
+let curFilter = 'all';
+
+function daysLeft(d) {
+  if (!d) return 9999;
+  const ms = new Date(d).getTime();
+  if (isNaN(ms)) return 9999;
+  return Math.max(0, Math.round((ms - Date.now()) / 86400000));
+}
+
+function parsePrices(raw) {
+  if (!raw) return [];
+  let arr = raw;
+  if (typeof raw === 'string') { try { arr = JSON.parse(raw); } catch { return []; } }
+  if (!Array.isArray(arr)) return [];
+  return arr.map(x => parseFloat(x)).filter(x => !isNaN(x));
+}
+
+function parseOutcomes(raw) {
+  if (!raw) return ['Yes','No'];
+  if (Array.isArray(raw)) return raw;
+  if (typeof raw === 'string') {
+    try { const a = JSON.parse(raw); if (Array.isArray(a)) return a; } catch {}
+    if (raw.includes(',')) return raw.split(',').map(s => s.trim());
+  }
+  return ['Yes','No'];
+}
+
+function fmtVol(v) {
+  if (!v || isNaN(v)) return '—';
+  if (v >= 1e6) return '$'+(v/1e6).toFixed(1)+'M';
+  if (v >= 1e3) return '$'+Math.round(v/1e3)+'K';
+  return '$'+Math.round(v);
+}
+
+// Convert Polymarket price (0-1) to decimal odds
+function toOdds(price) {
+  if (!price || price <= 0) return 999;
+  return 1 / price;
+}
+
+/*
+  ESTIMATED REAL PROBABILITY
+  ──────────────────────────
+  For higher-odds markets (less certain outcomes), inefficiency signals
+  matter even more — these markets have fewer participants tracking them.
+
+  Adjustments:
+  • Liquidity < $1K    → +6%  (near-zero arbitrage activity)
+  • Liquidity < $5K    → +4%
+  • Liquidity < $20K   → +2%
+  • Volume < $5K       → +2%  (little crowd wisdom in the price)
+  • Volume < $20K      → +1%
+  • Expires ≤ 3 days   → +4%  (outcome imminent, market slow to adjust)
+  • Expires ≤ 7 days   → +3%
+  • Expires ≤ 14 days  → +1.5%
+  • Expires ≤ 30 days  → +0.5%
+  • Price 0.40–0.67    → +1%  (mid-range odds, less market attention)
+
+  Only shown if estimated prob > market price (positive edge).
+  Min edge shown: 2%
+*/
+function estimateRealProb(p, liq, vol, days) {
+  let adj = 0;
+  if      (liq < 1000)  adj += 0.06;
+  else if (liq < 5000)  adj += 0.04;
+  else if (liq < 20000) adj += 0.02;
+  if      (vol < 5000)  adj += 0.02;
+  else if (vol < 20000) adj += 0.01;
+  if      (days <= 3)   adj += 0.04;
+  else if (days <= 7)   adj += 0.03;
+  else if (days <= 14)  adj += 0.015;
+  else if (days <= 30)  adj += 0.005;
+  if (p >= 0.40 && p <= 0.67) adj += 0.01;
+  // Cap: can't exceed implied prob by more than 15% (stay realistic)
+  adj = Math.min(adj, 0.15);
+  return Math.min(p + adj, 0.97);
+}
+
+function whyText(liq, vol, days, p, gap) {
+  const parts = [];
+  if      (liq < 1000)  parts.push('near-zero liquidity ('+fmtVol(liq)+') — almost no one is pricing this market');
+  else if (liq < 5000)  parts.push('very low liquidity ('+fmtVol(liq)+') — few market makers active');
+  else if (liq < 20000) parts.push('low liquidity ('+fmtVol(liq)+')');
+  if      (vol < 5000)  parts.push('very low volume — crowd wisdom not yet reflected in price');
+  else if (vol < 20000) parts.push('moderate volume');
+  if      (days <= 3)   parts.push('expires in '+days+'d — market hasn\'t caught up to near-certain outcome');
+  else if (days <= 7)   parts.push('expires in '+days+' days — short window, price likely to move');
+  else if (days <= 14)  parts.push('expires in '+days+' days');
+  if (gap >= 0.08)      parts.push('large mispricing gap of +'+( gap*100).toFixed(1)+'%');
+  if (parts.length === 0) parts.push('combined inefficiency signals');
+  return parts.join(' · ');
+}
+
+function filt(f, btn) {
+  curFilter = f;
+  document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  render();
+}
+
+async function load() {
+  document.getElementById('list').innerHTML = '<div class="status"><span class="spin"></span>Connecting to Polymarket...</div>';
+
+  const TARGETS = [
+    'https://gamma-api.polymarket.com/markets?active=true&closed=false&limit=200',
+    'https://gamma-api.polymarket.com/events?active=true&closed=false&limit=100',
+  ];
+  const PROXY = url => [
+    `https://corsproxy.io/?${encodeURIComponent(url)}`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+  ];
+
+  let raw = [], log = [];
+
+  outer:
+  for (const target of TARGETS) {
+    for (const purl of PROXY(target)) {
+      const label = purl.split('?')[0].replace('https://','').split('/')[0];
+      try {
+        const r = await fetch(purl, { signal: AbortSignal.timeout(8000) });
+        if (!r.ok) { log.push(`✗ ${label} HTTP ${r.status}`); continue; }
+        const text = await r.text();
+        let j;
+        try { j = JSON.parse(text); } catch { continue; }
+        if (j && typeof j.contents === 'string') { try { j = JSON.parse(j.contents); } catch { continue; } }
+        if (Array.isArray(j) && j.length > 0) {
+          raw = j[0].markets ? j.flatMap(e => e.markets || []) : j;
+        } else if (j && j.data) { raw = Array.isArray(j.data) ? j.data : []; }
+        if (raw.length > 0) { log.push(`✓ ${label} → ${raw.length}`); break outer; }
+      } catch(e) { log.push(`✗ ${label}: ${e.message}`); }
+    }
+  }
+
+  if (raw.length === 0) {
+    document.getElementById('list').innerHTML = `<div class="status">Failed to load.<div class="debug">${log.join('\n')}</div></div>`;
+    document.getElementById('ts').textContent = 'Error';
+    return;
+  }
+
+  markets = [];
+  for (const m of raw) {
+    if (!m.question || m.closed === true) continue;
+    const prices = parsePrices(m.outcomePrices || m.outcome_prices);
+    if (prices.length === 0) continue;
+
+    // Look at ALL outcomes — find one with odds ≥ 1.50 (price ≤ 0.667)
+    // AND that has positive edge
+    let bestCandidate = null;
+
+    for (let i = 0; i < prices.length; i++) {
+      const p = prices[i];
+      if (p <= 0.05 || p > 0.667) continue; // odds must be ≥ 1.50
+      const days  = daysLeft(m.endDate || m.endDateIso || m.end_date_iso);
+      const liq   = parseFloat(m.liquidity || m.liquidityNum || 0);
+      const vol   = parseFloat(m.volume || m.volumeNum || 0);
+      const realP = estimateRealProb(p, liq, vol, days);
+      const gap   = realP - p;
+      if (gap < 0.02) continue; // need at least 2% edge
+
+      const odds       = toOdds(p);
+      const realOdds   = toOdds(realP);
+      const outcomes   = parseOutcomes(m.outcomes);
+      const side       = outcomes[i] || (i === 0 ? 'Yes' : 'No');
+
+      // Payout on $100 bet
+      const payout     = 100 * odds;       // total return if win
+      const profit     = payout - 100;     // net profit
+      const ev         = realP * profit - (1 - realP) * 100;
+
+      if (!bestCandidate || gap > bestCandidate.gap) {
+        bestCandidate = {
+          id: m.id || Math.random(),
+          question: m.question,
+          prob: p, realProb: realP, gap, ev,
+          odds, realOdds, profit, payout,
+          side, days, vol, liq,
+          slug: m.slug || '',
+          why: whyText(liq, vol, days, p, gap),
+        };
+      }
+    }
+
+    if (bestCandidate) markets.push(bestCandidate);
+  }
+
+  // Sort by gap DESC then odds DESC (bigger odds = more exciting)
+  markets.sort((a, b) => b.gap - a.gap || b.odds - a.odds);
+
+  document.getElementById('ts').textContent =
+    `${raw.length} scanned · ${markets.length} opportunities · ` +
+    new Date().toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
+
+  render();
+}
+
+function render() {
+  const filters = {
+    all:    () => true,
+    big:    m => m.odds >= 2.00,
+    edge:   m => m.gap >= 0.05,
+    urgent: m => m.days <= 14,
+  };
+  const shown = markets.filter(filters[curFilter] || (() => true));
+
+  if (shown.length === 0) {
+    document.getElementById('list').innerHTML = '<div class="status">No markets found for this filter.</div>';
+    return;
+  }
+
+  document.getElementById('list').innerHTML = shown.map(m => {
+    const mOdds  = m.odds.toFixed(2);
+    const rOdds  = m.realOdds.toFixed(2);
+    const mPct   = (m.prob * 100).toFixed(1);
+    const rPct   = (m.realProb * 100).toFixed(1);
+    const gapPct = (m.gap * 100).toFixed(1);
+    const dayStr = m.days >= 9999 ? '—' : m.days === 0 ? 'Today' : m.days === 1 ? 'Tomorrow' : m.days+'d';
+    const evFmt  = (m.ev >= 0 ? '+' : '')+'$'+m.ev.toFixed(2);
+    const evCls  = m.ev >= 0 ? 'g' : 'r';
+
+    let bdgCls, bdgTxt;
+    if (m.odds >= 3.0 && m.gap >= 0.05) { bdgCls='gold';   bdgTxt='★ High value bet'; }
+    else if (m.gap >= 0.05)              { bdgCls='green';  bdgTxt='◆ Strong edge'; }
+    else                                 { bdgCls='purple'; bdgTxt='◇ Moderate edge'; }
+
+    const cardCls = m.odds >= 3.0 && m.gap >= 0.05 ? 'hot' : m.gap >= 0.05 ? 'solid' : '';
+
+    return `
+    <div class="card ${cardCls}">
+      <div class="card-head">
+        <div class="q">${m.question}</div>
+        <div class="odds-block">
+          <div class="odds-market">${mOdds}x</div>
+          <div class="odds-est">est. should be ${rOdds}x</div>
+          <div class="odds-lbl">MARKET ODDS · OUTCOME: ${m.side}</div>
+        </div>
+      </div>
+
+      <div class="badge ${bdgCls}">${bdgTxt} · +${gapPct}% edge</div>
+
+      <div class="cotes">
+        <div class="cote-box market">
+          <div class="cb-lbl">Polymarket odds</div>
+          <div class="cb-main">
+            <div class="cb-odds">${mOdds}x</div>
+            <div class="cb-pct">(${mPct}% implied)</div>
+          </div>
+          <div class="cb-sub">What you pay for</div>
+        </div>
+        <div class="cote-box est">
+          <div class="cb-lbl g">My estimated odds</div>
+          <div class="cb-main">
+            <div class="cb-odds g">${rOdds}x</div>
+            <div class="cb-pct g">(${rPct}% real prob)</div>
+          </div>
+          <div class="cb-sub g">You're getting +${gapPct}% extra probability</div>
+        </div>
+      </div>
+
+      <div class="sim">
+        <div class="sim-lbl">Betting $100 on "${m.side}"</div>
+        <div class="sim-grid">
+          <div><div class="sg-val">$100</div><div class="sg-sub">You bet</div></div>
+          <div><div class="sg-val g">+$${m.profit.toFixed(2)}</div><div class="sg-sub">Profit if correct</div></div>
+          <div><div class="sg-val r">−$100</div><div class="sg-sub">Loss if wrong</div></div>
+          <div><div class="sg-val ${evCls}">${evFmt}</div><div class="sg-sub">Expected value</div></div>
+        </div>
+      </div>
+
+      <div class="why"><strong>Why the edge:</strong> ${m.why}</div>
+
+      <div class="meta">
+        <span class="tag">⏱ ${dayStr}</span>
+        <span class="tag">💧 ${fmtVol(m.liq)}</span>
+        <span class="tag">📊 ${fmtVol(m.vol)}</span>
+        ${m.slug ? `<a class="see" href="https://polymarket.com/event/${m.slug}" target="_blank">View on Polymarket ↗</a>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+load();
+</script>
+</body>
+</html>
