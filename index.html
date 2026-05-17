@@ -45,11 +45,16 @@ canvas#dots{position:absolute;inset:0;z-index:1;opacity:.42}
 
 h1{
   font-family:'Manrope',sans-serif;
-  font-size:clamp(18px,2.4vw,28px);
+  font-size:18px !important;
   font-weight:700;
-  line-height:1.3;letter-spacing:-.01em;color:#ece9ff;
+  line-height:1.4;
+  letter-spacing:-.01em;
+  color:#ece9ff;
   margin-bottom:18px;
-  opacity:0;animation:up .8s .15s ease forwards;
+  opacity:0;
+  animation:up .8s .15s ease forwards;
+  white-space:normal;
+  max-width:100%;
 }
 h1 .dim{color:rgba(236,233,255,.28);font-weight:300}
 h1 .lit{
