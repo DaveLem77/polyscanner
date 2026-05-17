@@ -3,691 +3,427 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Internal Systems — Build. Sell. Repeat.</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
+<title>Internal Systems</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400&family=Manrope:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
-html{scroll-behavior:smooth}
-body{background:#06040e;color:#ede8ff;font-family:'Manrope',sans-serif;overflow-x:hidden}
+html,body{height:100%;overflow-x:hidden}
+body{background:#070710;color:#ece9ff;font-family:'Manrope',sans-serif}
 
-/* ── NAV ── */
-.nav{
-  position:fixed;top:0;left:0;right:0;z-index:200;
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;justify-content:space-between;align-items:center;
-  padding:20px 40px;
-  border-bottom:1px solid rgba(150,120,255,.06);
-  background:rgba(6,4,14,.8);
-  backdrop-filter:blur(18px);
-  transition:padding .3s;
+  padding:22px 44px;
+  transition:background .4s,padding .3s;
 }
-.nav.scrolled{padding:14px 40px}
-.nav-logo{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.18em;color:rgba(237,232,255,.25);text-transform:uppercase}
-.nav-right{display:flex;gap:16px;align-items:center}
-.nav-signin{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(237,232,255,.22);border:1px solid rgba(150,120,255,.15);padding:8px 18px;border-radius:2px;text-decoration:none;transition:all .2s}
-.nav-signin:hover{color:#b8a4ff;border-color:rgba(184,164,255,.35)}
-.nav-cta{font-family:'Manrope',sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#06040e;background:#ede8ff;padding:9px 22px;border-radius:2px;text-decoration:none;transition:opacity .2s,transform .2s}
-.nav-cta:hover{opacity:.88;transform:translateY(-1px)}
+nav.solid{background:rgba(7,7,16,.92);backdrop-filter:blur(16px);padding:16px 44px;border-bottom:1px solid rgba(255,255,255,.04)}
+.logo{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(236,233,255,.28)}
+.signin{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(236,233,255,.24);text-decoration:none;border:1px solid rgba(255,255,255,.08);padding:8px 18px;border-radius:2px;transition:all .2s}
+.signin:hover{color:rgba(236,233,255,.65);border-color:rgba(180,160,255,.3)}
 
-/* ── HERO ── */
 .hero{
-  position:relative;min-height:100vh;
+  position:relative;height:100vh;min-height:620px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:120px 24px 80px;overflow:hidden;
+  text-align:center;padding:0 24px;overflow:hidden;
 }
-canvas#bg{position:absolute;inset:0;z-index:0}
-.hero-orb{
-  position:absolute;width:800px;height:800px;
-  left:50%;top:50%;transform:translate(-50%,-55%);
-  background:radial-gradient(circle,rgba(110,70,255,.09) 0%,rgba(90,50,200,.04) 40%,transparent 68%);
-  border-radius:50%;pointer-events:none;z-index:1;
-  animation:orb 9s ease-in-out infinite;
+.hero::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse 65% 55% at 50% 45%,rgba(100,70,255,.08) 0%,transparent 70%);
+  pointer-events:none;
 }
-@keyframes orb{0%,100%{transform:translate(-50%,-55%) scale(1);opacity:.7}50%{transform:translate(-50%,-55%) scale(1.12);opacity:1}}
+canvas#dots{position:absolute;inset:0;z-index:1;opacity:.42}
+.hero-content{position:relative;z-index:5;width:100%;max-width:680px}
 
-.hero-inner{position:relative;z-index:5;display:flex;flex-direction:column;align-items:center}
-
-.pill{
-  display:inline-flex;align-items:center;gap:9px;
-  border:1px solid rgba(160,130,255,.25);background:rgba(120,80,255,.07);
-  border-radius:40px;padding:8px 20px;margin-bottom:40px;
-  opacity:0;animation:fadeup .7s .15s ease forwards;
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(180,160,255,.5);margin-bottom:24px;
+  opacity:0;animation:up .6s .05s ease forwards;
 }
-.pill-dot{width:6px;height:6px;border-radius:50%;background:#9b7fff;animation:blink 2.4s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.2;transform:scale(.65)}}
-.pill-txt{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#9b7fff}
+.edot{width:5px;height:5px;border-radius:50%;background:#9b7fff;animation:blink 2.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
 h1{
   font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(86px,22vw,160px);
-  line-height:.88;letter-spacing:.015em;
-  color:#ede8ff;
-  opacity:0;animation:fadeup .9s .25s ease forwards;
+  font-size:clamp(64px,13vw,118px);
+  line-height:.9;letter-spacing:.015em;color:#ece9ff;
+  margin-bottom:18px;
+  opacity:0;animation:up .8s .15s ease forwards;
 }
-h1 .outline{-webkit-text-stroke:1.5px rgba(200,185,255,.16);color:transparent}
-h1 .glow{
-  color:#a78bff;display:block;
-  animation:textglow 3.5s ease-in-out infinite;
+h1 .dim{-webkit-text-stroke:1px rgba(200,190,255,.16);color:transparent}
+h1 .lit{color:#a78bff;animation:glow 3.5s ease-in-out infinite}
+@keyframes glow{0%,100%{color:#a78bff}50%{color:#c4b0ff;text-shadow:0 0 60px rgba(196,176,255,.18)}}
+
+.sub{
+  font-size:14px;font-weight:300;color:rgba(236,233,255,.32);line-height:1.8;
+  max-width:380px;margin:0 auto 32px;
+  opacity:0;animation:up .7s .28s ease forwards;
 }
-@keyframes textglow{
-  0%,100%{color:#a78bff;text-shadow:none}
-  50%{color:#c4b0ff;text-shadow:0 0 80px rgba(196,176,255,.2)}
+.sub b{color:rgba(236,233,255,.68);font-weight:600}
+
+.video-box{
+  width:100%;max-width:560px;margin:0 auto 28px;
+  position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;
+  border:1px solid rgba(180,160,255,.1);
+  box-shadow:0 20px 60px rgba(0,0,0,.55);
+  cursor:pointer;
+  opacity:0;animation:up .8s .38s ease forwards;
+}
+.vbg{
+  position:absolute;inset:0;background:#0c0b18;
+  display:flex;align-items:center;justify-content:center;
+}
+.vbg::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 55% 50% at 50% 50%,rgba(100,70,255,.07) 0%,transparent 70%);
+}
+.vlines{
+  position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.009) 3px,rgba(255,255,255,.009) 4px);
+}
+.play{
+  position:relative;z-index:2;
+  width:54px;height:54px;border-radius:50%;
+  border:1.5px solid rgba(200,185,255,.25);
+  background:rgba(100,70,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .2s,background .2s;backdrop-filter:blur(6px);
+}
+.video-box:hover .play{transform:scale(1.1);background:rgba(120,90,255,.2)}
+.play svg{fill:#ece9ff;margin-left:4px}
+.vlabel{
+  position:absolute;bottom:13px;left:0;right:0;text-align:center;z-index:2;
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(236,233,255,.26);
 }
 
-.hero-sub{
-  font-size:15px;font-weight:300;color:rgba(237,232,255,.32);
-  line-height:1.8;max-width:360px;margin:32px auto 48px;
-  opacity:0;animation:fadeup .7s .4s ease forwards;
+.cta-row{
+  display:flex;flex-direction:column;align-items:center;gap:11px;
+  opacity:0;animation:up .7s .5s ease forwards;
 }
-.hero-sub strong{color:rgba(237,232,255,.72);font-weight:600}
-
-.hero-btns{
-  display:flex;flex-direction:column;align-items:center;gap:14px;
-  opacity:0;animation:fadeup .7s .55s ease forwards;
-}
-.btn-main{
+.btn{
   display:inline-block;font-family:'Manrope',sans-serif;font-size:12px;font-weight:700;
   letter-spacing:.16em;text-transform:uppercase;
-  padding:18px 52px;border-radius:3px;
-  background:#ede8ff;color:#06040e;text-decoration:none;
+  padding:16px 52px;border-radius:2px;
+  background:#ece9ff;color:#07070f;text-decoration:none;
   transition:transform .2s,box-shadow .2s;
 }
-.btn-main:hover{transform:translateY(-3px);box-shadow:0 0 60px rgba(167,139,255,.18)}
-.price-note{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:rgba(237,232,255,.16)}
+.btn:hover{transform:translateY(-3px);box-shadow:0 0 48px rgba(160,130,255,.16)}
+.price{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:rgba(236,233,255,.18)}
 
-/* ── TICKER ── */
-.ticker{
-  position:relative;z-index:10;overflow:hidden;
-  border-top:1px solid rgba(255,255,255,.04);
-  border-bottom:1px solid rgba(255,255,255,.04);
-  padding:13px 0;background:rgba(255,255,255,.012);
+.scroll-cue{
+  position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:5;
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  opacity:0;animation:up .6s .95s ease forwards;
 }
-.tick-track{display:flex;width:max-content;animation:scroll 30s linear infinite}
-@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.tick-item{
-  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(237,232,255,.13);white-space:nowrap;padding:0 36px;
-  display:flex;align-items:center;gap:30px;
-}
-.tick-item::after{content:'·';color:rgba(237,232,255,.09)}
+.scroll-line{width:1px;height:32px;background:linear-gradient(180deg,rgba(200,185,255,.2),transparent);animation:sp 2.2s ease-in-out infinite}
+@keyframes sp{0%,100%{opacity:.35}50%{opacity:1}}
+.scroll-txt{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(236,233,255,.16)}
 
-/* ── SECTION BASE ── */
-section{padding:120px 40px;max-width:1100px;margin:0 auto}
-.section-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(237,232,255,.2);margin-bottom:24px}
-.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,88px);line-height:.92;color:#ede8ff;margin-bottom:40px}
+/* TICKER */
+.ticker{overflow:hidden;border-top:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04);padding:12px 0;background:rgba(255,255,255,.01)}
+.t-track{display:flex;width:max-content;animation:tkr 32s linear infinite}
+@keyframes tkr{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.t-item{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(236,233,255,.12);white-space:nowrap;padding:0 30px;display:flex;align-items:center}
+.t-item::after{content:'·';margin-left:30px;color:rgba(236,233,255,.08)}
 
-/* ── WHAT WE SELL ── */
-.what{padding:140px 40px}
-.what-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.what-text .section-tag{margin-bottom:20px}
-.what-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(58px,7vw,96px);line-height:.9;color:#ede8ff;margin-bottom:28px}
-.what-title em{font-style:italic;color:#a78bff;font-family:'DM Mono',monospace;font-size:.55em;display:block;letter-spacing:.04em;line-height:2}
-.what-desc{font-size:15px;font-weight:300;color:rgba(237,232,255,.35);line-height:1.85;max-width:380px}
-.what-desc strong{color:rgba(237,232,255,.7);font-weight:600}
+/* SECTIONS */
+.dline{height:1px;background:linear-gradient(90deg,transparent,rgba(180,160,255,.07),transparent)}
+.s-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(180,160,255,.35);margin-bottom:18px}
+.s-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(46px,7vw,78px);line-height:.9;color:#ece9ff}
 
-.what-visual{position:relative;aspect-ratio:4/5;border-radius:16px;overflow:hidden}
-.photo-block{
-  width:100%;height:100%;
-  background:linear-gradient(145deg,#110d22 0%,#1a1130 50%,#0e0b1a 100%);
-  display:flex;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;border-radius:16px;
-  border:1px solid rgba(150,120,255,.1);
-}
-.photo-block::before{
-  content:'';position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse at 30% 30%,rgba(120,80,255,.12) 0%,transparent 55%),
-    radial-gradient(ellipse at 70% 70%,rgba(80,50,180,.08) 0%,transparent 55%);
-}
-.photo-person{
-  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
-  width:75%;height:88%;
-  background:linear-gradient(180deg,rgba(140,110,255,.08) 0%,rgba(100,70,200,.18) 100%);
-  border-radius:200px 200px 0 0;
-  display:flex;align-items:flex-start;justify-content:center;
-  overflow:hidden;
-}
-.photo-silhouette{
-  width:55%;height:100%;
-  background:linear-gradient(180deg,rgba(180,160,255,.22) 0%,rgba(120,90,255,.15) 60%,rgba(80,50,180,.25) 100%);
-  border-radius:100px 100px 0 0;margin-top:20%;
-  position:relative;
-}
-.photo-silhouette::before{
-  content:'';position:absolute;top:-4%;left:20%;width:60%;height:30%;
-  background:rgba(200,185,255,.18);border-radius:50%;
-}
-.photo-badge{
-  position:absolute;bottom:28px;left:24px;right:24px;
-  background:rgba(15,10,30,.85);border:1px solid rgba(150,120,255,.2);
-  border-radius:10px;padding:16px 18px;backdrop-filter:blur(12px);
-}
-.pb-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(237,232,255,.25);margin-bottom:8px}
-.pb-val{font-family:'Bebas Neue',sans-serif;font-size:32px;color:#ede8ff;line-height:1}
-.pb-sub{font-size:12px;color:rgba(237,232,255,.3);margin-top:4px}
+/* WHAT */
+.what-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;padding:110px 44px;max-width:1080px;margin:0 auto}
+.what-desc{font-size:14px;font-weight:300;color:rgba(236,233,255,.3);line-height:1.88;max-width:380px;margin-top:22px}
+.what-desc b{color:rgba(236,233,255,.68);font-weight:600}
 
-/* ── STATS ── */
-.stats-section{padding:0 40px 140px}
-.stats-inner{max-width:1100px;margin:0 auto}
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
-.stat-box{
-  background:rgba(255,255,255,.025);border:1px solid rgba(150,120,255,.08);
-  padding:48px 36px;position:relative;overflow:hidden;
-  transition:background .3s;
-}
-.stat-box:hover{background:rgba(150,120,255,.04)}
-.stat-box::before{
-  content:'';position:absolute;top:-60px;left:-60px;width:180px;height:180px;
-  background:radial-gradient(circle,rgba(150,120,255,.06) 0%,transparent 70%);
-  pointer-events:none;
-}
-.stat-num{
-  font-family:'Bebas Neue',sans-serif;font-size:72px;line-height:1;
-  color:#ede8ff;margin-bottom:8px;
-}
-.stat-num span{color:#a78bff}
-.stat-label{font-size:13px;font-weight:300;color:rgba(237,232,255,.3);line-height:1.6}
+/* phone */
+.phone{margin:0 auto;width:196px;background:#0d0b1c;border:1px solid rgba(180,160,255,.1);border-radius:28px;padding:12px 10px;box-shadow:0 36px 72px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.04)}
+.phone-notch{width:50px;height:5px;background:#18162a;border-radius:4px;margin:0 auto 10px}
+.phone-screen{background:#09081a;border-radius:18px;padding:14px 12px;display:flex;flex-direction:column;gap:8px}
+.ps-l{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,233,255,.2)}
+.ps-h{font-size:14px;font-weight:800;color:#ece9ff;margin-bottom:4px}
+.ps-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px}
+.ps-cv{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#ece9ff;line-height:1}
+.ps-cs{font-size:9px;color:rgba(236,233,255,.28);margin-top:2px}
+.ps-row{display:flex;gap:6px}
+.ps-m{flex:1;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:7px;padding:8px}
+.ps-ml{font-size:7px;font-family:'DM Mono',monospace;color:rgba(236,233,255,.2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.ps-mv{font-family:'Bebas Neue',sans-serif;font-size:15px;color:#ece9ff}
+.ps-dl{height:1px;background:rgba(255,255,255,.04);margin:2px 0}
+.ps-item{display:flex;justify-content:space-between;align-items:center;padding:5px 0}
+.ps-in{font-size:10px;color:rgba(236,233,255,.35)}
+.ps-it{font-family:'DM Mono',monospace;font-size:8px;color:#a78bff;border:1px solid rgba(167,139,255,.2);padding:2px 7px;border-radius:20px}
+.ps-it.d{color:rgba(236,233,255,.18);border-color:rgba(255,255,255,.06)}
 
-/* ── VIDEO ── */
-.video-section{padding:0 40px 140px}
-.video-inner{max-width:860px;margin:0 auto;text-align:center}
-.video-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,7vw,80px);color:#ede8ff;margin-bottom:48px;line-height:.92}
-.video-wrap{
-  position:relative;width:100%;aspect-ratio:16/9;
-  border-radius:14px;overflow:hidden;
-  border:1px solid rgba(150,120,255,.12);
-  box-shadow:0 40px 100px rgba(0,0,0,.5),0 0 0 1px rgba(150,120,255,.06);
-}
-.video-inner-bg{
-  width:100%;height:100%;
-  background:linear-gradient(145deg,#0f0a1e 0%,#160f28 50%,#0a0818 100%);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;position:relative;overflow:hidden;
-}
-.video-inner-bg::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at center,rgba(120,80,255,.09) 0%,transparent 65%);
-}
-.video-thumb-grid{
-  position:absolute;inset:0;
-  display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);
-  gap:2px;opacity:.35;
-}
-.vt-cell{background:linear-gradient(145deg,rgba(120,90,255,.12),rgba(80,50,180,.08))}
-.play-ring{
-  position:relative;z-index:5;
-  width:72px;height:72px;border-radius:50%;
-  border:1.5px solid rgba(200,185,255,.3);
-  background:rgba(150,120,255,.1);
-  display:flex;align-items:center;justify-content:center;
-  transition:transform .25s,background .25s;
-  backdrop-filter:blur(8px);
-}
-.video-inner-bg:hover .play-ring{transform:scale(1.08);background:rgba(150,120,255,.2)}
-.play-ring svg{fill:#ede8ff;margin-left:5px}
-.video-caption{
-  position:absolute;bottom:0;left:0;right:0;
-  background:linear-gradient(0deg,rgba(6,4,14,.9) 0%,transparent 100%);
-  padding:32px 28px 20px;text-align:left;
-}
-.vc-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(237,232,255,.3);margin-bottom:6px}
-.vc-title{font-size:15px;font-weight:600;color:rgba(237,232,255,.8)}
+/* STATS */
+.stats-wrap{padding:0 44px 110px;max-width:1080px;margin:0 auto}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(180,160,255,.05);border:1px solid rgba(180,160,255,.05);border-radius:4px;overflow:hidden}
+.stat{padding:44px 36px;background:#070710;transition:background .3s}
+.stat:hover{background:rgba(100,70,255,.035)}
+.stat-n{font-family:'Bebas Neue',sans-serif;font-size:60px;line-height:1;color:#ece9ff;margin-bottom:8px}
+.stat-n span{color:#a78bff}
+.stat-l{font-size:12px;font-weight:300;color:rgba(236,233,255,.26);line-height:1.65}
 
-/* ── WHO ── */
-.who-section{padding:0 40px 140px}
-.who-inner{max-width:1100px;margin:0 auto}
-.who-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:56px}
-.who-card{
-  background:rgba(255,255,255,.02);border:1px solid rgba(150,120,255,.07);
-  padding:40px 32px;
-}
-.who-icon{font-size:28px;margin-bottom:24px;opacity:.6}
-.who-title{font-family:'Bebas Neue',sans-serif;font-size:28px;color:#ede8ff;margin-bottom:12px}
-.who-desc{font-size:13px;font-weight:300;color:rgba(237,232,255,.3);line-height:1.75}
+/* STEPS */
+.steps-wrap{padding:0 44px 110px;max-width:1080px;margin:0 auto}
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:44px}
+.step{padding:36px 28px;border:1px solid rgba(180,160,255,.06);border-radius:4px;position:relative;overflow:hidden;transition:border-color .3s}
+.step:hover{border-color:rgba(180,160,255,.16)}
+.step-n{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;color:rgba(180,160,255,.25);margin-bottom:18px}
+.step-h{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#ece9ff;margin-bottom:10px}
+.step-d{font-size:13px;font-weight:300;color:rgba(236,233,255,.28);line-height:1.72}
 
-/* ── RESULTS PHOTOS ── */
-.results-section{padding:0 40px 140px;overflow:hidden}
-.results-inner{max-width:1100px;margin:0 auto}
-.results-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px}
-.results-photos{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:16px;align-items:start}
-.rp-main{
-  aspect-ratio:3/4;border-radius:12px;overflow:hidden;
-  background:linear-gradient(160deg,#120e24,#1e1535,#0e0b1a);
-  border:1px solid rgba(150,120,255,.1);position:relative;
-}
-.rp-main::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 40% 20%,rgba(130,90,255,.12) 0%,transparent 55%)}
-.rp-side{
-  aspect-ratio:3/4;border-radius:12px;overflow:hidden;
-  background:linear-gradient(160deg,#0f0b1e,#191030);
-  border:1px solid rgba(150,120,255,.08);
-  position:relative;display:flex;align-items:flex-end;
-}
-.rp-side:last-child{margin-top:40px}
-.rp-overlay{
-  width:100%;padding:20px 18px 16px;
-  background:linear-gradient(0deg,rgba(6,4,14,.88) 0%,transparent 100%);
-}
-.rp-name{font-size:13px;font-weight:600;color:rgba(237,232,255,.8);margin-bottom:3px}
-.rp-result{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:#9b7fff}
+/* RESULTS */
+.results-wrap{padding:0 44px 110px;max-width:1080px;margin:0 auto}
+.results-hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px}
+.results-note{font-size:12px;color:rgba(236,233,255,.22);max-width:180px;text-align:right;font-weight:300;line-height:1.7}
+.results-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rc{background:#0c0a1a;border:1px solid rgba(180,160,255,.07);border-radius:10px;overflow:hidden;position:relative;transition:border-color .3s,transform .3s;cursor:default}
+.rc:hover{border-color:rgba(180,160,255,.18);transform:translateY(-5px)}
+.rc-img{aspect-ratio:3/4;position:relative;overflow:hidden;background:linear-gradient(160deg,#0f0c20 0%,#19132e 55%,#0d0b1a 100%)}
+.rc-img::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 40% at 50% 25%,rgba(120,90,255,.09) 0%,transparent 65%)}
+.rc-figure{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:58%;height:76%}
+.rc-body{width:100%;height:100%;background:linear-gradient(180deg,rgba(167,139,255,.17) 0%,rgba(120,90,220,.13) 100%);border-radius:76px 76px 0 0;position:relative}
+.rc-body::before{content:'';position:absolute;top:-6%;left:18%;width:64%;height:26%;background:rgba(200,185,255,.13);border-radius:50%}
+.rc-overlay{position:absolute;bottom:0;left:0;right:0;padding:22px 16px 14px;background:linear-gradient(0deg,rgba(7,7,16,.96) 0%,transparent 100%)}
+.rc-name{font-size:12px;font-weight:600;color:rgba(236,233,255,.72);margin-bottom:3px}
+.rc-amt{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;color:#a78bff}
+.rc-badge{position:absolute;top:13px;left:11px;background:rgba(7,7,16,.88);border:1px solid rgba(167,139,255,.2);border-radius:6px;padding:8px 11px;backdrop-filter:blur(8px)}
+.rc-bv{font-family:'Bebas Neue',sans-serif;font-size:21px;color:#a78bff;line-height:1}
+.rc-bl{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(236,233,255,.28);margin-top:1px}
 
-.rp-fig{
-  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
-  width:70%;height:80%;
-  display:flex;align-items:flex-end;justify-content:center;
-}
-.rp-sil{
-  width:60%;height:90%;
-  background:linear-gradient(180deg,rgba(170,150,255,.2) 0%,rgba(110,80,220,.15) 100%);
-  border-radius:90px 90px 0 0;position:relative;
-}
-.rp-sil::before{content:'';position:absolute;top:-6%;left:18%;width:64%;height:28%;background:rgba(190,175,255,.16);border-radius:50%}
+/* FINAL CTA */
+.cta-final{padding:120px 44px;text-align:center;border-top:1px solid rgba(180,160,255,.05);position:relative;overflow:hidden}
+.cta-final::before{content:'';position:absolute;width:600px;height:600px;left:50%;top:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(100,70,255,.06) 0%,transparent 65%);border-radius:50%;pointer-events:none}
+.cf-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(58px,10vw,104px);line-height:.9;color:#ece9ff;margin-bottom:16px}
+.cf-h em{color:#a78bff;font-style:normal}
+.cf-sub{font-size:14px;font-weight:300;color:rgba(236,233,255,.26);line-height:1.8;margin-bottom:44px}
+.cta-block{display:flex;flex-direction:column;align-items:center;gap:12px;position:relative;z-index:2}
+.btn-lg{display:inline-block;font-family:'Manrope',sans-serif;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:19px 64px;border-radius:2px;background:#ece9ff;color:#07070f;text-decoration:none;transition:transform .2s,box-shadow .2s}
+.btn-lg:hover{transform:translateY(-3px);box-shadow:0 0 60px rgba(160,130,255,.2)}
+.cf-note{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:rgba(236,233,255,.15)}
 
-.rp-figure{position:absolute;width:65%;height:85%;bottom:0;left:50%;transform:translateX(-50%)}
-.rp-body{width:100%;height:100%;background:linear-gradient(180deg,rgba(155,135,255,.18) 0%,rgba(100,70,210,.14) 100%);border-radius:80px 80px 0 0;position:relative}
-.rp-body::before{content:'';position:absolute;top:-5%;left:20%;width:60%;height:25%;background:rgba(185,170,255,.14);border-radius:50%}
+footer{padding:26px 44px;border-top:1px solid rgba(255,255,255,.03);display:flex;justify-content:space-between;align-items:center}
+.fl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,233,255,.13)}
 
-.rp-badge{
-  position:absolute;top:18px;left:14px;
-  background:rgba(10,7,22,.9);border:1px solid rgba(150,120,255,.2);
-  border-radius:8px;padding:10px 14px;backdrop-filter:blur(8px);
-}
-.rpb-num{font-family:'Bebas Neue',sans-serif;font-size:24px;color:#a78bff;line-height:1}
-.rpb-txt{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;color:rgba(237,232,255,.3);text-transform:uppercase}
+/* REVEAL */
+.r{opacity:0;transform:translateY(26px);transition:opacity .75s ease,transform .75s ease}
+.rl{opacity:0;transform:translateX(-26px);transition:opacity .75s ease,transform .75s ease}
+.rr{opacity:0;transform:translateX(26px);transition:opacity .75s ease,transform .75s ease}
+.r.on,.rl.on,.rr.on{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.18s}.d3{transition-delay:.3s}
 
-/* ── CTA FINAL ── */
-.cta-section{
-  padding:140px 40px;text-align:center;
-  background:linear-gradient(0deg,rgba(100,70,255,.04) 0%,transparent 100%);
-  border-top:1px solid rgba(150,120,255,.07);
-}
-.cta-inner{max-width:640px;margin:0 auto}
-.cta-section .section-tag{text-align:center;margin-bottom:28px}
-.cta-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(60px,10vw,110px);color:#ede8ff;line-height:.9;margin-bottom:36px}
-.cta-h em{color:#a78bff;font-style:normal}
-.cta-sub{font-size:14px;font-weight:300;color:rgba(237,232,255,.3);line-height:1.8;margin-bottom:52px}
-.cta-btn-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
-.btn-big{
-  display:inline-block;font-family:'Manrope',sans-serif;font-size:13px;font-weight:700;
-  letter-spacing:.16em;text-transform:uppercase;
-  padding:20px 64px;border-radius:3px;
-  background:#ede8ff;color:#06040e;text-decoration:none;
-  transition:transform .2s,box-shadow .2s;
-}
-.btn-big:hover{transform:translateY(-4px);box-shadow:0 0 80px rgba(167,139,255,.22)}
-.cta-price{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;color:rgba(237,232,255,.18)}
+@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
 
-/* ── FOOTER ── */
-footer{
-  padding:32px 40px;
-  display:flex;justify-content:space-between;align-items:center;
-  border-top:1px solid rgba(255,255,255,.04);
-}
-.foot-logo{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;color:rgba(237,232,255,.15);text-transform:uppercase}
-.foot-copy{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:rgba(237,232,255,.1)}
-
-/* ── SCROLL REVEAL ── */
-.reveal{opacity:0;transform:translateY(36px);transition:opacity .8s ease,transform .8s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .8s ease,transform .8s ease}
-.reveal-left.visible{opacity:1;transform:translateX(0)}
-.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .8s ease,transform .8s ease}
-.reveal-right.visible{opacity:1;transform:translateX(0)}
-.delay-1{transition-delay:.1s}
-.delay-2{transition-delay:.2s}
-.delay-3{transition-delay:.35s}
-.delay-4{transition-delay:.5s}
-
-@keyframes fadeup{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-
-/* ── RESPONSIVE ── */
-@media(max-width:768px){
-  .nav{padding:18px 24px}
-  .what-inner{grid-template-columns:1fr;gap:48px}
-  .stats-grid{grid-template-columns:1fr}
-  .who-grid{grid-template-columns:1fr}
-  .results-photos{grid-template-columns:1fr;gap:12px}
-  .rp-side:last-child{margin-top:0}
-  .results-header{flex-direction:column;gap:16px;align-items:flex-start}
-  section{padding:80px 24px}
-  .what,.stats-section,.video-section,.who-section,.results-section,.cta-section{padding-left:24px;padding-right:24px}
-  footer{flex-direction:column;gap:12px;text-align:center}
+@media(max-width:760px){
+  nav,.nav{padding:18px 20px}
+  nav.solid{padding:14px 20px}
+  h1{font-size:clamp(60px,17vw,90px)}
+  .video-box{max-width:100%}
+  .what-grid{grid-template-columns:1fr;gap:44px;padding:80px 22px}
+  .stats-grid,.steps-grid,.results-cards{grid-template-columns:1fr}
+  .stats-wrap,.steps-wrap,.results-wrap{padding-left:22px;padding-right:22px}
+  .results-hdr{flex-direction:column;gap:12px;align-items:flex-start}
+  .results-note{text-align:left;max-width:none}
+  .cta-final{padding:80px 22px}
+  footer{flex-direction:column;gap:10px;text-align:center;padding:20px}
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav class="nav" id="nav">
-  <span class="nav-logo">Internal.sys</span>
-  <div class="nav-right">
-    <a href="#" class="nav-signin">Sign in</a>
-    <a href="#cta" class="nav-cta">Start now</a>
-  </div>
+<nav id="nav">
+  <span class="logo">Internal.sys</span>
+  <a href="#" class="signin">Sign in</a>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <canvas id="bg"></canvas>
-  <div class="hero-orb"></div>
-  <div class="hero-inner">
-    <div class="pill">
-      <span class="pill-dot"></span>
-      <span class="pill-txt">Nobody else teaches this</span>
+  <canvas id="dots"></canvas>
+  <div class="hero-content">
+    <div class="eyebrow"><span class="edot"></span>Nobody else teaches this</div>
+    <h1>BUILD<br><span class="dim">SELL</span><br><span class="lit">REPEAT</span></h1>
+    <p class="sub">Companies <b>desperately need</b> internal systems. Almost nobody knows how to sell them. This is that course.</p>
+    <div class="video-box" id="vbox">
+      <div class="vbg">
+        <div class="vlines"></div>
+        <div class="play"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="vlabel">Watch the overview — 5 min</div>
+      </div>
     </div>
-    <h1>
-      BUILD<br>
-      <span class="outline">SELL</span><br>
-      <span class="glow">REPEAT</span>
-    </h1>
-    <p class="hero-sub">
-      Companies <strong>desperately need</strong> internal systems.<br>
-      Almost nobody knows how to sell them.<br>
-      You're about to.
-    </p>
-    <div class="hero-btns">
-      <a href="#cta" class="btn-main">Start now</a>
-      <span class="price-note">Full access · $500 one-time</span>
+    <div class="cta-row">
+      <a href="#cta" class="btn">Start now</a>
+      <span class="price">Full access · $6,500 · one-time</span>
     </div>
+  </div>
+  <div class="scroll-cue">
+    <span class="scroll-txt">Scroll</span>
+    <div class="scroll-line"></div>
   </div>
 </div>
 
 <!-- TICKER -->
 <div class="ticker">
-  <div class="tick-track">
-    <span class="tick-item">Zero competition</span>
-    <span class="tick-item">High-ticket B2B</span>
-    <span class="tick-item">No team needed</span>
-    <span class="tick-item">Recurring clients</span>
-    <span class="tick-item">Untapped market</span>
-    <span class="tick-item">$500 full access</span>
-    <span class="tick-item">Nobody teaches this</span>
-    <span class="tick-item">Internal systems</span>
-    <span class="tick-item">Zero competition</span>
-    <span class="tick-item">High-ticket B2B</span>
-    <span class="tick-item">No team needed</span>
-    <span class="tick-item">Recurring clients</span>
-    <span class="tick-item">Untapped market</span>
-    <span class="tick-item">$500 full access</span>
-    <span class="tick-item">Nobody teaches this</span>
-    <span class="tick-item">Internal systems</span>
+  <div class="t-track">
+    <span class="t-item">Zero competition</span><span class="t-item">High-ticket B2B</span><span class="t-item">No team needed</span><span class="t-item">Recurring clients</span><span class="t-item">Untapped market</span><span class="t-item">Nobody teaches this</span><span class="t-item">$5K–$30K contracts</span><span class="t-item">Internal systems</span><span class="t-item">Zero competition</span><span class="t-item">High-ticket B2B</span><span class="t-item">No team needed</span><span class="t-item">Recurring clients</span><span class="t-item">Untapped market</span><span class="t-item">Nobody teaches this</span><span class="t-item">$5K–$30K contracts</span><span class="t-item">Internal systems</span>
   </div>
 </div>
 
-<!-- WHAT WE SELL -->
-<div class="what">
-  <div class="what-inner">
-    <div class="what-text reveal-left">
-      <div class="section-tag">What we sell</div>
-      <h2 class="what-title">
-        Custom tools.<br>
-        <em>For companies.</em>
-        At real prices.
-      </h2>
-      <p class="what-desc">
-        Internal systems — dashboards, automations, onboarding tools — are worth <strong>$5K–$30K per project</strong>. Companies buy them every day. Almost no one knows how to position and sell them.
-      </p>
-    </div>
-    <div class="what-visual reveal-right">
-      <div class="photo-block">
-        <div class="photo-person">
-          <div class="photo-silhouette"></div>
+<div class="dline"></div>
+
+<!-- WHAT -->
+<div class="what-grid">
+  <div class="rl">
+    <div class="s-tag">What we sell</div>
+    <div class="s-title">Custom<br>internal<br>tools.</div>
+    <p class="what-desc">Dashboards, automations, onboarding systems — built for companies. Worth <b>$5K to $30K per contract</b>. Almost no one is selling them. You're about to.</p>
+  </div>
+  <div class="rr">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="ps-l">Dashboard</div>
+        <div class="ps-h">This month</div>
+        <div class="ps-card"><div class="ps-cv">$18,500</div><div class="ps-cs">Revenue · 3 contracts</div></div>
+        <div class="ps-row">
+          <div class="ps-m"><div class="ps-ml">Avg</div><div class="ps-mv">$6.2K</div></div>
+          <div class="ps-m"><div class="ps-ml">Time</div><div class="ps-mv">8 days</div></div>
         </div>
-        <div class="photo-badge">
-          <div class="pb-label">Contract signed</div>
-          <div class="pb-val">$14,500</div>
-          <div class="pb-sub">HR onboarding system · 3 weeks</div>
-        </div>
+        <div class="ps-dl"></div>
+        <div class="ps-item"><span class="ps-in">HR System · Motrec</span><span class="ps-it">$12K</span></div>
+        <div class="ps-dl"></div>
+        <div class="ps-item"><span class="ps-in">Inventory tool</span><span class="ps-it">$7K</span></div>
+        <div class="ps-dl"></div>
+        <div class="ps-item"><span class="ps-in">In negotiation…</span><span class="ps-it d">pending</span></div>
       </div>
     </div>
   </div>
 </div>
+
+<div class="dline"></div>
 
 <!-- STATS -->
-<div class="stats-section">
-  <div class="stats-inner">
-    <div class="stats-grid">
-      <div class="stat-box reveal delay-1">
-        <div class="stat-num"><span class="count" data-target="8">0</span>K<span>+</span></div>
-        <div class="stat-label">Average contract value<br>per system delivered</div>
+<div class="stats-wrap">
+  <div class="stats-grid">
+    <div class="stat r d1">
+      <div class="stat-n"><span class="cnt" data-t="8">0</span>K<span>+</span></div>
+      <div class="stat-l">Average contract value<br>per system delivered</div>
+    </div>
+    <div class="stat r d2">
+      <div class="stat-n"><span class="cnt" data-t="72">0</span><span>h</span></div>
+      <div class="stat-l">Average time to build<br>a sellable system</div>
+    </div>
+    <div class="stat r d3">
+      <div class="stat-n">0 <span style="font-size:.52em;color:#a78bff;letter-spacing:-.01em">direct<br>competitors</span></div>
+      <div class="stat-l">No one teaches<br>this specific market</div>
+    </div>
+  </div>
+</div>
+
+<div class="dline"></div>
+
+<!-- STEPS -->
+<div class="steps-wrap">
+  <div class="r"><div class="s-tag">The method</div></div>
+  <div class="r d1"><div class="s-title">3 steps.<br>That's it.</div></div>
+  <div class="steps-grid">
+    <div class="step r d1"><div class="step-n">01 —</div><div class="step-h">Identify</div><p class="step-d">Find companies with broken internal workflows. They already have the budget — you just need to show up first.</p></div>
+    <div class="step r d2"><div class="step-n">02 —</div><div class="step-h">Build</div><p class="step-d">Use our proven system templates. No team, no complex tech stack. Average delivery under 2 weeks.</p></div>
+    <div class="step r d3"><div class="step-n">03 —</div><div class="step-h">Close</div><p class="step-d">Scripts, pricing frameworks, and objection handling included. You close $5K–$30K deals with confidence.</p></div>
+  </div>
+</div>
+
+<div class="dline"></div>
+
+<!-- RESULTS -->
+<div class="results-wrap">
+  <div class="results-hdr">
+    <div><div class="s-tag r">Results</div><div class="s-title r d1">Real deals.</div></div>
+    <p class="results-note r">Students from all backgrounds closing $5K–$25K contracts.</p>
+  </div>
+  <div class="results-cards">
+    <div class="rc r d1">
+      <div class="rc-img">
+        <div class="rc-figure"><div class="rc-body"></div></div>
+        <div class="rc-badge"><div class="rc-bv">$22K</div><div class="rc-bl">60 days</div></div>
+        <div class="rc-overlay"><div class="rc-name">Marc-Antoine, 27</div><div class="rc-amt">3 contracts · $22,400</div></div>
       </div>
-      <div class="stat-box reveal delay-2">
-        <div class="stat-num"><span class="count" data-target="72">0</span><span>H</span></div>
-        <div class="stat-label">Average time to build<br>a sellable system</div>
+    </div>
+    <div class="rc r d2">
+      <div class="rc-img">
+        <div class="rc-figure"><div class="rc-body"></div></div>
+        <div class="rc-badge"><div class="rc-bv">$14K</div><div class="rc-bl">45 days</div></div>
+        <div class="rc-overlay"><div class="rc-name">Sarah K., 31</div><div class="rc-amt">2 contracts · $14,200</div></div>
       </div>
-      <div class="stat-box reveal delay-3">
-        <div class="stat-num"><span>0</span> <span style="font-size:.6em;color:#a78bff">direct<br>competitors</span></div>
-        <div class="stat-label">No one teaches this<br>specific market</div>
+    </div>
+    <div class="rc r d3">
+      <div class="rc-img">
+        <div class="rc-figure"><div class="rc-body"></div></div>
+        <div class="rc-badge"><div class="rc-bv">$19K</div><div class="rc-bl">3 months</div></div>
+        <div class="rc-overlay"><div class="rc-name">Julien R., 24</div><div class="rc-amt">4 contracts · $19,800</div></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- VIDEO -->
-<div class="video-section">
-  <div class="video-inner">
-    <h2 class="video-title reveal">See how it works</h2>
-    <div class="video-wrap reveal">
-      <div class="video-inner-bg" id="play-btn">
-        <div class="video-thumb-grid">
-          <div class="vt-cell"></div><div class="vt-cell"></div><div class="vt-cell"></div>
-          <div class="vt-cell"></div><div class="vt-cell"></div><div class="vt-cell"></div>
-        </div>
-        <div class="play-ring">
-          <svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        </div>
-        <div class="video-caption">
-          <div class="vc-tag">Overview · 6 min</div>
-          <div class="vc-title">How I closed my first $12K internal system deal</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- WHO IS IT FOR -->
-<div class="who-section">
-  <div class="who-inner">
-    <div class="section-tag reveal">Who this is for</div>
-    <h2 class="section-title reveal">3 types.<br>1 method.</h2>
-    <div class="who-grid">
-      <div class="who-card reveal delay-1">
-        <div class="who-icon">⚡</div>
-        <div class="who-title">Freelancers</div>
-        <div class="who-desc">You already deliver work for clients. Now you learn to upsell them systems they'll pay 10× more for.</div>
-      </div>
-      <div class="who-card reveal delay-2">
-        <div class="who-icon">🧱</div>
-        <div class="who-title">Builders</div>
-        <div class="who-desc">You can build things but don't know how to sell. This fixes the gap between skill and income.</div>
-      </div>
-      <div class="who-card reveal delay-3">
-        <div class="who-icon">🎯</div>
-        <div class="who-title">Beginners</div>
-        <div class="who-desc">No technical background needed. You learn what to sell, how to find clients, and how to deliver — from zero.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- RESULTS / PHOTOS -->
-<div class="results-section">
-  <div class="results-inner">
-    <div class="results-header">
-      <div>
-        <div class="section-tag reveal">Results</div>
-        <h2 class="section-title reveal" style="margin-bottom:0">Real people.<br>Real deals.</h2>
-      </div>
-      <p class="reveal" style="font-size:13px;color:rgba(237,232,255,.28);max-width:220px;text-align:right;font-weight:300;line-height:1.7">Students from all backgrounds closing $5K–$25K contracts.</p>
-    </div>
-    <div class="results-photos">
-      <div class="rp-main reveal-left">
-        <div class="rp-fig">
-          <div class="rp-sil"></div>
-        </div>
-        <div class="rp-badge">
-          <div class="rpb-num">$22K</div>
-          <div class="rpb-txt">First 60 days</div>
-        </div>
-        <div class="rp-overlay" style="position:absolute;bottom:0;left:0;right:0;padding:24px 20px 20px;background:linear-gradient(0deg,rgba(6,4,14,.9) 0%,transparent 100%)">
-          <div class="rp-name">Marc-Antoine, 27</div>
-          <div class="rp-result">3 contracts · $22,400 total</div>
-        </div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:16px">
-        <div class="rp-side reveal delay-1">
-          <div class="rp-figure">
-            <div class="rp-body"></div>
-          </div>
-          <div class="rp-overlay">
-            <div class="rp-name">Sarah K.</div>
-            <div class="rp-result">$8,500 · first deal</div>
-          </div>
-        </div>
-        <div class="rp-side reveal delay-2" style="margin-top:0">
-          <div class="rp-figure">
-            <div class="rp-body"></div>
-          </div>
-          <div class="rp-overlay">
-            <div class="rp-name">Julien R.</div>
-            <div class="rp-result">$14K in 45 days</div>
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:16px">
-        <div class="rp-side reveal delay-2" style="margin-top:60px">
-          <div class="rp-figure">
-            <div class="rp-body"></div>
-          </div>
-          <div class="rp-overlay">
-            <div class="rp-name">Karim B.</div>
-            <div class="rp-result">$11,200 · 2 clients</div>
-          </div>
-        </div>
-        <div class="rp-side reveal delay-3">
-          <div class="rp-figure">
-            <div class="rp-body"></div>
-          </div>
-          <div class="rp-overlay">
-            <div class="rp-name">Emma T.</div>
-            <div class="rp-result">$19K · 3 months</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="dline"></div>
 
 <!-- FINAL CTA -->
-<div class="cta-section" id="cta">
-  <div class="cta-inner">
-    <div class="section-tag">Get in</div>
-    <h2 class="cta-h reveal">
-      The market<br>is <em>open</em>.<br>Are you?
-    </h2>
-    <p class="cta-sub reveal">Full access. Lifetime updates. Community included.<br>One price. No subscriptions.</p>
-    <div class="cta-btn-wrap reveal">
-      <a href="#" class="btn-big">Start now — $500</a>
-      <span class="cta-price">One-time · Instant access · 30-day refund</span>
-    </div>
+<div class="cta-final" id="cta">
+  <div class="s-tag r">Get in</div>
+  <div class="cf-h r d1">The market<br>is <em>open</em>.<br>Are you?</div>
+  <p class="cf-sub r d2">Full access. Lifetime updates. Community included.<br>One price. No subscriptions.</p>
+  <div class="cta-block r d3">
+    <a href="#" class="btn-lg">Start now — $6,500</a>
+    <span class="cf-note">One-time · Instant access · 30-day refund</span>
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
-  <span class="foot-logo">Internal.sys</span>
-  <span class="foot-copy">© 2025 — All rights reserved</span>
+  <span class="fl">Internal.sys</span>
+  <span class="fl" style="font-size:9px">© 2025</span>
 </footer>
 
 <script>
-/* ── ANIMATED DOT GRID ── */
-const canvas = document.getElementById('bg');
-const ctx = canvas.getContext('2d');
-let W, H, dots = [], t = 0;
-
-function resize() {
-  W = canvas.width = canvas.offsetWidth;
-  H = canvas.height = canvas.offsetHeight;
-  dots = [];
-  const sp = 40;
-  for (let x = 0; x < W + sp; x += sp)
-    for (let y = 0; y < H + sp; y += sp)
-      dots.push({ ox: x, oy: y, x, y, phase: Math.random() * Math.PI * 2 });
+const cv=document.getElementById('dots'),cx=cv.getContext('2d');
+let W,H,pts=[],T=0;
+function sz(){
+  W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;pts=[];
+  for(let x=0;x<W+44;x+=44)for(let y=0;y<H+44;y+=44)
+    pts.push({ox:x,oy:y,x,y,ph:Math.random()*Math.PI*2});
 }
-
-function draw() {
-  ctx.clearRect(0, 0, W, H);
-  t += 0.009;
-  dots.forEach(d => {
-    d.x = d.ox + Math.sin(t * 0.55 + d.phase) * 4;
-    d.y = d.oy + Math.cos(t * 0.45 + d.phase) * 4;
-    const a = 0.1 + 0.08 * Math.abs(Math.sin(d.phase + t * 0.35));
-    ctx.beginPath();
-    ctx.arc(d.x, d.y, 1.1, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(167,139,255,${a})`;
-    ctx.fill();
+function df(){
+  cx.clearRect(0,0,W,H);T+=.008;
+  pts.forEach(p=>{
+    p.x=p.ox+Math.sin(T*.5+p.ph)*3.5;
+    p.y=p.oy+Math.cos(T*.42+p.ph)*3.5;
+    cx.beginPath();cx.arc(p.x,p.y,1,0,Math.PI*2);
+    cx.fillStyle=`rgba(167,139,255,${.07+.055*Math.abs(Math.sin(p.ph+T*.3))})`;cx.fill();
   });
-  for (let i = 0; i < dots.length; i++) {
-    for (let j = i + 1; j < dots.length; j++) {
-      const dx = dots[i].x - dots[j].x, dy = dots[i].y - dots[j].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 56) {
-        ctx.beginPath();
-        ctx.moveTo(dots[i].x, dots[i].y);
-        ctx.lineTo(dots[j].x, dots[j].y);
-        ctx.strokeStyle = `rgba(150,120,255,${0.035 * (1 - dist / 56)})`;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-      }
-    }
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+    if(d<56){cx.beginPath();cx.moveTo(pts[i].x,pts[i].y);cx.lineTo(pts[j].x,pts[j].y);cx.strokeStyle=`rgba(140,110,255,${.025*(1-d/56)})`;cx.lineWidth=.5;cx.stroke()}
   }
-  requestAnimationFrame(draw);
+  requestAnimationFrame(df);
 }
-resize();
-window.addEventListener('resize', resize);
-draw();
+sz();window.addEventListener('resize',sz);df();
 
-/* ── NAV SCROLL ── */
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
-});
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('solid',scrollY>60));
 
-/* ── SCROLL REVEAL ── */
-const revealEls = document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') });
-}, { threshold: 0.12 });
-revealEls.forEach(el => obs.observe(el));
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.1});
+document.querySelectorAll('.r,.rl,.rr').forEach(el=>obs.observe(el));
 
-/* ── COUNT UP ── */
-function countUp(el, target, duration = 1800) {
-  let start = null;
-  const step = ts => {
-    if (!start) start = ts;
-    const progress = Math.min((ts - start) / duration, 1);
-    el.textContent = Math.floor(progress * target);
-    if (progress < 1) requestAnimationFrame(step);
-    else el.textContent = target;
-  };
-  requestAnimationFrame(step);
-}
+const co=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  const el=e.target,t=+el.dataset.t;let s=null;
+  const step=ts=>{if(!s)s=ts;const p=Math.min((ts-s)/1500,1);el.textContent=Math.floor(p*t);if(p<1)requestAnimationFrame(step);else el.textContent=t};
+  requestAnimationFrame(step);co.unobserve(el);
+}),{threshold:.5});
+document.querySelectorAll('.cnt').forEach(el=>co.observe(el));
 
-const countObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const el = e.target;
-      countUp(el, parseInt(el.dataset.target));
-      countObs.unobserve(el);
-    }
-  });
-}, { threshold: 0.5 });
-document.querySelectorAll('.count').forEach(el => countObs.observe(el));
-
-/* ── VIDEO CLICK ── */
-document.getElementById('play-btn').addEventListener('click', function () {
-  this.innerHTML = `<iframe width="100%" height="100%"
-    src="https://www.youtube.com/embed/?autoplay=1"
-    style="position:absolute;inset:0;border:none;border-radius:14px"
-    allow="autoplay; fullscreen"></iframe>`;
+document.getElementById('vbox').addEventListener('click',function(){
+  this.innerHTML=`<iframe width="100%" height="100%" src="https://www.youtube.com/embed/?autoplay=1" style="position:absolute;inset:0;border:none;border-radius:10px" allow="autoplay;fullscreen"></iframe>`;
 });
 </script>
 </body>
