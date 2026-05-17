@@ -19,12 +19,76 @@ nav{display:none}
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   text-align:center;padding:0 24px;overflow:hidden;
 }
-.hero::before{
-  content:'';position:absolute;inset:0;z-index:0;
-  background:radial-gradient(ellipse 65% 55% at 50% 45%,rgba(100,70,255,.08) 0%,transparent 70%);
+
+/* premium animated background — soft moving light */
+.hero-bg{
+  position:absolute;inset:0;z-index:0;overflow:hidden;
+}
+.hero-bg canvas{position:absolute;inset:0;z-index:1;opacity:.35}
+.orb-main{
+  position:absolute;
+  width:520px;height:520px;
+  left:50%;top:50%;
+  transform:translate(-50%,-52%);
+  background:radial-gradient(circle at center,rgba(255,255,255,.055) 0%,rgba(200,185,255,.04) 30%,transparent 68%);
+  border-radius:50%;
+  animation:orb-drift 10s ease-in-out infinite;
+  pointer-events:none;z-index:2;
+}
+.orb-left{
+  position:absolute;
+  width:300px;height:300px;
+  left:10%;top:30%;
+  background:radial-gradient(circle,rgba(140,100,255,.06) 0%,transparent 65%);
+  border-radius:50%;
+  animation:orb-left 13s ease-in-out infinite;
+  pointer-events:none;z-index:2;
+}
+.orb-right{
+  position:absolute;
+  width:280px;height:280px;
+  right:8%;top:40%;
+  background:radial-gradient(circle,rgba(180,150,255,.05) 0%,transparent 65%);
+  border-radius:50%;
+  animation:orb-right 11s ease-in-out infinite;
+  pointer-events:none;z-index:2;
+}
+/* soft white horizontal glow beam */
+.beam{
+  position:absolute;
+  left:50%;top:48%;
+  transform:translate(-50%,-50%);
+  width:110%;height:1px;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.08) 30%,rgba(255,255,255,.14) 50%,rgba(255,255,255,.08) 70%,transparent 100%);
+  z-index:2;
+  animation:beam-pulse 6s ease-in-out infinite;
   pointer-events:none;
 }
-canvas#dots{position:absolute;inset:0;z-index:1;opacity:.42}
+.beam::before{
+  content:'';position:absolute;
+  left:0;right:0;top:-30px;height:60px;
+  background:inherit;filter:blur(20px);opacity:.5;
+}
+
+@keyframes orb-drift{
+  0%,100%{transform:translate(-50%,-52%) scale(1)}
+  33%{transform:translate(-50%,-56%) scale(1.06)}
+  66%{transform:translate(-50%,-48%) scale(.97)}
+}
+@keyframes orb-left{
+  0%,100%{transform:translate(0,0) scale(1);opacity:.8}
+  50%{transform:translate(20px,-30px) scale(1.1);opacity:1}
+}
+@keyframes orb-right{
+  0%,100%{transform:translate(0,0) scale(1);opacity:.7}
+  50%{transform:translate(-15px,20px) scale(.9);opacity:1}
+}
+@keyframes beam-pulse{
+  0%,100%{opacity:.6}
+  50%{opacity:1}
+}
+
+canvas#dots{position:absolute;inset:0;z-index:1;opacity:.3}
 .hero-content{position:relative;z-index:5;width:100%;max-width:680px}
 
 .eyebrow{
@@ -272,7 +336,13 @@ footer{padding:26px 44px;border-top:1px solid rgba(255,255,255,.03);display:flex
 
 <!-- HERO -->
 <div class="hero">
-  <canvas id="dots"></canvas>
+  <div class="hero-bg">
+    <canvas id="dots"></canvas>
+    <div class="orb-main"></div>
+    <div class="orb-left"></div>
+    <div class="orb-right"></div>
+    <div class="beam"></div>
+  </div>
   <div class="hero-content">
     <div class="eyebrow"><span class="edot"></span>Nobody else teaches this</div>
     <h1>Websites Are Saturated.<br><span class="lit line2">Systems Aren't.</span></h1>
@@ -457,7 +527,8 @@ footer{padding:26px 44px;border-top:1px solid rgba(255,255,255,.03);display:flex
 const cv=document.getElementById('dots'),cx=cv.getContext('2d');
 let W,H,pts=[],T=0;
 function sz(){
-  W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;pts=[];
+  const hero=cv.parentElement.parentElement;
+  W=cv.width=hero.offsetWidth;H=cv.height=hero.offsetHeight;pts=[];
   for(let x=0;x<W+44;x+=44)for(let y=0;y<H+44;y+=44)
     pts.push({ox:x,oy:y,x,y,ph:Math.random()*Math.PI*2});
 }
