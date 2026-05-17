@@ -9,171 +9,188 @@
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson.min.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; background: #06080D; }
-.app { background: #06080D; color: #E2E8F0; font-family: system-ui, sans-serif; height: 100vh; display: grid; grid-template-columns: 200px 1fr; grid-template-rows: 52px 1fr; }
-.topbar { grid-column: 1/-1; background: #080B12; border-bottom: 0.5px solid #161D2B; display: flex; align-items: center; padding: 0 24px; gap: 12px; }
-.logo { display: flex; align-items: center; gap: 10px; }
-.logo-icon { width: 26px; height: 26px; border-radius: 50%; background: #0F1A2E; border: 1px solid #1E3050; display: flex; align-items: center; justify-content: center; }
+html, body { background: #06080D; color: #E2E8F0; font-family: system-ui, -apple-system, sans-serif; min-height: 100vh; }
+
+/* TOPBAR */
+.topbar { background: #080B12; border-bottom: 0.5px solid #161D2B; display: flex; align-items: center; padding: 0 16px; height: 52px; gap: 10px; position: sticky; top: 0; z-index: 100; }
+.logo { display: flex; align-items: center; gap: 8px; }
+.logo-icon { width: 26px; height: 26px; border-radius: 50%; background: #0F1A2E; border: 1px solid #1E3050; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .logo-cross { width: 10px; height: 10px; position: relative; }
 .logo-cross::before { content:''; position:absolute; left:4px; top:0; width:2px; height:10px; background:#B8955A; border-radius:1px; }
 .logo-cross::after { content:''; position:absolute; left:0; top:3px; width:10px; height:2px; background:#B8955A; border-radius:1px; }
-.logo-name { font-size: 16px; font-weight: 500; color: #E2E8F0; letter-spacing: 0.01em; }
+.logo-name { font-size: 17px; font-weight: 500; color: #E2E8F0; }
 .logo-name span { color: #B8955A; }
-.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 18px; }
-.live { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #5A8A62; }
-.live-dot { width: 5px; height: 5px; border-radius: 50%; background: #5A8A62; animation: blink 2s infinite; }
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.live { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #5A8A62; white-space: nowrap; }
+.live-dot { width: 5px; height: 5px; border-radius: 50%; background: #5A8A62; animation: blink 2s infinite; flex-shrink: 0; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-.topbar-verse { font-size: 12px; color: #2E3D55; font-style: italic; }
-.avatar { width: 28px; height: 28px; border-radius: 50%; background: #0F1A2E; border: 0.5px solid #1E3050; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #B8955A; font-weight: 500; }
-.sidebar { background: #06080D; border-right: 0.5px solid #161D2B; padding: 16px 0; }
-.nav-label { font-size: 10px; font-weight: 500; color: #1E2A3A; text-transform: uppercase; letter-spacing: 0.08em; padding: 14px 18px 5px; }
-.nav-item { display: flex; align-items: center; gap: 9px; padding: 8px 18px; font-size: 13px; color: #3A4D63; cursor: pointer; border-left: 2px solid transparent; }
-.nav-item:hover { color: #7A8FA8; }
-.nav-item.active { color: #E2E8F0; border-left-color: #B8955A; }
-.nav-item i { font-size: 15px; }
-.nav-badge { margin-left: auto; font-size: 10px; color: #B8955A; background: #0F1820; padding: 1px 6px; border-radius: 8px; }
-.main { padding: 22px; display: flex; flex-direction: column; gap: 18px; overflow: hidden; }
-.globe-wrap { background: #080B12; border: 0.5px solid #161D2B; border-radius: 14px; overflow: hidden; position: relative; flex: 1; min-height: 0; }
+.avatar { width: 28px; height: 28px; border-radius: 50%; background: #0F1A2E; border: 0.5px solid #1E3050; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #B8955A; font-weight: 500; flex-shrink: 0; }
+
+/* BOTTOM NAV (mobile) */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #080B12; border-top: 0.5px solid #161D2B; display: flex; z-index: 100; }
+.bn-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 10px 4px 14px; font-size: 10px; color: #2E3D55; cursor: pointer; border-top: 2px solid transparent; }
+.bn-item.active { color: #B8955A; border-top-color: #B8955A; }
+.bn-item i { font-size: 20px; }
+.bn-badge { font-size: 9px; color: #B8955A; background: #0F1820; padding: 1px 5px; border-radius: 8px; }
+
+/* CONTENT */
+.content { padding: 16px 14px 90px; display: flex; flex-direction: column; gap: 14px; }
+
+/* VERSE */
+.verse-bar { font-size: 12px; color: #2E3D55; font-style: italic; text-align: center; padding: 8px 0 2px; }
+
+/* GLOBE */
+.globe-wrap { background: #080B12; border: 0.5px solid #161D2B; border-radius: 14px; overflow: hidden; position: relative; height: 280px; }
 canvas#globe { display: block; width: 100%; height: 100%; }
-.globe-stat-tl { position: absolute; top: 18px; left: 22px; }
-.big-num { font-size: 30px; font-weight: 500; color: #E2E8F0; line-height: 1; }
-.small-lbl { font-size: 11px; color: #2E3D55; margin-top: 3px; }
-.globe-stat-tr { position: absolute; top: 18px; right: 22px; text-align: right; }
-.globe-stat-tr .small-lbl { color: #5A8A62; }
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; height: 280px; }
-.panel { background: #080B12; border: 0.5px solid #161D2B; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; overflow: hidden; }
-.ph { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-shrink: 0; }
-.pt { font-size: 12px; font-weight: 500; color: #4A6080; text-transform: uppercase; letter-spacing: 0.06em; }
+.globe-stat-tl { position: absolute; top: 14px; left: 16px; }
+.big-num { font-size: 26px; font-weight: 500; color: #E2E8F0; line-height: 1; }
+.small-lbl { font-size: 11px; color: #2E3D55; margin-top: 2px; }
+.globe-stat-tr { position: absolute; top: 14px; right: 16px; text-align: right; }
+.nations-lbl { font-size: 11px; color: #5A8A62; }
+
+/* PANELS */
+.panel { background: #080B12; border: 0.5px solid #161D2B; border-radius: 14px; padding: 16px; }
+.ph { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.pt { font-size: 11px; font-weight: 500; color: #4A6080; text-transform: uppercase; letter-spacing: 0.07em; }
 .pa { font-size: 12px; color: #1E2A3A; cursor: pointer; }
 .pa:hover { color: #B8955A; }
-.prayer-list { overflow-y: auto; flex: 1; }
-.prayer-item { padding: 11px 0; border-bottom: 0.5px solid #0E1420; }
+
+/* PRAYER */
+.prayer-item { padding: 12px 0; border-bottom: 0.5px solid #0E1420; }
 .prayer-item:last-child { border-bottom: none; padding-bottom: 0; }
-.pi-top { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-.pi-cross { width: 12px; height: 12px; position: relative; flex-shrink: 0; }
-.pi-cross::before { content:''; position:absolute; left:5px; top:0; width:2px; height:12px; background:#4A6080; border-radius:1px; }
-.pi-cross::after { content:''; position:absolute; left:0; top:4px; width:12px; height:2px; background:#4A6080; border-radius:1px; }
-.pi-name { font-size: 13px; font-weight: 500; color: #C8D5E5; }
+.pi-top { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.pi-cross { width: 13px; height: 13px; position: relative; flex-shrink: 0; }
+.pi-cross::before { content:''; position:absolute; left:5.5px; top:0; width:2px; height:13px; background:#3A5070; border-radius:1px; }
+.pi-cross::after { content:''; position:absolute; left:0; top:4px; width:13px; height:2px; background:#3A5070; border-radius:1px; }
+.pi-name { font-size: 14px; font-weight: 500; color: #C8D5E5; }
 .pi-country { font-size: 11px; color: #1E2A3A; margin-left: auto; }
-.pi-text { font-size: 12px; color: #3A4D63; line-height: 1.55; padding-left: 20px; margin-bottom: 6px; }
-.pi-bottom { display: flex; align-items: center; gap: 10px; padding-left: 20px; }
-.pray-btn { background: none; border: none; font-size: 11px; color: #3A5A40; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 4px; padding: 0; }
-.pray-btn:hover { color: #5A8A62; }
-.pray-btn i { font-size: 12px; }
-.pray-count { font-size: 11px; color: #1E2A3A; }
-.chat-msgs { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; flex: 1; }
-.cm { display: flex; flex-direction: column; gap: 3px; }
-.cm-top { display: flex; align-items: center; gap: 7px; }
-.cm-av { width: 20px; height: 20px; border-radius: 50%; background: #0F1820; border: 0.5px solid #1E2A3A; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #B8955A; font-weight: 500; flex-shrink: 0; }
-.cm-name { font-size: 12px; font-weight: 500; color: #6A80A0; }
+.pi-text { font-size: 13px; color: #3A4D63; line-height: 1.55; padding-left: 21px; margin-bottom: 8px; }
+.pi-bottom { display: flex; align-items: center; gap: 12px; padding-left: 21px; }
+.pray-btn { background: none; border: 0.5px solid #1E3040; border-radius: 20px; padding: 4px 12px; font-size: 12px; color: #3A5A40; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 5px; }
+.pray-btn:hover, .pray-btn.prayed { color: #B8955A; border-color: #B8955A; }
+.pray-btn i { font-size: 13px; }
+.pray-count { font-size: 12px; color: #1E2A3A; }
+
+/* CHAT */
+.chat-msgs { display: flex; flex-direction: column; gap: 14px; }
+.cm { display: flex; flex-direction: column; gap: 4px; }
+.cm-top { display: flex; align-items: center; gap: 8px; }
+.cm-av { width: 24px; height: 24px; border-radius: 50%; background: #0F1820; border: 0.5px solid #1E2A3A; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #B8955A; font-weight: 500; flex-shrink: 0; }
+.cm-name { font-size: 13px; font-weight: 500; color: #6A80A0; }
 .cm-loc { font-size: 11px; color: #1E2A3A; }
 .cm-time { margin-left: auto; font-size: 10px; color: #161D2B; }
-.cm-text { font-size: 13px; color: #B0BECE; line-height: 1.5; padding-left: 27px; }
-.input-row { margin-top: 12px; padding-top: 12px; border-top: 0.5px solid #0E1420; display: flex; gap: 8px; flex-shrink: 0; }
-.msg-input { flex: 1; background: #06080D; border: 0.5px solid #161D2B; border-radius: 8px; padding: 7px 12px; font-size: 12px; color: #E2E8F0; font-family: inherit; outline: none; }
+.cm-text { font-size: 14px; color: #B0BECE; line-height: 1.55; padding-left: 32px; }
+.input-row { margin-top: 14px; padding-top: 14px; border-top: 0.5px solid #0E1420; display: flex; gap: 8px; }
+.msg-input { flex: 1; background: #06080D; border: 0.5px solid #161D2B; border-radius: 20px; padding: 9px 14px; font-size: 14px; color: #E2E8F0; font-family: inherit; outline: none; }
 .msg-input::placeholder { color: #1E2A3A; }
-.send-btn { background: #0F1820; border: 0.5px solid #1E3050; border-radius: 8px; padding: 7px 13px; font-size: 13px; color: #B8955A; cursor: pointer; }
+.send-btn { background: #0F1820; border: 0.5px solid #1E3050; border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; font-size: 15px; color: #B8955A; cursor: pointer; flex-shrink: 0; }
 .send-btn:hover { background: #141E30; }
 </style>
 </head>
 <body>
-<div class="app">
-  <div class="topbar">
-    <div class="logo">
-      <div class="logo-icon"><div class="logo-cross"></div></div>
-      <div class="logo-name">Globe<span>Pray</span></div>
+
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-icon"><div class="logo-cross"></div></div>
+    <div class="logo-name">Globe<span>Pray</span></div>
+  </div>
+  <div class="topbar-right">
+    <div class="live"><div class="live-dot"></div>3 241 en prière</div>
+    <div class="avatar">D</div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="verse-bar">"Là où deux ou trois sont réunis en mon nom..." — Mt 18:20</div>
+
+  <div class="globe-wrap">
+    <canvas id="globe"></canvas>
+    <div class="globe-stat-tl">
+      <div class="big-num">3 241</div>
+      <div class="small-lbl">frères et sœurs connectés</div>
     </div>
-    <div class="topbar-verse">"Là où deux ou trois sont réunis en mon nom..." — Mt 18:20</div>
-    <div class="topbar-right">
-      <div class="live"><div class="live-dot"></div>3 241 en prière</div>
-      <div class="avatar">D</div>
+    <div class="globe-stat-tr">
+      <div class="nations-lbl">156 nations</div>
     </div>
   </div>
 
-  <div class="sidebar">
-    <div class="nav-label">Explorer</div>
-    <div class="nav-item active"><i class="ti ti-world"></i> Globe <span class="nav-badge">DIRECT</span></div>
-    <div class="nav-item"><i class="ti ti-hand-stop"></i> Prières <span class="nav-badge">156</span></div>
-    <div class="nav-item"><i class="ti ti-messages"></i> Chat mondial</div>
-    <div class="nav-label">Mon espace</div>
-    <div class="nav-item"><i class="ti ti-building-church"></i> Mon église</div>
-    <div class="nav-item"><i class="ti ti-users"></i> Ma communauté</div>
-    <div class="nav-label">Méditation</div>
-    <div class="nav-item"><i class="ti ti-moon"></i> Moment de silence</div>
-    <div class="nav-item"><i class="ti ti-book"></i> Verset du jour</div>
+  <div class="panel">
+    <div class="ph">
+      <div class="pt">Mur de prière</div>
+      <div class="pa">+ Ajouter la mienne</div>
+    </div>
+    <div class="prayer-item">
+      <div class="pi-top"><div class="pi-cross"></div><div class="pi-name">Marie-Claire</div><div class="pi-country">Cameroun</div></div>
+      <div class="pi-text">Pour la guérison de ma mère hospitalisée depuis lundi.</div>
+      <div class="pi-bottom">
+        <button class="pray-btn" onclick="addPray(this)"><i class="ti ti-hand-stop"></i> Je prie avec toi</button>
+        <div class="pray-count">47 prient</div>
+      </div>
+    </div>
+    <div class="prayer-item">
+      <div class="pi-top"><div class="pi-cross"></div><div class="pi-name">Samuel</div><div class="pi-country">Brésil</div></div>
+      <div class="pi-text">Pour les familles touchées par les inondations dans le sud.</div>
+      <div class="pi-bottom">
+        <button class="pray-btn" onclick="addPray(this)"><i class="ti ti-hand-stop"></i> Je prie avec toi</button>
+        <div class="pray-count">312 prient</div>
+      </div>
+    </div>
+    <div class="prayer-item">
+      <div class="pi-top"><div class="pi-cross"></div><div class="pi-name">David</div><div class="pi-country">Canada</div></div>
+      <div class="pi-text">Pour l'unité du corps de Christ sur toute la terre.</div>
+      <div class="pi-bottom">
+        <button class="pray-btn" onclick="addPray(this)"><i class="ti ti-hand-stop"></i> Je prie avec toi</button>
+        <div class="pray-count">891 prient</div>
+      </div>
+    </div>
   </div>
 
-  <div class="main">
-    <div class="globe-wrap">
-      <canvas id="globe"></canvas>
-      <div class="globe-stat-tl">
-        <div class="big-num">3 241</div>
-        <div class="small-lbl">frères et sœurs connectés</div>
+  <div class="panel">
+    <div class="ph">
+      <div class="pt">Chat mondial</div>
+      <div class="pa">Toutes langues</div>
+    </div>
+    <div class="chat-msgs">
+      <div class="cm">
+        <div class="cm-top"><div class="cm-av">A</div><div class="cm-name">Abigail</div><div class="cm-loc">Nigeria</div><div class="cm-time">maintenant</div></div>
+        <div class="cm-text">Que la grâce de Dieu soit sur vous tous ce matin. Amen.</div>
       </div>
-      <div class="globe-stat-tr">
-        <div class="small-lbl">156 nations représentées</div>
+      <div class="cm">
+        <div class="cm-top"><div class="cm-av">J</div><div class="cm-name">Jonas</div><div class="cm-loc">Allemagne</div><div class="cm-time">1 min</div></div>
+        <div class="cm-text">Magnifique de se retrouver en communion ici. Que Dieu vous bénisse.</div>
+      </div>
+      <div class="cm">
+        <div class="cm-top"><div class="cm-av">L</div><div class="cm-name">Lucia</div><div class="cm-loc">Philippines</div><div class="cm-time">2 min</div></div>
+        <div class="cm-text">Quelqu'un peut-il prier pour ma famille en ce moment ?</div>
       </div>
     </div>
-
-    <div class="grid2">
-      <div class="panel">
-        <div class="ph">
-          <div class="pt">Mur de prière</div>
-          <div class="pa">+ Ajouter</div>
-        </div>
-        <div class="prayer-list">
-          <div class="prayer-item">
-            <div class="pi-top"><div class="pi-cross"></div><div class="pi-name">Marie-Claire</div><div class="pi-country">Cameroun</div></div>
-            <div class="pi-text">Pour la guérison de ma mère hospitalisée depuis lundi.</div>
-            <div class="pi-bottom">
-              <button class="pray-btn" onclick="addPray(this)"><i class="ti ti-hand-stop"></i> Je prie avec toi</button>
-              <div class="pray-count">47 prient</div>
-            </div>
-          </div>
-          <div class="prayer-item">
-            <div class="pi-top"><div class="pi-cross"></div><div class="pi-name">Samuel</div><div class="pi-country">Brésil</div></div>
-            <div class="pi-text">Pour les familles touchées par les inondations dans le sud.</div>
-            <div class="pi-bottom">
-              <button class="pray-btn" onclick="addPray(this)"><i class="ti ti-hand-stop"></i> Je prie avec toi</button>
-              <div class="pray-count">312 prient</div>
-            </div>
-          </div>
-          <div class="prayer-item">
-            <div class="pi-top"><div class="pi-cross"></div><div class="pi-name">David</div><div class="pi-country">Canada</div></div>
-            <div class="pi-text">Pour l'unité du corps de Christ sur toute la terre.</div>
-            <div class="pi-bottom">
-              <button class="pray-btn" onclick="addPray(this)"><i class="ti ti-hand-stop"></i> Je prie avec toi</button>
-              <div class="pray-count">891 prient</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="ph">
-          <div class="pt">Chat mondial</div>
-          <div class="pa">Toutes langues</div>
-        </div>
-        <div class="chat-msgs">
-          <div class="cm">
-            <div class="cm-top"><div class="cm-av">A</div><div class="cm-name">Abigail</div><div class="cm-loc">Nigeria</div><div class="cm-time">maintenant</div></div>
-            <div class="cm-text">Que la grâce de Dieu soit sur vous tous ce matin. Amen.</div>
-          </div>
-          <div class="cm">
-            <div class="cm-top"><div class="cm-av">J</div><div class="cm-name">Jonas</div><div class="cm-loc">Allemagne</div><div class="cm-time">1 min</div></div>
-            <div class="cm-text">Magnifique de se retrouver en communion ici. Que Dieu vous bénisse.</div>
-          </div>
-          <div class="cm">
-            <div class="cm-top"><div class="cm-av">L</div><div class="cm-name">Lucia</div><div class="cm-loc">Philippines</div><div class="cm-time">2 min</div></div>
-            <div class="cm-text">Quelqu'un peut-il prier pour ma famille en ce moment ?</div>
-          </div>
-        </div>
-        <div class="input-row">
-          <input class="msg-input" type="text" placeholder="Un mot, une prière...">
-          <button class="send-btn"><i class="ti ti-send"></i></button>
-        </div>
-      </div>
+    <div class="input-row">
+      <input class="msg-input" type="text" placeholder="Un mot, une prière...">
+      <button class="send-btn"><i class="ti ti-send"></i></button>
     </div>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <div class="bn-item active" onclick="setNav(this)">
+    <i class="ti ti-world"></i>
+    <span>Globe</span>
+  </div>
+  <div class="bn-item" onclick="setNav(this)">
+    <i class="ti ti-hand-stop"></i>
+    <span>Prières</span>
+  </div>
+  <div class="bn-item" onclick="setNav(this)">
+    <i class="ti ti-messages"></i>
+    <span>Chat</span>
+  </div>
+  <div class="bn-item" onclick="setNav(this)">
+    <i class="ti ti-building-church"></i>
+    <span>Église</span>
+  </div>
+  <div class="bn-item" onclick="setNav(this)">
+    <i class="ti ti-moon"></i>
+    <span>Silence</span>
   </div>
 </div>
 
@@ -182,26 +199,27 @@ function addPray(btn) {
   const c = btn.parentElement.querySelector('.pray-count');
   const n = parseInt(c.textContent) + 1;
   c.textContent = n + ' prient';
-  btn.style.color = '#B8955A';
+  btn.classList.add('prayed');
+  btn.innerHTML = '<i class="ti ti-check"></i> En prière';
+  btn.disabled = true;
 }
 
-document.querySelectorAll('.nav-item').forEach(el => {
-  el.addEventListener('click', function() {
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    this.classList.add('active');
-  });
-});
+function setNav(el) {
+  document.querySelectorAll('.bn-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
 
 const canvas = document.getElementById('globe');
 const ctx = canvas.getContext('2d');
 
 function resize() {
   const wrap = canvas.parentElement;
-  canvas.width = wrap.clientWidth;
-  canvas.height = wrap.clientHeight;
+  canvas.width = wrap.clientWidth * window.devicePixelRatio;
+  canvas.height = wrap.clientHeight * window.devicePixelRatio;
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 }
 resize();
-window.addEventListener('resize', resize);
+window.addEventListener('resize', () => { ctx.setTransform(1,0,0,1,0,0); resize(); });
 
 const prayerLocations = [
   [2.35,48.85],[-43.17,-22.9],[28.05,-26.2],[103.82,1.35],
@@ -223,9 +241,10 @@ fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
   .catch(() => {});
 
 function drawGlobe() {
-  const W = canvas.width, H = canvas.height;
+  const W = canvas.parentElement.clientWidth;
+  const H = canvas.parentElement.clientHeight;
   const cx = W / 2, cy = H / 2;
-  const R = Math.min(W, H) * 0.42;
+  const R = Math.min(W, H) * 0.44;
 
   ctx.clearRect(0, 0, W, H);
 
@@ -238,12 +257,11 @@ function drawGlobe() {
   ctx.stroke();
 
   if (worldData) {
-    const projection = d3.geoOrthographic()
-      .scale(R)
-      .translate([cx, cy])
-      .rotate([-rotation * 180 / Math.PI, 0])
+    const proj = d3.geoOrthographic()
+      .scale(R).translate([cx, cy])
+      .rotate([-rotation * 180 / Math.PI, -15])
       .clipAngle(90);
-    const path = d3.geoPath(projection, ctx);
+    const path = d3.geoPath(proj, ctx);
     const countries = topojson.feature(worldData, worldData.objects.countries);
 
     ctx.save();
@@ -252,8 +270,7 @@ function drawGlobe() {
     ctx.clip();
 
     countries.features.forEach(f => {
-      ctx.beginPath();
-      path(f);
+      ctx.beginPath(); path(f);
       ctx.fillStyle = '#0F1828';
       ctx.fill();
       ctx.strokeStyle = '#1E2A40';
@@ -261,34 +278,44 @@ function drawGlobe() {
       ctx.stroke();
     });
 
-    const graticule = d3.geoGraticule()();
-    ctx.beginPath();
-    path(graticule);
-    ctx.strokeStyle = '#0D1420';
+    const grat = d3.geoGraticule()();
+    ctx.beginPath(); path(grat);
+    ctx.strokeStyle = '#0D1520';
     ctx.lineWidth = 0.3;
     ctx.stroke();
 
     ctx.restore();
-  }
 
-  const t = Date.now() / 1000;
-  prayerLocations.forEach((loc, i) => {
-    const proj = d3.geoOrthographic()
-      .scale(R).translate([cx, cy])
-      .rotate([-rotation * 180 / Math.PI, 0])
-      .clipAngle(90);
-    const p = proj([loc[0], loc[1]]);
-    if (!p) return;
-    const flicker = 0.75 + 0.25 * Math.sin(t * 1.5 + i * 0.7);
-    ctx.beginPath();
-    ctx.arc(p[0], p[1], 2.5, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(184,149,90,${flicker * 0.9})`;
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(p[0], p[1], 6, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(184,149,90,${flicker * 0.15})`;
-    ctx.fill();
-  });
+    const t = Date.now() / 1000;
+    prayerLocations.forEach((loc, i) => {
+      const p = proj(loc);
+      if (!p) return;
+      const flicker = 0.75 + 0.25 * Math.sin(t * 1.5 + i * 0.7);
+      ctx.beginPath();
+      ctx.arc(p[0], p[1], 3, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(184,149,90,${flicker * 0.9})`;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(p[0], p[1], 7, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(184,149,90,${flicker * 0.15})`;
+      ctx.fill();
+    });
+  } else {
+    const t = Date.now() / 1000;
+    prayerLocations.forEach((loc, i) => {
+      const lam = (loc[0] * Math.PI / 180) + rotation;
+      const phi = loc[1] * Math.PI / 180;
+      const z = Math.cos(phi) * Math.cos(lam);
+      if (z < 0.05) return;
+      const sx = cx + Math.cos(phi) * Math.sin(lam) * R;
+      const sy = cy - Math.sin(phi) * R;
+      const flicker = 0.75 + 0.25 * Math.sin(t * 1.5 + i * 0.7);
+      ctx.beginPath();
+      ctx.arc(sx, sy, 3, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(184,149,90,${flicker * 0.9})`;
+      ctx.fill();
+    });
+  }
 
   rotation += 0.004;
   requestAnimationFrame(drawGlobe);
