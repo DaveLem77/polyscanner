@@ -24,77 +24,83 @@ nav{display:none}
 .hero-bg{
   position:absolute;inset:0;z-index:0;overflow:hidden;
 }
-.hero-bg canvas{position:absolute;inset:0;z-index:1;opacity:.35}
+.hero-bg canvas{position:absolute;inset:0;z-index:1;opacity:.2}
 .orb-main{
   position:absolute;
-  width:520px;height:520px;
+  width:700px;height:700px;
   left:50%;top:50%;
   transform:translate(-50%,-52%);
-  background:radial-gradient(circle at center,rgba(255,255,255,.055) 0%,rgba(200,185,255,.04) 30%,transparent 68%);
+  background:radial-gradient(circle at center,rgba(255,255,255,.14) 0%,rgba(210,195,255,.09) 22%,rgba(150,110,255,.04) 48%,transparent 68%);
   border-radius:50%;
   animation:orb-drift 10s ease-in-out infinite;
   pointer-events:none;z-index:2;
 }
 .orb-left{
   position:absolute;
-  width:300px;height:300px;
-  left:10%;top:30%;
-  background:radial-gradient(circle,rgba(140,100,255,.06) 0%,transparent 65%);
+  width:420px;height:420px;
+  left:2%;top:20%;
+  background:radial-gradient(circle,rgba(170,130,255,.12) 0%,rgba(130,90,255,.05) 40%,transparent 68%);
   border-radius:50%;
   animation:orb-left 13s ease-in-out infinite;
   pointer-events:none;z-index:2;
 }
 .orb-right{
   position:absolute;
-  width:280px;height:280px;
-  right:8%;top:40%;
-  background:radial-gradient(circle,rgba(180,150,255,.05) 0%,transparent 65%);
+  width:380px;height:380px;
+  right:1%;top:30%;
+  background:radial-gradient(circle,rgba(210,185,255,.1) 0%,rgba(170,130,255,.05) 40%,transparent 68%);
   border-radius:50%;
   animation:orb-right 11s ease-in-out infinite;
   pointer-events:none;z-index:2;
 }
-/* soft white horizontal glow beam */
 .beam{
   position:absolute;
-  left:50%;top:48%;
+  left:50%;top:46%;
   transform:translate(-50%,-50%);
-  width:110%;height:1px;
-  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.08) 30%,rgba(255,255,255,.14) 50%,rgba(255,255,255,.08) 70%,transparent 100%);
-  z-index:2;
-  animation:beam-pulse 6s ease-in-out infinite;
+  width:100%;height:2px;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.05) 15%,rgba(255,255,255,.22) 38%,rgba(230,220,255,.3) 50%,rgba(255,255,255,.22) 62%,rgba(255,255,255,.05) 85%,transparent 100%);
+  z-index:3;
+  animation:beam-pulse 5s ease-in-out infinite;
   pointer-events:none;
 }
 .beam::before{
   content:'';position:absolute;
-  left:0;right:0;top:-30px;height:60px;
-  background:inherit;filter:blur(20px);opacity:.5;
+  left:0;right:0;top:-50px;height:100px;
+  background:linear-gradient(90deg,transparent,rgba(230,220,255,.09) 30%,rgba(255,255,255,.15) 50%,rgba(230,220,255,.09) 70%,transparent);
+  filter:blur(22px);
+}
+.beam::after{
+  content:'';position:absolute;
+  left:20%;right:20%;top:-1px;height:4px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.28) 50%,transparent);
+  filter:blur(2px);
 }
 
 @keyframes orb-drift{
-  0%,100%{transform:translate(-50%,-52%) scale(1)}
-  33%{transform:translate(-50%,-56%) scale(1.06)}
-  66%{transform:translate(-50%,-48%) scale(.97)}
+  0%,100%{transform:translate(-50%,-52%) scale(1);opacity:.85}
+  33%{transform:translate(-50%,-57%) scale(1.08);opacity:1}
+  66%{transform:translate(-50%,-47%) scale(.95);opacity:.9}
 }
 @keyframes orb-left{
-  0%,100%{transform:translate(0,0) scale(1);opacity:.8}
-  50%{transform:translate(20px,-30px) scale(1.1);opacity:1}
+  0%,100%{transform:translate(0,0) scale(1);opacity:.7}
+  50%{transform:translate(28px,-40px) scale(1.14);opacity:1}
 }
 @keyframes orb-right{
-  0%,100%{transform:translate(0,0) scale(1);opacity:.7}
-  50%{transform:translate(-15px,20px) scale(.9);opacity:1}
+  0%,100%{transform:translate(0,0) scale(1);opacity:.65}
+  50%{transform:translate(-20px,26px) scale(.86);opacity:1}
 }
 @keyframes beam-pulse{
-  0%,100%{opacity:.6}
+  0%,100%{opacity:.5}
   50%{opacity:1}
 }
 
-canvas#dots{position:absolute;inset:0;z-index:1;opacity:.3}
+canvas#dots{position:absolute;inset:0;z-index:1;opacity:.2}
 .hero-content{position:relative;z-index:5;width:100%;max-width:680px}
 
 .eyebrow{
   display:inline-flex;align-items:center;gap:8px;
   font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-  color:rgba(180,160,255,.5);margin-bottom:24px;
+  color:rgba(180,160,255,.5);margin-bottom:16px;
   opacity:0;animation:up .6s .05s ease forwards;
 }
 .edot{width:5px;height:5px;border-radius:50%;background:#9b7fff;animation:blink 2.5s ease-in-out infinite}
@@ -173,6 +179,15 @@ h1 .lit{
   display:flex;flex-direction:column;align-items:center;gap:11px;
   opacity:0;animation:up .7s .5s ease forwards;
 }
+.signin-link{
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;
+  color:rgba(236,233,255,.22);text-decoration:none;
+  border-bottom:1px solid rgba(236,233,255,.1);
+  padding-bottom:1px;
+  transition:color .2s,border-color .2s;
+  margin-top:2px;
+}
+.signin-link:hover{color:rgba(236,233,255,.5);border-color:rgba(236,233,255,.25)}
 .btn{
   display:inline-block;font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;
   letter-spacing:.08em;text-transform:uppercase;
@@ -357,6 +372,7 @@ footer{padding:26px 44px;border-top:1px solid rgba(255,255,255,.03);display:flex
     <div class="cta-row">
       <a href="#cta" class="btn">Get Instant Access →</a>
       <span class="price">Full access · $750 · one-time payment</span>
+      <a href="#" class="signin-link">Already enrolled? Sign in</a>
     </div>
   </div>
   <div class="scroll-cue">
