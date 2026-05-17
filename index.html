@@ -16,9 +16,8 @@ nav{display:none}
 
 .hero{
   position:relative;
-  min-height:100vh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:60px 24px 48px;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;padding:24px 24px 48px;overflow:hidden;
 }
 
 /* premium animated background — soft moving light */
@@ -56,27 +55,31 @@ nav{display:none}
 }
 .beam{
   position:absolute;
-  left:50%;top:46%;
-  transform:translate(-50%,-50%);
-  width:100%;height:2px;
-  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.05) 15%,rgba(255,255,255,.22) 38%,rgba(230,220,255,.3) 50%,rgba(255,255,255,.22) 62%,rgba(255,255,255,.05) 85%,transparent 100%);
+  left:-10%;top:46%;
+  transform:translateY(-50%);
+  width:120%;height:2px;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.05) 15%,rgba(255,255,255,.28) 38%,rgba(240,230,255,.4) 50%,rgba(255,255,255,.28) 62%,rgba(255,255,255,.05) 85%,transparent 100%);
   z-index:3;
-  animation:beam-pulse 5s ease-in-out infinite;
+  animation:beam-move 6s ease-in-out infinite;
   pointer-events:none;
 }
 .beam::before{
   content:'';position:absolute;
   left:0;right:0;top:-50px;height:100px;
-  background:linear-gradient(90deg,transparent,rgba(230,220,255,.09) 30%,rgba(255,255,255,.15) 50%,rgba(230,220,255,.09) 70%,transparent);
+  background:linear-gradient(90deg,transparent,rgba(230,220,255,.11) 30%,rgba(255,255,255,.18) 50%,rgba(230,220,255,.11) 70%,transparent);
   filter:blur(22px);
 }
 .beam::after{
   content:'';position:absolute;
   left:20%;right:20%;top:-1px;height:4px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.28) 50%,transparent);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35) 50%,transparent);
   filter:blur(2px);
 }
-
+@keyframes beam-move{
+  0%{transform:translateY(-50%) translateX(-8%);opacity:.5}
+  50%{transform:translateY(-50%) translateX(8%);opacity:1}
+  100%{transform:translateY(-50%) translateX(-8%);opacity:.5}
+}
 @keyframes orb-drift{
   0%,100%{transform:translate(-50%,-52%) scale(1);opacity:.85}
   33%{transform:translate(-50%,-57%) scale(1.08);opacity:1}
@@ -89,10 +92,6 @@ nav{display:none}
 @keyframes orb-right{
   0%,100%{transform:translate(0,0) scale(1);opacity:.65}
   50%{transform:translate(-20px,26px) scale(.86);opacity:1}
-}
-@keyframes beam-pulse{
-  0%,100%{opacity:.5}
-  50%{opacity:1}
 }
 
 canvas#dots{position:absolute;inset:0;z-index:1;opacity:.2}
@@ -181,14 +180,14 @@ h1 .lit{
   opacity:0;animation:up .7s .5s ease forwards;
 }
 .signin-link{
-  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;
-  color:rgba(236,233,255,.22);text-decoration:none;
-  border-bottom:1px solid rgba(236,233,255,.1);
-  padding-bottom:1px;
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;
+  color:rgba(236,233,255,.42);text-decoration:none;
+  border-bottom:1px solid rgba(236,233,255,.2);
+  padding-bottom:2px;
   transition:color .2s,border-color .2s;
-  margin-top:2px;
+  margin-top:4px;
 }
-.signin-link:hover{color:rgba(236,233,255,.5);border-color:rgba(236,233,255,.25)}
+.signin-link:hover{color:rgba(236,233,255,.75);border-color:rgba(236,233,255,.45)}
 .btn{
   display:inline-block;font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;
   letter-spacing:.08em;text-transform:uppercase;
