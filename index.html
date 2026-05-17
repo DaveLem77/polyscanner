@@ -44,15 +44,21 @@ canvas#dots{position:absolute;inset:0;z-index:1;opacity:.42}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
 h1{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(64px,13vw,118px);
-  line-height:.9;letter-spacing:.015em;color:#ece9ff;
+  font-family:'Manrope',sans-serif;
+  font-size:clamp(18px,2.4vw,28px);
+  font-weight:700;
+  line-height:1.3;letter-spacing:-.01em;color:#ece9ff;
   margin-bottom:18px;
   opacity:0;animation:up .8s .15s ease forwards;
 }
-h1 .dim{-webkit-text-stroke:1px rgba(200,190,255,.16);color:transparent}
-h1 .lit{color:#a78bff;animation:glow 3.5s ease-in-out infinite}
-@keyframes glow{0%,100%{color:#a78bff}50%{color:#c4b0ff;text-shadow:0 0 60px rgba(196,176,255,.18)}}
+h1 .dim{color:rgba(236,233,255,.28);font-weight:300}
+h1 .lit{
+  background:linear-gradient(90deg,#a78bff 0%,#c4b0ff 50%,#a78bff 100%);
+  background-size:200%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:shimmer 4s ease-in-out infinite;
+}
+@keyframes shimmer{0%,100%{background-position:0%}50%{background-position:100%}}
 
 .sub{
   font-size:14px;font-weight:300;color:rgba(236,233,255,.32);line-height:1.8;
@@ -179,19 +185,35 @@ h1 .lit{color:#a78bff;animation:glow 3.5s ease-in-out infinite}
 .results-hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px}
 .results-note{font-size:12px;color:rgba(236,233,255,.22);max-width:180px;text-align:right;font-weight:300;line-height:1.7}
 .results-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.rc{background:#0c0a1a;border:1px solid rgba(180,160,255,.07);border-radius:10px;overflow:hidden;position:relative;transition:border-color .3s,transform .3s;cursor:default}
-.rc:hover{border-color:rgba(180,160,255,.18);transform:translateY(-5px)}
-.rc-img{aspect-ratio:3/4;position:relative;overflow:hidden;background:linear-gradient(160deg,#0f0c20 0%,#19132e 55%,#0d0b1a 100%)}
-.rc-img::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 40% at 50% 25%,rgba(120,90,255,.09) 0%,transparent 65%)}
-.rc-figure{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:58%;height:76%}
-.rc-body{width:100%;height:100%;background:linear-gradient(180deg,rgba(167,139,255,.17) 0%,rgba(120,90,220,.13) 100%);border-radius:76px 76px 0 0;position:relative}
-.rc-body::before{content:'';position:absolute;top:-6%;left:18%;width:64%;height:26%;background:rgba(200,185,255,.13);border-radius:50%}
-.rc-overlay{position:absolute;bottom:0;left:0;right:0;padding:22px 16px 14px;background:linear-gradient(0deg,rgba(7,7,16,.96) 0%,transparent 100%)}
-.rc-name{font-size:12px;font-weight:600;color:rgba(236,233,255,.72);margin-bottom:3px}
-.rc-amt{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;color:#a78bff}
-.rc-badge{position:absolute;top:13px;left:11px;background:rgba(7,7,16,.88);border:1px solid rgba(167,139,255,.2);border-radius:6px;padding:8px 11px;backdrop-filter:blur(8px)}
-.rc-bv{font-family:'Bebas Neue',sans-serif;font-size:21px;color:#a78bff;line-height:1}
-.rc-bl{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(236,233,255,.28);margin-top:1px}
+.rc{
+  background:#0c0a1a;border:1px solid rgba(180,160,255,.08);border-radius:12px;
+  padding:32px 28px;
+  display:flex;flex-direction:column;gap:20px;
+  transition:border-color .3s,transform .3s;
+}
+.rc:hover{border-color:rgba(180,160,255,.2);transform:translateY(-4px)}
+.rc-top{display:flex;align-items:center;gap:14px}
+.rc-avatar{
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(140,110,255,.3),rgba(100,70,220,.2));
+  border:1px solid rgba(167,139,255,.18);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Manrope',sans-serif;font-size:14px;font-weight:700;
+  color:rgba(200,185,255,.7);
+}
+.rc-meta{}
+.rc-name{font-size:13px;font-weight:600;color:rgba(236,233,255,.75);margin-bottom:2px}
+.rc-role{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(236,233,255,.22)}
+.rc-amount{
+  font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1;
+  color:#a78bff;letter-spacing:.01em;
+}
+.rc-amount-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(236,233,255,.24);margin-top:2px}
+.rc-quote{font-size:13px;font-weight:300;color:rgba(236,233,255,.32);line-height:1.72;font-style:italic}
+.rc-divider{height:1px;background:rgba(180,160,255,.07)}
+.rc-stat{display:flex;justify-content:space-between;align-items:center}
+.rc-stat-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(236,233,255,.2)}
+.rc-stat-val{font-size:12px;font-weight:600;color:rgba(236,233,255,.55)}
 
 /* FINAL CTA */
 .cta-final{padding:120px 44px;text-align:center;border-top:1px solid rgba(180,160,255,.05);position:relative;overflow:hidden}
@@ -243,7 +265,7 @@ footer{padding:26px 44px;border-top:1px solid rgba(255,255,255,.03);display:flex
   <canvas id="dots"></canvas>
   <div class="hero-content">
     <div class="eyebrow"><span class="edot"></span>Nobody else teaches this</div>
-    <h1>BUILD<br><span class="dim">SELL</span><br><span class="lit">REPEAT</span></h1>
+    <h1>Websites Are Saturated. <span class="lit">Systems Aren't.</span></h1>
     <p class="sub">Companies <b>desperately need</b> internal systems. Almost nobody knows how to sell them. This is that course.</p>
     <div class="video-box" id="vbox">
       <div class="vbg">
@@ -344,24 +366,60 @@ footer{padding:26px 44px;border-top:1px solid rgba(255,255,255,.03);display:flex
   </div>
   <div class="results-cards">
     <div class="rc r d1">
-      <div class="rc-img">
-        <div class="rc-figure"><div class="rc-body"></div></div>
-        <div class="rc-badge"><div class="rc-bv">$22K</div><div class="rc-bl">60 days</div></div>
-        <div class="rc-overlay"><div class="rc-name">Marc-Antoine, 27</div><div class="rc-amt">3 contracts · $22,400</div></div>
+      <div class="rc-top">
+        <div class="rc-avatar">MA</div>
+        <div class="rc-meta">
+          <div class="rc-name">Marc-Antoine L.</div>
+          <div class="rc-role">Ex-student · Montréal</div>
+        </div>
+      </div>
+      <div>
+        <div class="rc-amount">$22K</div>
+        <div class="rc-amount-sub">Revenue · first 60 days</div>
+      </div>
+      <div class="rc-quote">"I had zero business experience. Closed my first $8K deal 3 weeks after finishing the course."</div>
+      <div class="rc-divider"></div>
+      <div class="rc-stat">
+        <span class="rc-stat-label">Contracts</span>
+        <span class="rc-stat-val">3 deals</span>
       </div>
     </div>
     <div class="rc r d2">
-      <div class="rc-img">
-        <div class="rc-figure"><div class="rc-body"></div></div>
-        <div class="rc-badge"><div class="rc-bv">$14K</div><div class="rc-bl">45 days</div></div>
-        <div class="rc-overlay"><div class="rc-name">Sarah K., 31</div><div class="rc-amt">2 contracts · $14,200</div></div>
+      <div class="rc-top">
+        <div class="rc-avatar">SK</div>
+        <div class="rc-meta">
+          <div class="rc-name">Sarah K.</div>
+          <div class="rc-role">Ex-student · Toronto</div>
+        </div>
+      </div>
+      <div>
+        <div class="rc-amount">$14K</div>
+        <div class="rc-amount-sub">Revenue · first 45 days</div>
+      </div>
+      <div class="rc-quote">"The client acquisition framework is what made the difference. I knew exactly what to say."</div>
+      <div class="rc-divider"></div>
+      <div class="rc-stat">
+        <span class="rc-stat-label">Contracts</span>
+        <span class="rc-stat-val">2 deals</span>
       </div>
     </div>
     <div class="rc r d3">
-      <div class="rc-img">
-        <div class="rc-figure"><div class="rc-body"></div></div>
-        <div class="rc-badge"><div class="rc-bv">$19K</div><div class="rc-bl">3 months</div></div>
-        <div class="rc-overlay"><div class="rc-name">Julien R., 24</div><div class="rc-amt">4 contracts · $19,800</div></div>
+      <div class="rc-top">
+        <div class="rc-avatar">JR</div>
+        <div class="rc-meta">
+          <div class="rc-name">Julien R.</div>
+          <div class="rc-role">Ex-student · Paris</div>
+        </div>
+      </div>
+      <div>
+        <div class="rc-amount">$19K</div>
+        <div class="rc-amount-sub">Revenue · first 3 months</div>
+      </div>
+      <div class="rc-quote">"Built an inventory system in 9 days. The company paid $11K without hesitation. Insane ROI."</div>
+      <div class="rc-divider"></div>
+      <div class="rc-stat">
+        <span class="rc-stat-label">Contracts</span>
+        <span class="rc-stat-val">4 deals</span>
       </div>
     </div>
   </div>
