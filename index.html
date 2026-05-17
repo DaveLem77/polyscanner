@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<style>
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}</style>
 <title>Internal Systems</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400&family=Manrope:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -45,16 +47,20 @@ canvas#dots{position:absolute;inset:0;z-index:1;opacity:.42}
 
 h1{
   font-family:'Manrope',sans-serif;
-  font-size:18px !important;
+  font-size:26px !important;
   font-weight:700;
-  line-height:1.4;
-  letter-spacing:-.01em;
+  line-height:1.35;
+  letter-spacing:-.02em;
   color:#ece9ff;
   margin-bottom:18px;
   opacity:0;
   animation:up .8s .15s ease forwards;
   white-space:normal;
   max-width:100%;
+}
+h1 .line2{
+  display:block;
+  font-size:30px !important;
 }
 h1 .dim{color:rgba(236,233,255,.28);font-weight:300}
 h1 .lit{
@@ -261,7 +267,7 @@ footer{padding:26px 44px;border-top:1px solid rgba(255,255,255,.03);display:flex
 <body>
 
 <nav id="nav">
-  <span class="logo">Internal.sys</span>
+  <span class="logo">suitefocused.com</span>
   <a href="#" class="signin">Sign in</a>
 </nav>
 
@@ -270,7 +276,7 @@ footer{padding:26px 44px;border-top:1px solid rgba(255,255,255,.03);display:flex
   <canvas id="dots"></canvas>
   <div class="hero-content">
     <div class="eyebrow"><span class="edot"></span>Nobody else teaches this</div>
-    <h1>Websites Are Saturated. <span class="lit">Systems Aren't.</span></h1>
+    <h1>Websites Are Saturated.<br><span class="lit line2">Systems Aren't.</span></h1>
     <p class="sub">Companies <b>desperately need</b> internal systems. Almost nobody knows how to sell them. This is that course.</p>
     <div class="video-box" id="vbox">
       <div class="vbg">
@@ -444,7 +450,7 @@ footer{padding:26px 44px;border-top:1px solid rgba(255,255,255,.03);display:flex
 </div>
 
 <footer>
-  <span class="fl">Internal.sys</span>
+  <span class="fl">suitefocused.com</span>
   <span class="fl" style="font-size:9px">© 2025</span>
 </footer>
 
