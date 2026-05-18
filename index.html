@@ -177,125 +177,68 @@ h1 .lit{background:linear-gradient(90deg,#a78bff 0%,#c4b0ff 50%,#a78bff 100%);ba
 .resume-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:7px 13px;border-radius:4px;background:#9b7fff;color:#06050f;border:none;cursor:pointer;white-space:nowrap;transition:background .2s}
 .resume-btn:hover{background:#b09aff}
 
-/* ── PIPELINE — full deal flow ── */
-.pipe-stages{display:flex;gap:0;margin-bottom:24px;border:1px solid rgba(255,255,255,.05);border-radius:10px;overflow:hidden}
-.stage-tab{flex:1;padding:10px 6px;text-align:center;cursor:pointer;border:none;background:rgba(255,255,255,.02);transition:background .18s;border-right:1px solid rgba(255,255,255,.04)}
-.stage-tab:last-child{border-right:none}
-.stage-tab.active{background:rgba(155,127,255,.09)}
-.stage-tab:hover:not(.active){background:rgba(255,255,255,.03)}
-.stage-n{font-family:'DM Mono',monospace;font-size:16px;font-weight:400;line-height:1;color:#e8e4ff;margin-bottom:3px}
-.stage-n.green{color:#7fcc9a}
-.stage-n.purple{color:#a78bff}
-.stage-n.amber{color:#d4a84b}
-.stage-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:rgba(232,228,255,.22)}
+/* ── TOOLKIT ── */
+.tk-block{background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.055);border-radius:12px;padding:22px 20px;margin-bottom:12px}
+.tk-block-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+.tk-block-title{font-size:14px;font-weight:700;color:#e8e4ff;margin-bottom:3px;letter-spacing:-.01em}
+.tk-block-sub{font-size:11px;font-weight:300;color:rgba(232,228,255,.3);line-height:1.55}
+.tk-form{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.tk-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tk-row.three{grid-template-columns:1fr 1fr 1fr}
+.tkf{display:flex;flex-direction:column;gap:4px}
+.tkf-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,228,255,.26)}
+.tkf-input{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:9px 11px;font-family:'Manrope',sans-serif;font-size:12px;color:#e8e4ff;outline:none;transition:border-color .2s;width:100%}
+.tkf-input:focus{border-color:rgba(155,127,255,.32)}
+.tkf-input::placeholder{color:rgba(232,228,255,.18)}
+.tkf-sel{background:#0c0a1e;border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:9px 11px;font-family:'Manrope',sans-serif;font-size:12px;color:#e8e4ff;outline:none;cursor:pointer;width:100%;-webkit-appearance:none;transition:border-color .2s}
+.tkf-sel:focus{border-color:rgba(155,127,255,.32)}
+.tkf-sel option{background:#0c0a1e}
+.tk-btn{align-self:flex-start;font-family:'Manrope',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;background:#9b7fff;color:#06050f;border:none;padding:9px 20px;border-radius:5px;cursor:pointer;transition:background .2s}
+.tk-btn:hover{background:#b09aff}
+.tk-output{margin-top:2px}
+.tk-output-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(155,127,255,.4);margin-bottom:8px}
+.tk-ta{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:13px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.7;color:rgba(232,228,255,.7);resize:vertical;outline:none;transition:border-color .2s}
+.tk-ta:focus{border-color:rgba(155,127,255,.28)}
+.tk-copy-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:rgba(155,127,255,.08);border:1px solid rgba(155,127,255,.18);color:#a78bff;padding:7px 14px;border-radius:4px;cursor:pointer;margin-top:8px;display:inline-block;transition:background .18s}
+.tk-copy-btn:hover{background:rgba(155,127,255,.16)}
+.tk-copy-btn-sm{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;background:rgba(155,127,255,.07);border:1px solid rgba(155,127,255,.15);color:rgba(155,127,255,.7);padding:6px 12px;border-radius:4px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background .18s}
+.tk-copy-btn-sm:hover{background:rgba(155,127,255,.14)}
 
-.pipe-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.pipe-title{font-size:13px;font-weight:600;color:#e8e4ff}
-.add-btn{display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:rgba(155,127,255,.08);border:1px solid rgba(155,127,255,.18);color:#a78bff;padding:6px 12px;border-radius:4px;cursor:pointer;transition:background .2s}
-.add-btn:hover{background:rgba(155,127,255,.16)}
+/* PRICE RESULT */
+.price-result{display:flex;align-items:center;gap:0;background:rgba(155,127,255,.04);border:1px solid rgba(155,127,255,.1);border-radius:9px;overflow:hidden;margin-top:4px}
+.pr-col{flex:1;padding:16px 18px;text-align:center}
+.pr-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:rgba(232,228,255,.25);margin-bottom:6px}
+.pr-val{font-family:'Bebas Neue',sans-serif;font-size:24px;color:#e8e4ff;line-height:1}
+.pr-val.accent{color:#a78bff}
+.pr-divider{width:1px;height:40px;background:rgba(155,127,255,.12)}
 
-/* ADD DEAL FORM */
-.deal-form{background:rgba(255,255,255,.022);border:1px solid rgba(155,127,255,.14);border-radius:10px;padding:20px;margin-bottom:14px;display:none}
-.deal-form.open{display:block}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-.form-row.tri{grid-template-columns:1fr 1fr 1fr}
-.form-row.solo{grid-template-columns:1fr}
-.ff{display:flex;flex-direction:column;gap:5px}
-.ff label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,228,255,.26)}
-.fi{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:9px 11px;font-family:'Manrope',sans-serif;font-size:12px;color:#e8e4ff;outline:none;transition:border-color .2s;width:100%}
-.fi:focus{border-color:rgba(155,127,255,.32)}
-.fi::placeholder{color:rgba(232,228,255,.18)}
-.fi-sel{background:#0c0a1e;border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:9px 11px;font-family:'Manrope',sans-serif;font-size:12px;color:#e8e4ff;outline:none;cursor:pointer;width:100%;-webkit-appearance:none;transition:border-color .2s}
-.fi-sel:focus{border-color:rgba(155,127,255,.32)}
-.fi-sel option{background:#0c0a1e}
-.fi-ta{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:9px 11px;font-family:'Manrope',sans-serif;font-size:12px;color:#e8e4ff;outline:none;resize:vertical;min-height:68px;width:100%;transition:border-color .2s}
-.fi-ta:focus{border-color:rgba(155,127,255,.32)}
-.fi-ta::placeholder{color:rgba(232,228,255,.18)}
-.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
-.btn-save{font-family:'Manrope',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;background:#9b7fff;color:#06050f;border:none;padding:9px 20px;border-radius:5px;cursor:pointer;transition:background .2s}
-.btn-save:hover{background:#b09aff}
-.btn-cancel{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:none;border:1px solid rgba(255,255,255,.07);color:rgba(232,228,255,.26);padding:9px 15px;border-radius:5px;cursor:pointer;transition:all .18s}
-.btn-cancel:hover{border-color:rgba(255,255,255,.18);color:rgba(232,228,255,.55)}
+/* DISCOVERY */
+.discovery-grid{display:flex;flex-direction:column;gap:14px}
+.dq-phase{}
+.dq-phase-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(155,127,255,.4);margin-bottom:9px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.04)}
+.dq-list{display:flex;flex-direction:column;gap:6px}
+.dq-item{display:flex;gap:12px;align-items:flex-start;padding:9px 10px;border-radius:7px;transition:background .18s}
+.dq-item:hover{background:rgba(255,255,255,.025)}
+.dq-num{font-family:'Bebas Neue',sans-serif;font-size:18px;color:rgba(155,127,255,.3);line-height:1;flex-shrink:0;width:22px;margin-top:1px}
+.dq-text{font-size:13px;font-weight:300;color:rgba(232,228,255,.62);line-height:1.55}
 
-/* KANBAN BOARD */
-.kanban{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:16px;align-items:start}
-.kanban-col{}
-.kc-head{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,228,255,.22);margin-bottom:7px;padding:0 2px;display:flex;align-items:center;justify-content:space-between}
-.kc-count{background:rgba(255,255,255,.06);color:rgba(232,228,255,.35);padding:1px 6px;border-radius:20px;font-size:7px}
-.kc-cards{display:flex;flex-direction:column;gap:5px;min-height:40px}
+/* OBJECTIONS */
+.obj-list{display:flex;flex-direction:column;gap:4px}
+.obj-item{border:1px solid rgba(255,255,255,.055);border-radius:8px;overflow:hidden;cursor:pointer;transition:border-color .18s}
+.obj-item:hover{border-color:rgba(155,127,255,.2)}
+.obj-item.open{border-color:rgba(155,127,255,.22);background:rgba(155,127,255,.03)}
+.obj-q{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}
+.obj-q-text{font-size:13px;font-weight:600;color:rgba(232,228,255,.72)}
+.obj-arrow{color:rgba(232,228,255,.3);transition:transform .22s;flex-shrink:0}
+.obj-item.open .obj-arrow{transform:rotate(180deg);color:#a78bff}
+.obj-a{display:none;padding:0 14px 14px;font-size:13px;font-weight:300;color:rgba(232,228,255,.5);line-height:1.72;border-top:1px solid rgba(255,255,255,.04)}
+.obj-item.open .obj-a{display:block}
 
-.deal-card{background:rgba(255,255,255,.028);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:11px 12px;cursor:pointer;transition:border-color .2s,transform .18s;position:relative}
-.deal-card:hover{border-color:rgba(155,127,255,.22);transform:translateY(-1px)}
-.dc-company{font-size:12px;font-weight:600;color:rgba(232,228,255,.82);margin-bottom:2px;line-height:1.3;word-break:break-word}
-.dc-type{font-family:'DM Mono',monospace;font-size:9px;color:rgba(232,228,255,.3);margin-bottom:6px}
-.dc-value{font-family:'Bebas Neue',sans-serif;font-size:17px;color:#a78bff;line-height:1;margin-bottom:5px}
-.dc-value.closed{color:#7fcc9a}
-.dc-foot{display:flex;align-items:center;justify-content:space-between}
-.dc-date{font-family:'DM Mono',monospace;font-size:8px;color:rgba(232,228,255,.22)}
-.dc-del{background:none;border:none;cursor:pointer;opacity:0;transition:opacity .18s;padding:2px}
-.deal-card:hover .dc-del{opacity:.45}
-.dc-del:hover{opacity:1!important}
-.dc-bar{height:2px;border-radius:1px;margin-bottom:7px}
-.dc-bar.prospect{background:rgba(200,200,255,.15)}
-.dc-bar.contacted{background:rgba(220,185,100,.35)}
-.dc-bar.proposal{background:rgba(100,140,255,.4)}
-.dc-bar.negotiation{background:rgba(160,100,255,.5)}
-.dc-bar.closed{background:rgba(100,200,120,.45)}
-.dc-bar.lost{background:rgba(255,80,80,.2)}
-
-/* DEAL DETAIL DRAWER */
-.drawer-overlay{position:fixed;inset:0;z-index:200;display:none;align-items:flex-end;justify-content:flex-end}
-.drawer-overlay.open{display:flex}
-.drawer-backdrop{position:absolute;inset:0;background:rgba(6,5,15,.5);backdrop-filter:blur(4px)}
-.drawer{position:relative;z-index:1;width:380px;height:calc(100vh - 50px);margin-top:50px;background:#0d0b1e;border-left:1px solid rgba(155,127,255,.12);display:flex;flex-direction:column;overflow:hidden;animation:slideIn .25s ease}
-@keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
-.drawer-head{padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-shrink:0}
-.dh-co{font-size:15px;font-weight:700;color:#e8e4ff;margin-bottom:3px}
-.dh-type{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;color:rgba(232,228,255,.3)}
-.drawer-close{background:none;border:none;cursor:pointer;color:rgba(232,228,255,.3);transition:color .18s;padding:4px;flex-shrink:0}
-.drawer-close:hover{color:rgba(232,228,255,.7)}
-.drawer-body{flex:1;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:16px;scrollbar-width:thin;scrollbar-color:rgba(155,127,255,.1) transparent}
-
-.d-section{}
-.d-sec-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(155,127,255,.35);margin-bottom:10px}
-.d-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.03)}
-.d-row:last-child{border-bottom:none}
-.d-key{font-size:11px;font-weight:300;color:rgba(232,228,255,.35)}
-.d-val{font-size:11px;font-weight:600;color:rgba(232,228,255,.72);text-align:right}
-.d-val.purple{color:#a78bff;font-family:'Bebas Neue',sans-serif;font-size:18px}
-.d-val.green{color:#7fcc9a}
-
-.stage-selector{display:flex;flex-direction:column;gap:4px}
-.stage-option{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;cursor:pointer;border:1px solid transparent;transition:all .18s}
-.stage-option:hover{background:rgba(255,255,255,.03)}
-.stage-option.selected{border-color:rgba(155,127,255,.25);background:rgba(155,127,255,.07)}
-.so-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.so-dot.prospect{background:rgba(200,200,255,.4)}
-.so-dot.contacted{background:rgba(220,185,100,.6)}
-.so-dot.proposal{background:rgba(100,140,255,.65)}
-.so-dot.negotiation{background:rgba(180,130,255,.7)}
-.so-dot.closed{background:rgba(100,200,120,.7)}
-.so-dot.lost{background:rgba(255,100,100,.5)}
-.so-label{font-size:12px;font-weight:500;color:rgba(232,228,255,.6)}
-.so-sub{font-size:10px;font-weight:300;color:rgba(232,228,255,.25);margin-left:auto}
-
-.activity-list{display:flex;flex-direction:column;gap:6px}
-.act-item{display:flex;gap:9px;align-items:flex-start}
-.act-line{display:flex;flex-direction:column;align-items:center;flex-shrink:0;margin-top:3px}
-.act-dot{width:6px;height:6px;border-radius:50%;background:rgba(155,127,255,.4);flex-shrink:0}
-.act-tail{width:1px;flex:1;background:rgba(255,255,255,.04);margin-top:4px;min-height:16px}
-.act-body{flex:1;padding-bottom:10px}
-.act-text{font-size:12px;font-weight:300;color:rgba(232,228,255,.55);line-height:1.5;margin-bottom:2px}
-.act-time{font-family:'DM Mono',monospace;font-size:8px;color:rgba(232,228,255,.2)}
-
-.note-area{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:7px;padding:11px;font-family:'Manrope',sans-serif;font-size:12px;color:rgba(232,228,255,.65);resize:vertical;outline:none;min-height:80px;transition:border-color .2s;line-height:1.55}
-.note-area:focus{border-color:rgba(155,127,255,.28)}
-.note-area::placeholder{color:rgba(232,228,255,.18)}
-.save-note-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:rgba(155,127,255,.1);border:1px solid rgba(155,127,255,.2);color:#a78bff;padding:7px 13px;border-radius:4px;cursor:pointer;margin-top:7px;transition:background .18s;display:block}
-.save-note-btn:hover{background:rgba(155,127,255,.18)}
-
-.next-action-row{display:flex;gap:8px;align-items:center;margin-top:6px}
-.next-action-row .fi{flex:1}
+@media(max-width:700px){
+  .tk-row,.tk-row.three{grid-template-columns:1fr}
+  .price-result{flex-direction:column}
+  .pr-divider{width:100%;height:1px}
+}
 
 /* ── CHAT ── */
 .chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 50px - 90px - 56px);min-height:300px}
@@ -349,11 +292,9 @@ h1 .lit{background:linear-gradient(90deg,#a78bff 0%,#c4b0ff 50%,#a78bff 100%);ba
   .sidebar{width:46px}
   .nav-item .nav-label,.nav-badge{display:none}
   .nav-item{padding:11px;justify-content:center}
-  .kanban{grid-template-columns:1fr 1fr;gap:8px}
   .content{padding:14px 12px}
   .form-row{grid-template-columns:1fr}
   .form-row.tri{grid-template-columns:1fr 1fr}
-  .drawer{width:100%;margin-top:50px}
   .tb-name,.tb-sep,.tb-logo{display:none}
   .pipe-stages{overflow-x:auto}
 }
@@ -460,10 +401,9 @@ h1 .lit{background:linear-gradient(90deg,#a78bff 0%,#c4b0ff 50%,#a78bff 100%);ba
         <svg class="nav-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
         <span class="nav-label">Training</span>
       </button>
-      <button class="nav-item" onclick="showPanel('pipeline',this)">
-        <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        <span class="nav-label">Pipeline</span>
-        <span class="nav-badge" id="pipe-badge">0</span>
+      <button class="nav-item" onclick="showPanel('toolkit',this)">
+        <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        <span class="nav-label">Toolkit</span>
       </button>
       <button class="nav-item" onclick="showPanel('chat',this)">
         <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -552,82 +492,212 @@ h1 .lit{background:linear-gradient(90deg,#a78bff 0%,#c4b0ff 50%,#a78bff 100%);ba
         </div>
       </div>
 
-      <!-- PIPELINE -->
-      <div class="panel" id="panel-pipeline">
-        <div class="sh"><div class="sh-tag">Deal flow</div><div class="sh-title">My Pipeline</div></div>
+      <!-- TOOLKIT -->
+      <div class="panel" id="panel-toolkit">
+        <div class="sh"><div class="sh-tag">Your unfair advantage</div><div class="sh-title">Toolkit</div></div>
 
-        <div class="pipe-stages" id="pipe-stages">
-          <div class="stage-tab" onclick="filterStage(null,this)" style="cursor:pointer">
-            <div class="stage-n" id="st-all">0</div>
-            <div class="stage-label">All</div>
-          </div>
-          <div class="stage-tab" onclick="filterStage('prospect',this)">
-            <div class="stage-n" id="st-prospect">0</div>
-            <div class="stage-label">Prospect</div>
-          </div>
-          <div class="stage-tab" onclick="filterStage('contacted',this)">
-            <div class="stage-n amber" id="st-contacted">0</div>
-            <div class="stage-label">Contacted</div>
-          </div>
-          <div class="stage-tab" onclick="filterStage('proposal',this)">
-            <div class="stage-n purple" id="st-proposal">0</div>
-            <div class="stage-label">Proposal</div>
-          </div>
-          <div class="stage-tab" onclick="filterStage('negotiation',this)">
-            <div class="stage-n purple" id="st-negotiation">0</div>
-            <div class="stage-label">Negotiation</div>
-          </div>
-          <div class="stage-tab active" onclick="filterStage('closed',this)">
-            <div class="stage-n green" id="st-closed">0</div>
-            <div class="stage-label">Closed $</div>
-          </div>
-        </div>
-
-        <div class="pipe-header">
-          <span class="pipe-title" id="pipe-filter-label">All deals</span>
-          <button class="add-btn" onclick="toggleDealForm()">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-            Add deal
-          </button>
-        </div>
-
-        <div class="deal-form" id="deal-form">
-          <div class="form-row">
-            <div class="ff"><label>Company *</label><input class="fi" id="f-co" placeholder="Acme Manufacturing"></div>
-            <div class="ff"><label>Contact name</label><input class="fi" id="f-ct" placeholder="Jean Tremblay"></div>
-          </div>
-          <div class="form-row tri">
-            <div class="ff"><label>System type</label><input class="fi" id="f-ty" placeholder="HR onboarding, inventory..."></div>
-            <div class="ff"><label>Deal value ($)</label><input class="fi" id="f-va" type="number" placeholder="8000"></div>
-            <div class="ff"><label>Stage</label>
-              <select class="fi-sel" id="f-st">
-                <option value="prospect">Prospect</option>
-                <option value="contacted">Contacted</option>
-                <option value="proposal">Proposal sent</option>
-                <option value="negotiation">Negotiation</option>
-                <option value="closed">Closed</option>
-                <option value="lost">Lost</option>
-              </select>
+        <!-- SCRIPTS GENERATOR -->
+        <div class="tk-block">
+          <div class="tk-block-head">
+            <div>
+              <div class="tk-block-title">Cold Email Generator</div>
+              <div class="tk-block-sub">Enter a company and their likely pain point — get a ready-to-send email</div>
             </div>
           </div>
-          <div class="form-row">
-            <div class="ff"><label>Email</label><input class="fi" id="f-em" placeholder="jean@company.com" type="email"></div>
-            <div class="ff"><label>Next follow-up</label><input class="fi" id="f-da" type="date"></div>
+          <div class="tk-form">
+            <div class="tk-row">
+              <div class="tkf"><label class="tkf-label">Company name</label><input class="tkf-input" id="ce-company" placeholder="Acme Manufacturing"></div>
+              <div class="tkf"><label class="tkf-label">Industry</label><input class="tkf-input" id="ce-industry" placeholder="Manufacturing, logistics, retail..."></div>
+            </div>
+            <div class="tk-row">
+              <div class="tkf" style="grid-column:1/-1"><label class="tkf-label">Their pain point (what they probably do manually right now)</label><input class="tkf-input" id="ce-pain" placeholder="Tracking employee onboarding in Excel, manual inventory counts every week..."></div>
+            </div>
+            <button class="tk-btn" onclick="generateEmail()">Generate email</button>
           </div>
-          <div class="form-row solo">
-            <div class="ff"><label>Notes — pain points, context, what they need</label><textarea class="fi-ta" id="f-no" placeholder="They currently manage employee onboarding in Excel across 3 departments. No automation. Budget discussed: around $10K..."></textarea></div>
-          </div>
-          <div class="form-actions">
-            <button class="btn-cancel" onclick="toggleDealForm()">Cancel</button>
-            <button class="btn-save" onclick="saveDeal()">Save deal</button>
+          <div class="tk-output" id="ce-output" style="display:none">
+            <div class="tk-output-label">Generated email — edit before sending</div>
+            <textarea class="tk-ta" id="ce-result" rows="12"></textarea>
+            <button class="tk-copy-btn" onclick="copyText('ce-result')">Copy to clipboard</button>
           </div>
         </div>
 
-        <div id="kanban-board" class="kanban"></div>
-        <div id="pipe-empty" class="empty-state" style="display:none;text-align:center;padding:40px 0">
-          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(232,228,255,.18);margin-bottom:6px">No deals yet</div>
-          <div style="font-size:12px;font-weight:300;color:rgba(232,228,255,.18)">Add your first prospect to start tracking your pipeline</div>
+        <!-- PRICING CALCULATOR -->
+        <div class="tk-block">
+          <div class="tk-block-head">
+            <div>
+              <div class="tk-block-title">Deal Value Calculator</div>
+              <div class="tk-block-sub">Estimate what to charge based on the client's situation</div>
+            </div>
+          </div>
+          <div class="tk-form">
+            <div class="tk-row three">
+              <div class="tkf">
+                <label class="tkf-label">Company size</label>
+                <select class="tkf-sel" id="pc-size" onchange="calcPrice()">
+                  <option value="small">Small (under 50 employees)</option>
+                  <option value="mid">Mid (50–200 employees)</option>
+                  <option value="large">Large (200+ employees)</option>
+                </select>
+              </div>
+              <div class="tkf">
+                <label class="tkf-label">System complexity</label>
+                <select class="tkf-sel" id="pc-complexity" onchange="calcPrice()">
+                  <option value="simple">Simple (1 database, basic automations)</option>
+                  <option value="medium">Medium (multiple tables, workflows)</option>
+                  <option value="complex">Complex (integrations, custom logic)</option>
+                </select>
+              </div>
+              <div class="tkf">
+                <label class="tkf-label">Number of users</label>
+                <select class="tkf-sel" id="pc-users" onchange="calcPrice()">
+                  <option value="few">1–5 users</option>
+                  <option value="some">6–20 users</option>
+                  <option value="many">21+ users</option>
+                </select>
+              </div>
+            </div>
+            <div class="tk-row three">
+              <div class="tkf">
+                <label class="tkf-label">Timeline pressure</label>
+                <select class="tkf-sel" id="pc-urgency" onchange="calcPrice()">
+                  <option value="normal">Normal (3–4 weeks)</option>
+                  <option value="rushed">Rushed (under 2 weeks)</option>
+                  <option value="asap">ASAP (under 1 week)</option>
+                </select>
+              </div>
+              <div class="tkf">
+                <label class="tkf-label">Includes training</label>
+                <select class="tkf-sel" id="pc-training" onchange="calcPrice()">
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
+                </select>
+              </div>
+              <div class="tkf">
+                <label class="tkf-label">Ongoing maintenance</label>
+                <select class="tkf-sel" id="pc-retainer" onchange="calcPrice()">
+                  <option value="no">No</option>
+                  <option value="yes">Yes — monthly retainer</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="price-result" id="price-result">
+            <div class="pr-col">
+              <div class="pr-label">Recommended range</div>
+              <div class="pr-val" id="pr-range">$3,500 — $6,000</div>
+            </div>
+            <div class="pr-divider"></div>
+            <div class="pr-col">
+              <div class="pr-label">Ideal quote</div>
+              <div class="pr-val accent" id="pr-ideal">$5,000</div>
+            </div>
+            <div class="pr-divider"></div>
+            <div class="pr-col">
+              <div class="pr-label">Monthly retainer</div>
+              <div class="pr-val" id="pr-retainer">—</div>
+            </div>
+          </div>
         </div>
+
+        <!-- DISCOVERY QUESTIONS -->
+        <div class="tk-block">
+          <div class="tk-block-head">
+            <div>
+              <div class="tk-block-title">Discovery Call Framework</div>
+              <div class="tk-block-sub">Questions to ask in order — copy to your notes before every call</div>
+            </div>
+            <button class="tk-copy-btn-sm" onclick="copyDiscovery()">Copy all</button>
+          </div>
+          <div class="discovery-grid" id="discovery-grid">
+            <div class="dq-phase">
+              <div class="dq-phase-label">Phase 1 — Understand the current state</div>
+              <div class="dq-list">
+                <div class="dq-item"><div class="dq-num">01</div><div class="dq-text">Walk me through how your team handles [process] today, step by step.</div></div>
+                <div class="dq-item"><div class="dq-num">02</div><div class="dq-text">How many people touch this process every week, and how much time does it take them?</div></div>
+                <div class="dq-item"><div class="dq-num">03</div><div class="dq-text">What tools are you using right now — Excel, email, paper? What's broken about it?</div></div>
+                <div class="dq-item"><div class="dq-num">04</div><div class="dq-text">What happens when something falls through the cracks? Can you give me an example?</div></div>
+              </div>
+            </div>
+            <div class="dq-phase">
+              <div class="dq-phase-label">Phase 2 — Quantify the pain</div>
+              <div class="dq-list">
+                <div class="dq-item"><div class="dq-num">05</div><div class="dq-text">If I could eliminate this problem entirely, what would that free up for your team?</div></div>
+                <div class="dq-item"><div class="dq-num">06</div><div class="dq-text">Has this caused a mistake that cost you money or a client? What was that worth?</div></div>
+                <div class="dq-item"><div class="dq-num">07</div><div class="dq-text">Have you tried to fix this before? What happened?</div></div>
+              </div>
+            </div>
+            <div class="dq-phase">
+              <div class="dq-phase-label">Phase 3 — Qualify budget and timeline</div>
+              <div class="dq-list">
+                <div class="dq-item"><div class="dq-num">08</div><div class="dq-text">Is solving this a priority this quarter, or is it more of a nice-to-have for later?</div></div>
+                <div class="dq-item"><div class="dq-num">09</div><div class="dq-text">Have you budgeted for this kind of project? Roughly what range were you thinking?</div></div>
+                <div class="dq-item"><div class="dq-num">10</div><div class="dq-text">Who else needs to be involved in the decision — is it just you?</div></div>
+              </div>
+            </div>
+            <div class="dq-phase">
+              <div class="dq-phase-label">Phase 4 — Close the call</div>
+              <div class="dq-list">
+                <div class="dq-item"><div class="dq-num">11</div><div class="dq-text">Based on what you've told me, I think I can build exactly what you need. Would it make sense for me to send you a proposal this week?</div></div>
+                <div class="dq-item"><div class="dq-num">12</div><div class="dq-text">If the proposal looks good, what would the next step look like on your end?</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- OBJECTION HANDLER -->
+        <div class="tk-block">
+          <div class="tk-block-head">
+            <div>
+              <div class="tk-block-title">Objection Responses</div>
+              <div class="tk-block-sub">Click an objection to see exactly what to say</div>
+            </div>
+          </div>
+          <div class="obj-list">
+            <div class="obj-item" onclick="toggleObj(this)">
+              <div class="obj-q">
+                <span class="obj-q-text">"It's too expensive."</span>
+                <svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="obj-a">I understand — price is always a consideration. Let me ask: if this system saves your team 10 hours per week, what's that worth over the next year? Most clients find the system pays for itself within 2–3 months. Would it help if I showed you how I arrived at this number?</div>
+            </div>
+            <div class="obj-item" onclick="toggleObj(this)">
+              <div class="obj-q">
+                <span class="obj-q-text">"We'll build it internally."</span>
+                <svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="obj-a">Absolutely — and many companies try that. The challenge is that internal teams are usually pulled between this project and their actual job. I can deliver a working system in under two weeks. What's a realistic timeline if your team takes it on themselves?</div>
+            </div>
+            <div class="obj-item" onclick="toggleObj(this)">
+              <div class="obj-q">
+                <span class="obj-q-text">"Not the right time."</span>
+                <svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="obj-a">I hear that a lot. Can I ask — what needs to happen for this to become a priority? If it's a Q3 budget issue, I can hold a proposal and follow up then. I'd rather work with your timeline than push for something that doesn't fit.</div>
+            </div>
+            <div class="obj-item" onclick="toggleObj(this)">
+              <div class="obj-q">
+                <span class="obj-q-text">"Can you do it for cheaper?"</span>
+                <svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="obj-a">I can look at reducing scope — for example, we could phase the project and start with the core module only. That said, I'd rather not cut corners on something your team will use every day. What part of the system is most critical to you?</div>
+            </div>
+            <div class="obj-item" onclick="toggleObj(this)">
+              <div class="obj-q">
+                <span class="obj-q-text">"We already have software for that."</span>
+                <svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="obj-a">Good to know — what are you using? The issue with most generic software is that it's built for everyone, which means it fits no one perfectly. What I build is designed specifically around your workflow. Is your current tool covering everything you need, or are there still gaps?</div>
+            </div>
+            <div class="obj-item" onclick="toggleObj(this)">
+              <div class="obj-q">
+                <span class="obj-q-text">"Send me some information and I'll look at it."</span>
+                <svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="obj-a">Of course. Before I send anything — is there a specific part you want me to focus on, or a concern I haven't addressed yet? I want to make sure what I send is actually useful, not just a generic deck. And when should I follow up after you've had a chance to read it?</div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- CHAT -->
@@ -698,282 +768,251 @@ h1 .lit{background:linear-gradient(90deg,#a78bff 0%,#c4b0ff 50%,#a78bff 100%);ba
   </div>
 </div>
 
-<!-- DEAL DRAWER -->
-<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer(event)">
-  <div class="drawer-backdrop"></div>
-  <div class="drawer" id="drawer">
-    <div class="drawer-head">
-      <div>
-        <div class="dh-co" id="dr-co">--</div>
-        <div class="dh-type" id="dr-type">--</div>
-      </div>
-      <button class="drawer-close" onclick="closeDrawerDirect()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <div class="drawer-body">
-      <div class="d-section">
-        <div class="d-sec-label">Deal overview</div>
-        <div class="d-row"><span class="d-key">Contact</span><span class="d-val" id="dr-contact">--</span></div>
-        <div class="d-row"><span class="d-key">Email</span><span class="d-val" id="dr-email">--</span></div>
-        <div class="d-row"><span class="d-key">Deal value</span><span class="d-val purple" id="dr-value">--</span></div>
-        <div class="d-row"><span class="d-key">Next follow-up</span><span class="d-val" id="dr-date">--</span></div>
-      </div>
-      <div class="d-section">
-        <div class="d-sec-label">Move to stage</div>
-        <div class="stage-selector" id="stage-selector"></div>
-      </div>
-      <div class="d-section">
-        <div class="d-sec-label">Activity log</div>
-        <div class="activity-list" id="activity-list"></div>
-      </div>
-      <div class="d-section">
-        <div class="d-sec-label">Add a note</div>
-        <textarea class="note-area" id="dr-note" placeholder="What happened on the last call? What are their blockers?"></textarea>
-        <button class="save-note-btn" onclick="saveNote()">Save note</button>
-      </div>
-    </div>
-  </div>
-</div>
 <script>
 const USERS = { '123456':'David' };
-let me = null, curVid = null, curDealId = null, stageFilter = null;
-
-const STAGE_META = {
-  prospect:    { label:'Prospect',    sub:'Identified — not yet contacted', color:'prospect' },
-  contacted:   { label:'Contacted',   sub:'Reached out, awaiting reply',    color:'contacted' },
-  proposal:    { label:'Proposal',    sub:'Proposal or quote sent',         color:'proposal' },
-  negotiation: { label:'Negotiation', sub:'Terms being discussed',          color:'negotiation' },
-  closed:      { label:'Closed',      sub:'Deal won',                       color:'closed' },
-  lost:        { label:'Lost',        sub:'Not moving forward',             color:'lost' },
-};
-const STAGE_ORDER = ['prospect','contacted','proposal','negotiation','closed','lost'];
-
-let deals = JSON.parse(localStorage.getItem('sf_deals') || '[]');
-function saveDeals(){ localStorage.setItem('sf_deals', JSON.stringify(deals)) }
+let me = null, curVid = null;
 
 // ── DOTS ──
-const cv=document.getElementById('dots'),cx=cv.getContext('2d');
-let W,H,pts=[],T=0;
-function sz(){const h=cv.parentElement.parentElement;W=cv.width=h.offsetWidth;H=cv.height=h.offsetHeight;pts=[];for(let x=0;x<W+44;x+=44)for(let y=0;y<H+44;y+=44)pts.push({ox:x,oy:y,x,y,ph:Math.random()*Math.PI*2})}
-function df(){cx.clearRect(0,0,W,H);T+=.008;pts.forEach(p=>{p.x=p.ox+Math.sin(T*.5+p.ph)*3.5;p.y=p.oy+Math.cos(T*.42+p.ph)*3.5;cx.beginPath();cx.arc(p.x,p.y,1,0,Math.PI*2);cx.fillStyle=`rgba(167,139,255,${.06+.05*Math.abs(Math.sin(p.ph+T*.3))})`;cx.fill()});for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<56){cx.beginPath();cx.moveTo(pts[i].x,pts[i].y);cx.lineTo(pts[j].x,pts[j].y);cx.strokeStyle=`rgba(140,110,255,${.02*(1-d/56)})`;cx.lineWidth=.5;cx.stroke()}}requestAnimationFrame(df)}
-sz();window.addEventListener('resize',sz);df();
+const cv = document.getElementById('dots');
+const cx = cv.getContext('2d');
+let W, H, pts = [], T = 0;
+function sz() {
+  const h = cv.parentElement.parentElement;
+  W = cv.width = h.offsetWidth; H = cv.height = h.offsetHeight; pts = [];
+  for (let x = 0; x < W + 44; x += 44)
+    for (let y = 0; y < H + 44; y += 44)
+      pts.push({ ox: x, oy: y, x, y, ph: Math.random() * Math.PI * 2 });
+}
+function df() {
+  cx.clearRect(0, 0, W, H); T += .008;
+  pts.forEach(p => {
+    p.x = p.ox + Math.sin(T * .5 + p.ph) * 3.5;
+    p.y = p.oy + Math.cos(T * .42 + p.ph) * 3.5;
+    cx.beginPath(); cx.arc(p.x, p.y, 1, 0, Math.PI * 2);
+    cx.fillStyle = `rgba(167,139,255,${.06 + .05 * Math.abs(Math.sin(p.ph + T * .3))})`; cx.fill();
+  });
+  for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+    const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y, d = Math.sqrt(dx*dx + dy*dy);
+    if (d < 56) { cx.beginPath(); cx.moveTo(pts[i].x, pts[i].y); cx.lineTo(pts[j].x, pts[j].y); cx.strokeStyle = `rgba(140,110,255,${.02*(1-d/56)})`; cx.lineWidth = .5; cx.stroke(); }
+  }
+  requestAnimationFrame(df);
+}
+sz(); window.addEventListener('resize', sz); df();
 
-document.getElementById('vbox').addEventListener('click',function(){this.innerHTML=`<iframe width="100%" height="100%" src="https://www.youtube.com/embed/?autoplay=1" style="position:absolute;inset:0;border:none;border-radius:10px" allow="autoplay;fullscreen"></iframe>`});
-function scrollToCTA(){}
+document.getElementById('vbox').addEventListener('click', function () {
+  this.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/?autoplay=1" style="position:absolute;inset:0;border:none;border-radius:10px" allow="autoplay;fullscreen"></iframe>`;
+});
 
 // ── LOGIN ──
-function openLogin(){document.getElementById('login-screen').classList.add('show');setTimeout(()=>digits[0].focus(),100)}
-function closeLogin(){document.getElementById('login-screen').classList.remove('show')}
-const digits=document.querySelectorAll('.digit');
-const lBtn=document.getElementById('login-btn');
-digits.forEach((d,i)=>{
-  d.addEventListener('input',e=>{const v=e.target.value.replace(/\D/g,'');e.target.value=v;v?e.target.classList.add('filled'):e.target.classList.remove('filled');if(v&&i<5)digits[i+1].focus();lBtn.disabled=getCode().length<6});
-  d.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!d.value&&i>0){digits[i-1].focus();digits[i-1].value='';digits[i-1].classList.remove('filled')}});
-  d.addEventListener('paste',e=>{e.preventDefault();const p=(e.clipboardData||window.clipboardData).getData('text').replace(/\D/g,'').slice(0,6);p.split('').forEach((ch,j)=>{if(digits[j]){digits[j].value=ch;digits[j].classList.add('filled')}});lBtn.disabled=p.length<6;if(p.length>=6)digits[5].focus()});
-});
-function getCode(){return Array.from(digits).map(d=>d.value).join('')}
-lBtn.addEventListener('click',()=>{
-  const code=getCode();
-  if(USERS[code]){me={code,name:USERS[code]};doLogin()}
-  else{document.getElementById('login-error').classList.add('show');digits.forEach(d=>d.style.borderColor='rgba(255,80,80,.35)');setTimeout(()=>{document.getElementById('login-error').classList.remove('show');digits.forEach(d=>d.style.borderColor='')},2500)}
-});
-function doLogin(){
-  const ls=document.getElementById('login-screen');ls.style.transition='opacity .4s';ls.style.opacity='0';
-  setTimeout(()=>{ls.classList.remove('show');ls.style.opacity='';document.getElementById('landing').style.display='none';document.getElementById('platform').classList.add('show');initPlatform()},400);
+function openLogin() {
+  document.getElementById('login-screen').classList.add('show');
+  document.getElementById('login-error').classList.remove('show');
+  setTimeout(() => digits[0].focus(), 100);
 }
-function logout(){me=null;document.getElementById('platform').classList.remove('show');document.getElementById('landing').style.display='block';digits.forEach(d=>{d.value='';d.classList.remove('filled')});lBtn.disabled=true}
+function closeLogin() { document.getElementById('login-screen').classList.remove('show'); }
 
-// ── INIT ──
-function initPlatform(){
-  document.getElementById('user-av').textContent=me.name.slice(0,2).toUpperCase();
-  document.getElementById('user-nm').textContent=me.name;
-  setTimeout(()=>document.getElementById('prog-fill').style.width='33%',300);
-  renderPipeline();
+const digits = document.querySelectorAll('.digit');
+const lBtn = document.getElementById('login-btn');
+
+digits.forEach((d, i) => {
+  d.addEventListener('input', e => {
+    const v = e.target.value.replace(/\D/g, '');
+    e.target.value = v;
+    v ? e.target.classList.add('filled') : e.target.classList.remove('filled');
+    if (v && i < 5) digits[i + 1].focus();
+    lBtn.disabled = getCode().length < 6;
+  });
+  d.addEventListener('keydown', e => {
+    if (e.key === 'Backspace' && !d.value && i > 0) {
+      digits[i - 1].focus(); digits[i - 1].value = ''; digits[i - 1].classList.remove('filled');
+    }
+  });
+  d.addEventListener('paste', e => {
+    e.preventDefault();
+    const p = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
+    p.split('').forEach((ch, j) => { if (digits[j]) { digits[j].value = ch; digits[j].classList.add('filled'); } });
+    lBtn.disabled = p.length < 6;
+    if (p.length >= 6) digits[5].focus();
+  });
+});
+
+function getCode() { return Array.from(digits).map(d => d.value).join(''); }
+
+lBtn.addEventListener('click', () => {
+  const code = getCode();
+  if (USERS[code]) { me = { code, name: USERS[code] }; doLogin(); }
+  else {
+    document.getElementById('login-error').classList.add('show');
+    digits.forEach(d => d.style.borderColor = 'rgba(255,80,80,.35)');
+    setTimeout(() => { document.getElementById('login-error').classList.remove('show'); digits.forEach(d => d.style.borderColor = ''); }, 2500);
+  }
+});
+
+function doLogin() {
+  const ls = document.getElementById('login-screen');
+  ls.style.transition = 'opacity .4s'; ls.style.opacity = '0';
+  setTimeout(() => {
+    ls.classList.remove('show'); ls.style.opacity = '';
+    document.getElementById('landing').style.display = 'none';
+    document.getElementById('platform').classList.add('show');
+    initPlatform();
+  }, 400);
+}
+
+function logout() {
+  me = null;
+  document.getElementById('platform').classList.remove('show');
+  document.getElementById('landing').style.display = 'block';
+  digits.forEach(d => { d.value = ''; d.classList.remove('filled'); });
+  lBtn.disabled = true;
+}
+
+// ── PLATFORM INIT ──
+function initPlatform() {
+  document.getElementById('user-av').textContent = me.name.slice(0, 2).toUpperCase();
+  document.getElementById('user-nm').textContent = me.name;
+  setTimeout(() => document.getElementById('prog-fill').style.width = '33%', 300);
   initChat();
-  setInterval(()=>{const el=document.getElementById('online-n');if(el)el.textContent=(6+Math.floor(Math.random()*6))+' members online'},9000);
+  setInterval(() => {
+    const el = document.getElementById('online-n');
+    if (el) el.textContent = (6 + Math.floor(Math.random() * 6)) + ' members online';
+  }, 9000);
 }
 
 // ── PANELS ──
-function showPanel(id,btn){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('panel-'+id).classList.add('active');
+function showPanel(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
   btn.classList.add('active');
-  if(id==='chat'){document.getElementById('chat-badge').style.display='none';setTimeout(()=>{const m=document.getElementById('msgs');m.scrollTop=m.scrollHeight},50)}
-  if(id==='pipeline')renderPipeline();
-}
-
-// ── VIDEO ──
-const VIDS=[{title:'Module 01 — The Untapped Market',url:'https://www.youtube.com/embed/dQw4w9WgXcQ'},{title:'Module 02 — Build Fast & Deliver',url:'https://www.youtube.com/embed/dQw4w9WgXcQ'},{title:'Module 03 — Close & Get Paid',url:'https://www.youtube.com/embed/dQw4w9WgXcQ'}];
-function openVid(i){if(i===2)return;curVid=i;const p=document.getElementById('vplayer');p.classList.add('open');document.getElementById('vp-title').textContent=VIDS[i].title;document.getElementById('vp-screen').innerHTML=`<div class="vp-cover"><div class="vp-pbtn" onclick="loadVid()"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div><span class="vp-hint">Click to watch</span></div>`;p.scrollIntoView({behavior:'smooth',block:'start'})}
-function loadVid(){if(curVid===null)return;document.getElementById('vp-screen').innerHTML=`<iframe src="${VIDS[curVid].url}?autoplay=1" allow="autoplay;fullscreen" style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe>`}
-function closeVid(){document.getElementById('vplayer').classList.remove('open');document.getElementById('vp-screen').innerHTML='';curVid=null}
-
-// ── PIPELINE ──
-function toggleDealForm(){const f=document.getElementById('deal-form');f.classList.toggle('open');if(f.classList.contains('open'))document.getElementById('f-co').focus()}
-
-function saveDeal(){
-  const co=document.getElementById('f-co').value.trim();
-  if(!co)return;
-  const d={
-    id:Date.now(),company:co,
-    contact:document.getElementById('f-ct').value.trim(),
-    email:document.getElementById('f-em').value.trim(),
-    type:document.getElementById('f-ty').value.trim(),
-    value:parseInt(document.getElementById('f-va').value)||0,
-    stage:document.getElementById('f-st').value,
-    date:document.getElementById('f-da').value,
-    notes:document.getElementById('f-no').value.trim(),
-    activity:[{text:'Deal created',ts:Date.now()}],
-  };
-  deals.push(d);saveDeals();
-  ['f-co','f-ct','f-em','f-ty','f-va','f-no','f-da'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('f-st').value='prospect';
-  document.getElementById('deal-form').classList.remove('open');
-  renderPipeline();
-}
-
-function deleteDeal(id,e){if(e)e.stopPropagation();deals=deals.filter(d=>d.id!==id);saveDeals();closeDrawerDirect();renderPipeline()}
-
-function filterStage(stage,btn){
-  stageFilter=stage;
-  document.querySelectorAll('.stage-tab').forEach(t=>t.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  const label=stage?STAGE_META[stage].label+' deals':'All deals';
-  document.getElementById('pipe-filter-label').textContent=label;
-  renderKanban();
-}
-
-function renderPipeline(){
-  // update stage counts
-  const counts={};STAGE_ORDER.forEach(s=>counts[s]=0);
-  deals.forEach(d=>counts[d.stage]=(counts[d.stage]||0)+1);
-  document.getElementById('st-all').textContent=deals.length;
-  STAGE_ORDER.forEach(s=>{const el=document.getElementById('st-'+s);if(el)el.textContent=counts[s]});
-  document.getElementById('pipe-badge').textContent=deals.length;
-  renderKanban();
-}
-
-function renderKanban(){
-  const board=document.getElementById('kanban-board');
-  const empty=document.getElementById('pipe-empty');
-  const filtered=stageFilter?deals.filter(d=>d.stage===stageFilter):deals;
-  if(deals.length===0){board.style.display='none';empty.style.display='block';return}
-  board.style.display='';empty.style.display='none';
-
-  if(stageFilter){
-    // single column view
-    board.style.gridTemplateColumns='1fr';
-    board.innerHTML=`<div class="kanban-col"><div class="kc-head"><span>${STAGE_META[stageFilter].label}</span><span class="kc-count">${filtered.length}</span></div><div class="kc-cards" id="kc-${stageFilter}">${filtered.map(d=>dealCardHTML(d)).join('')}</div></div>`;
-  } else {
-    board.style.gridTemplateColumns='repeat(6,1fr)';
-    board.innerHTML=STAGE_ORDER.map(s=>{
-      const cards=deals.filter(d=>d.stage===s);
-      return `<div class="kanban-col"><div class="kc-head"><span>${STAGE_META[s].label.split(' ')[0]}</span><span class="kc-count">${cards.length}</span></div><div class="kc-cards">${cards.map(d=>dealCardHTML(d)).join('')}</div></div>`;
-    }).join('');
+  if (id === 'chat') {
+    document.getElementById('chat-badge').style.display = 'none';
+    setTimeout(() => { const m = document.getElementById('msgs'); m.scrollTop = m.scrollHeight; }, 50);
   }
 }
 
-function dealCardHTML(d){
-  const val=d.value?'$'+d.value.toLocaleString():'--';
-  const valClass=d.stage==='closed'?'dc-value closed':'dc-value';
-  const dateStr=d.date?new Date(d.date+'T00:00:00').toLocaleDateString('en-CA',{month:'short',day:'numeric'}):'';
-  return `<div class="deal-card" onclick="openDrawer(${d.id})">
-    <div class="dc-bar ${d.stage}"></div>
-    <div class="dc-company">${d.company}</div>
-    ${d.type?`<div class="dc-type">${d.type}</div>`:''}
-    <div class="${valClass}">${val}</div>
-    <div class="dc-foot">
-      <span class="dc-date">${dateStr}</span>
-      <button class="dc-del" onclick="deleteDeal(${d.id},event)">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,100,100,.6)" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-  </div>`;
+// ── VIDEO ──
+const VIDS = [
+  { title: 'Module 01 — The Untapped Market', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+  { title: 'Module 02 — Build Fast & Deliver', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+  { title: 'Module 03 — Close & Get Paid',     url: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+];
+function openVid(i) {
+  if (i === 2) return;
+  curVid = i;
+  const p = document.getElementById('vplayer');
+  p.classList.add('open');
+  document.getElementById('vp-title').textContent = VIDS[i].title;
+  document.getElementById('vp-screen').innerHTML = `<div class="vp-cover"><div class="vp-pbtn" onclick="loadVid()"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div><span class="vp-hint">Click to watch</span></div>`;
+  p.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
-// ── DRAWER ──
-function openDrawer(id){
-  const d=deals.find(x=>x.id===id);if(!d)return;
-  curDealId=id;
-  document.getElementById('dr-co').textContent=d.company;
-  document.getElementById('dr-type').textContent=d.type||'Internal system';
-  document.getElementById('dr-contact').textContent=d.contact||'—';
-  document.getElementById('dr-email').textContent=d.email||'—';
-  document.getElementById('dr-value').textContent=d.value?'$'+d.value.toLocaleString():'—';
-  const dateStr=d.date?new Date(d.date+'T00:00:00').toLocaleDateString('en-CA',{month:'long',day:'numeric',year:'numeric'}):'—';
-  document.getElementById('dr-date').textContent=dateStr;
-
-  // stage selector
-  const sel=document.getElementById('stage-selector');
-  sel.innerHTML=STAGE_ORDER.map(s=>`
-    <div class="stage-option${d.stage===s?' selected':''}" onclick="moveDeal(${d.id},'${s}',this)">
-      <span class="so-dot ${s}"></span>
-      <span class="so-label">${STAGE_META[s].label}</span>
-      <span class="so-sub">${STAGE_META[s].sub}</span>
-    </div>`).join('');
-
-  // activity
-  const al=document.getElementById('activity-list');
-  al.innerHTML=(d.activity||[]).slice().reverse().map((a,i,arr)=>`
-    <div class="act-item">
-      <div class="act-line"><div class="act-dot"></div>${i<arr.length-1?'<div class="act-tail"></div>':''}</div>
-      <div class="act-body">
-        <div class="act-text">${a.text}</div>
-        <div class="act-time">${new Date(a.ts).toLocaleDateString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
-      </div>
-    </div>`).join('');
-
-  document.getElementById('dr-note').value='';
-  document.getElementById('drawer-overlay').classList.add('open');
+function loadVid() {
+  if (curVid === null) return;
+  document.getElementById('vp-screen').innerHTML = `<iframe src="${VIDS[curVid].url}?autoplay=1" allow="autoplay;fullscreen" style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe>`;
 }
-
-function moveDeal(id,stage,el){
-  const d=deals.find(x=>x.id===id);if(!d)return;
-  if(d.stage===stage)return;
-  const oldStage=STAGE_META[d.stage].label;
-  d.stage=stage;
-  d.activity=d.activity||[];
-  d.activity.push({text:`Moved from ${oldStage} to ${STAGE_META[stage].label}`,ts:Date.now()});
-  saveDeals();
-  document.querySelectorAll('.stage-option').forEach(o=>o.classList.remove('selected'));
-  el.classList.add('selected');
-  // refresh activity
-  const al=document.getElementById('activity-list');
-  al.innerHTML=(d.activity||[]).slice().reverse().map((a,i,arr)=>`<div class="act-item"><div class="act-line"><div class="act-dot"></div>${i<arr.length-1?'<div class="act-tail"></div>':''}</div><div class="act-body"><div class="act-text">${a.text}</div><div class="act-time">${new Date(a.ts).toLocaleDateString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div></div></div>`).join('');
-  renderPipeline();
+function closeVid() {
+  document.getElementById('vplayer').classList.remove('open');
+  document.getElementById('vp-screen').innerHTML = '';
+  curVid = null;
 }
-
-function saveNote(){
-  const txt=document.getElementById('dr-note').value.trim();if(!txt||!curDealId)return;
-  const d=deals.find(x=>x.id===curDealId);if(!d)return;
-  d.activity=d.activity||[];
-  d.activity.push({text:txt,ts:Date.now()});
-  saveDeals();
-  const al=document.getElementById('activity-list');
-  al.innerHTML=(d.activity||[]).slice().reverse().map((a,i,arr)=>`<div class="act-item"><div class="act-line"><div class="act-dot"></div>${i<arr.length-1?'<div class="act-tail"></div>':''}</div><div class="act-body"><div class="act-text">${a.text}</div><div class="act-time">${new Date(a.ts).toLocaleDateString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div></div></div>`).join('');
-  document.getElementById('dr-note').value='';
-}
-
-function closeDrawer(e){if(e.target===document.getElementById('drawer-overlay')||e.target.classList.contains('drawer-backdrop'))closeDrawerDirect()}
-function closeDrawerDirect(){document.getElementById('drawer-overlay').classList.remove('open');curDealId=null}
 
 // ── CHAT ──
-const SEED=[
-  {name:'Marc-Antoine',time:'10:42',text:"Closed my first deal — $8,500. Cold email script worked on the third attempt."},
-  {name:'Sarah K.',time:'11:05',text:"Congrats. Module 02 was the turning point for me too — the discovery call framework is solid."},
-  {name:'Julien R.',time:'11:28',text:"For the Airtable setup in the resource guide — free plan or do we need Pro?"},
-  {name:'Marc-Antoine',time:'11:31',text:"Free handles most clients. Pro only if they need more than 1,200 records per table."},
-  {name:'Karim B.',time:'12:14',text:"Anyone targeting manufacturing? Seems very underserved — no one is selling to them."},
-  {name:'Sarah K.',time:'12:19',text:"Yes, closed one last month. Pain point is always manual tracking in Excel across departments."},
-  {name:'Emma T.',time:'13:02',text:"Finished module 02 last night. Starting my first build this weekend."},
+const SEED = [
+  { name: 'Marc-Antoine', time: '10:42', text: "Closed my first deal — $8,500. Cold email script worked on the third attempt." },
+  { name: 'Sarah K.',     time: '11:05', text: "Congrats. Module 02 was the turning point for me — the discovery call framework is solid." },
+  { name: 'Julien R.',    time: '11:28', text: "For the Airtable setup in the resource guide — free plan or do we need Pro?" },
+  { name: 'Marc-Antoine', time: '11:31', text: "Free handles most clients. Pro only if they need more than 1,200 records per table." },
+  { name: 'Karim B.',     time: '12:14', text: "Anyone targeting manufacturing? Seems very underserved — no one is selling to them." },
+  { name: 'Sarah K.',     time: '12:19', text: "Yes, closed one last month. Pain point is always manual tracking in Excel across departments." },
+  { name: 'Emma T.',      time: '13:02', text: "Finished module 02 last night. Starting my first build this weekend." },
 ];
-function initChat(){const c=document.getElementById('msgs');c.innerHTML='';SEED.forEach(m=>c.appendChild(buildMsg(m.name,m.time,m.text,false)));c.scrollTop=c.scrollHeight}
-function buildMsg(name,time,text,isMe){const d=document.createElement('div');d.className='msg'+(isMe?' me':'');const ini=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();d.innerHTML=`<div class="msg-av">${ini}</div><div class="msg-body"><div class="msg-meta"><span class="msg-name">${name}</span><span class="msg-time">${time}</span></div><div class="msg-bub">${text}</div></div>`;return d}
-function sendMsg(){const ta=document.getElementById('chat-ta');const txt=ta.value.trim();if(!txt||!me)return;const now=new Date();const t=`${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;const c=document.getElementById('msgs');c.appendChild(buildMsg(me.name,t,txt,true));ta.value='';ta.style.height='auto';c.scrollTop=c.scrollHeight}
-document.getElementById('chat-ta').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg()}});
-document.getElementById('chat-ta').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,86)+'px'});
+function initChat() {
+  const c = document.getElementById('msgs'); c.innerHTML = '';
+  SEED.forEach(m => c.appendChild(buildMsg(m.name, m.time, m.text, false)));
+  c.scrollTop = c.scrollHeight;
+}
+function buildMsg(name, time, text, isMe) {
+  const d = document.createElement('div'); d.className = 'msg' + (isMe ? ' me' : '');
+  const ini = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+  d.innerHTML = `<div class="msg-av">${ini}</div><div class="msg-body"><div class="msg-meta"><span class="msg-name">${name}</span><span class="msg-time">${time}</span></div><div class="msg-bub">${text}</div></div>`;
+  return d;
+}
+function sendMsg() {
+  const ta = document.getElementById('chat-ta'); const txt = ta.value.trim();
+  if (!txt || !me) return;
+  const now = new Date(); const t = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+  const c = document.getElementById('msgs'); c.appendChild(buildMsg(me.name, t, txt, true));
+  ta.value = ''; ta.style.height = 'auto'; c.scrollTop = c.scrollHeight;
+}
+document.getElementById('chat-ta').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); } });
+document.getElementById('chat-ta').addEventListener('input', function () { this.style.height = 'auto'; this.style.height = Math.min(this.scrollHeight, 86) + 'px'; });
+
+// ── TOOLKIT ──
+function generateEmail() {
+  const co = document.getElementById('ce-company').value.trim();
+  const ind = document.getElementById('ce-industry').value.trim();
+  const pain = document.getElementById('ce-pain').value.trim();
+  if (!co || !pain) { alert('Please fill in the company name and pain point.'); return; }
+  const industry = ind || 'your industry';
+  const email = `Subject: Quick question about ${co}'s ${pain.split(' ').slice(0,4).join(' ').toLowerCase()}
+
+Hi [First name],
+
+I work with ${industry} companies to build internal systems that replace the manual processes their teams are stuck with — things like ${pain.toLowerCase()}.
+
+Most of our clients were spending 8–15 hours a week on this before we automated it. After we build the system, that time goes to zero.
+
+I'd love to understand how ${co} handles this today. Would you be open to a 20-minute call this week?
+
+[Your name]
+[Your website or LinkedIn]`;
+  document.getElementById('ce-result').value = email;
+  document.getElementById('ce-output').style.display = 'block';
+}
+
+function calcPrice() {
+  const sizeEl = document.getElementById('pc-size'); if (!sizeEl) return;
+  const size = sizeEl.value;
+  const complexity = document.getElementById('pc-complexity').value;
+  const users = document.getElementById('pc-users').value;
+  const urgency = document.getElementById('pc-urgency').value;
+  const training = document.getElementById('pc-training').value;
+  const retainer = document.getElementById('pc-retainer').value;
+  const base = { simple: 3500, medium: 7000, complex: 14000 }[complexity];
+  const sizeM = { small: 1, mid: 1.2, large: 1.5 }[size];
+  const userM = { few: 1, some: 1.15, many: 1.3 }[users];
+  const urgencyM = { normal: 1, rushed: 1.25, asap: 1.5 }[urgency];
+  const trainingAdd = training === 'yes' ? 800 : 0;
+  const low = Math.round(base * sizeM * 0.85 / 500) * 500;
+  const high = Math.round(base * sizeM * userM * urgencyM * 1.1 / 500) * 500;
+  const ideal = Math.round((low + high) / 2 / 250) * 250 + trainingAdd;
+  const monthly = retainer === 'yes' ? Math.round(ideal * 0.08 / 50) * 50 : 0;
+  document.getElementById('pr-range').textContent = '$' + low.toLocaleString() + ' — $' + high.toLocaleString();
+  document.getElementById('pr-ideal').textContent = '$' + ideal.toLocaleString();
+  document.getElementById('pr-retainer').textContent = monthly ? '$' + monthly.toLocaleString() + '/mo' : '—';
+}
+
+function copyText(id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.value || el.textContent).then(() => {
+    const btn = el.nextElementSibling;
+    if (btn) { const orig = btn.textContent; btn.textContent = 'Copied'; setTimeout(() => btn.textContent = orig, 1800); }
+  });
+}
+
+function copyDiscovery() {
+  const lines = Array.from(document.querySelectorAll('.dq-item')).map(el => {
+    const num = el.querySelector('.dq-num').textContent;
+    const txt = el.querySelector('.dq-text').textContent;
+    return num + '. ' + txt;
+  });
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    const btn = document.querySelector('.tk-copy-btn-sm');
+    if (btn) { const orig = btn.textContent; btn.textContent = 'Copied'; setTimeout(() => btn.textContent = orig, 1800); }
+  });
+}
+
+function toggleObj(el) { el.classList.toggle('open'); }
 </script>
 </body>
 </html>
