@@ -92,212 +92,258 @@ h1 .lit{background:linear-gradient(90deg,#a78bff 0%,#c4b0ff 50%,#a78bff 100%);ba
 .login-error.show{opacity:1}
 
 
-/* ════════════════════════════════
-   PLATFORM
-════════════════════════════════ */
+/* ════════ PLATFORM ════════ */
 #platform{display:none;min-height:100vh;flex-direction:column}
 #platform.show{display:flex}
 
-.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:50px;background:rgba(6,5,15,.96);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.05);flex-shrink:0}
-.tb-left{display:flex;align-items:center;gap:12px}
-.tb-logo{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(232,228,255,.22)}
-.tb-sep{width:1px;height:14px;background:rgba(255,255,255,.07)}
-.tb-pill{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#9b7fff;border:1px solid rgba(155,127,255,.2);background:rgba(155,127,255,.06);padding:3px 9px;border-radius:20px}
-.live-dot{width:5px;height:5px;border-radius:50%;background:#9b7fff;animation:blink 2s infinite}
-.tb-right{display:flex;align-items:center;gap:10px}
-.tb-avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,rgba(155,127,255,.4),rgba(100,70,220,.3));border:1px solid rgba(155,127,255,.25);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#c4b0ff}
-.tb-name{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.06em;color:rgba(232,228,255,.3)}
-.logout-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(232,228,255,.18);background:none;border:none;cursor:pointer;padding:5px 8px;transition:color .2s}
-.logout-btn:hover{color:rgba(232,228,255,.5)}
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 22px;height:52px;background:rgba(8,7,18,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0}
+.tb-left{display:flex;align-items:center;gap:14px}
+.tb-logo{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(232,228,255,.25)}
+.tb-sep{width:1px;height:14px;background:rgba(255,255,255,.08)}
+.tb-pill{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#a78bff;border:1px solid rgba(167,139,255,.22);background:rgba(167,139,255,.07);padding:3px 10px;border-radius:20px}
+.live-dot{width:5px;height:5px;border-radius:50%;background:#a78bff;animation:blink 2s infinite}
+.tb-right{display:flex;align-items:center;gap:12px}
+.tb-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,rgba(167,139,255,.45),rgba(110,80,240,.35));border:1px solid rgba(167,139,255,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#d4c8ff;letter-spacing:.04em}
+.tb-name{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.06em;color:rgba(232,228,255,.32)}
+.logout-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(232,228,255,.2);background:none;border:none;cursor:pointer;padding:5px 8px;transition:color .2s}
+.logout-btn:hover{color:rgba(232,228,255,.55)}
 
-.layout{flex:1;display:flex;overflow:hidden;height:calc(100vh - 50px)}
-
-.sidebar{width:192px;flex-shrink:0;border-right:1px solid rgba(255,255,255,.04);padding:14px 0;display:flex;flex-direction:column;gap:1px;background:rgba(6,5,15,.7);overflow-y:auto}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:12px;font-weight:500;color:rgba(232,228,255,.28);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:color .18s,background .18s;position:relative}
-.nav-item:hover{color:rgba(232,228,255,.6);background:rgba(255,255,255,.02)}
-.nav-item.active{color:#e8e4ff;background:rgba(155,127,255,.07)}
-.nav-item.active::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:2px;background:#9b7fff;border-radius:0 2px 2px 0}
-.nav-svg{width:15px;height:15px;flex-shrink:0;opacity:.6}
+/* LAYOUT */
+.layout{flex:1;display:flex;overflow:hidden;height:calc(100vh - 52px)}
+.sidebar{width:194px;flex-shrink:0;border-right:1px solid rgba(255,255,255,.05);padding:16px 0;display:flex;flex-direction:column;gap:2px;background:rgba(8,7,18,.8);overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 17px;font-size:12px;font-weight:500;color:rgba(232,228,255,.3);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:color .18s,background .18s;position:relative;border-radius:0}
+.nav-item:hover{color:rgba(232,228,255,.65);background:rgba(255,255,255,.025)}
+.nav-item.active{color:#e8e4ff;background:rgba(167,139,255,.08)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,#a78bff,#7c5cff);border-radius:0 2px 2px 0}
+.nav-svg{width:15px;height:15px;flex-shrink:0;opacity:.55;transition:opacity .18s}
 .nav-item.active .nav-svg{opacity:1}
-.nav-badge{margin-left:auto;background:rgba(155,127,255,.2);color:#b8a4ff;font-family:'DM Mono',monospace;font-size:8px;padding:2px 6px;border-radius:20px}
+.nav-item:hover .nav-svg{opacity:.8}
+.nav-badge{margin-left:auto;background:rgba(167,139,255,.18);color:#b8a4ff;font-family:'DM Mono',monospace;font-size:7px;padding:2px 6px;border-radius:20px}
+.nav-sep{height:1px;background:rgba(255,255,255,.05);margin:8px 16px}
 
-.content{flex:1;overflow-y:auto;padding:26px 24px;scrollbar-width:thin;scrollbar-color:rgba(155,127,255,.1) transparent}
+.content{flex:1;overflow-y:auto;padding:28px 26px;scrollbar-width:thin;scrollbar-color:rgba(167,139,255,.12) transparent}
 .content::-webkit-scrollbar{width:4px}
-.content::-webkit-scrollbar-thumb{background:rgba(155,127,255,.14);border-radius:2px}
-
+.content::-webkit-scrollbar-thumb{background:rgba(167,139,255,.15);border-radius:2px}
 .panel{display:none}
 .panel.active{display:block}
 
-.sh{margin-bottom:20px}
-.sh-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(155,127,255,.36);margin-bottom:5px}
-.sh-title{font-size:17px;font-weight:700;color:#e8e4ff;letter-spacing:-.02em}
+.sh{margin-bottom:22px}
+.sh-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(167,139,255,.4);margin-bottom:6px}
+.sh-title{font-size:18px;font-weight:700;color:#e8e4ff;letter-spacing:-.02em;line-height:1.2}
+
+/* CARD BASE */
+.card{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:12px;transition:border-color .22s}
+.card:hover{border-color:rgba(167,139,255,.2)}
 
 /* ── TRAINING ── */
-.prog-row{display:flex;align-items:center;gap:10px;margin-bottom:20px}
-.prog-track{flex:1;height:2px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.prog-row{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding:14px 16px;background:rgba(167,139,255,.05);border:1px solid rgba(167,139,255,.1);border-radius:10px}
+.prog-track{flex:1;height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden}
 .prog-fill{height:100%;background:linear-gradient(90deg,#7c5cff,#a78bff);border-radius:2px;width:0;transition:width 1.2s ease}
-.prog-label{font-family:'DM Mono',monospace;font-size:10px;color:rgba(155,127,255,.65);white-space:nowrap}
+.prog-label{font-family:'DM Mono',monospace;font-size:10px;color:rgba(167,139,255,.7);white-space:nowrap}
 
-.modules{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
-.mod{background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.055);border-radius:10px;overflow:hidden;cursor:pointer;transition:border-color .2s,transform .18s,box-shadow .18s}
-.mod:hover:not(.locked){border-color:rgba(155,127,255,.2);transform:translateY(-2px);box-shadow:0 6px 26px rgba(0,0,0,.26)}
-.mod.locked{opacity:.4;cursor:not-allowed}
-.mod-inner{display:flex;align-items:center;gap:14px;padding:14px 16px}
-.mod-thumb{width:68px;height:42px;border-radius:6px;background:linear-gradient(145deg,#100d22,#1a1333);border:1px solid rgba(155,127,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;overflow:hidden}
-.mod-thumb::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 40% 40%,rgba(130,90,255,.15),transparent 65%)}
-.mod-ico{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;z-index:2}
-.mod-ico.play{background:rgba(155,127,255,.2);border:1px solid rgba(155,127,255,.3)}
-.mod-ico.done{background:rgba(80,180,100,.1);border:1px solid rgba(80,180,100,.22)}
-.mod-ico.lock{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.modules{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.mod{border-radius:11px;overflow:hidden;cursor:pointer;transition:border-color .2s,transform .18s,box-shadow .18s}
+.mod:hover:not(.locked){border-color:rgba(167,139,255,.28)!important;transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.35)}
+.mod.locked{opacity:.38;cursor:not-allowed}
+.mod-inner{display:flex;align-items:center;gap:14px;padding:15px 17px}
+.mod-thumb{width:70px;height:44px;border-radius:7px;background:linear-gradient(145deg,#0f0c20,#19132e);border:1px solid rgba(167,139,255,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;overflow:hidden}
+.mod-thumb::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 40% 40%,rgba(120,80,255,.18),transparent 65%)}
+.mod-ico{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;z-index:2}
+.mod-ico.play{background:rgba(167,139,255,.22);border:1px solid rgba(167,139,255,.35)}
+.mod-ico.done{background:rgba(80,190,110,.12);border:1px solid rgba(80,190,110,.28)}
+.mod-ico.lock{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
 .mod-info{flex:1;min-width:0}
-.mod-num{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,228,255,.22);margin-bottom:3px}
-.mod-title{font-size:13px;font-weight:600;color:#e8e4ff;margin-bottom:4px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mod-meta{display:flex;align-items:center;gap:7px}
-.mod-dur{font-family:'DM Mono',monospace;font-size:9px;color:rgba(232,228,255,.24)}
-.mod-tag{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:20px}
-.mod-tag.done{background:rgba(80,180,100,.1);color:rgba(100,200,120,.6)}
-.mod-tag.active{background:rgba(155,127,255,.1);color:#9b7fff}
-.mod-tag.locked{background:rgba(255,255,255,.03);color:rgba(232,228,255,.18)}
+.mod-num{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,228,255,.22);margin-bottom:4px}
+.mod-title{font-size:13px;font-weight:600;color:#e8e4ff;margin-bottom:5px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mod-meta{display:flex;align-items:center;gap:8px}
+.mod-dur{font-family:'DM Mono',monospace;font-size:9px;color:rgba(232,228,255,.26)}
+.mod-tag{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:20px}
+.mod-tag.done{background:rgba(80,190,110,.1);color:rgba(100,210,130,.65)}
+.mod-tag.active{background:rgba(167,139,255,.12);color:#a78bff}
+.mod-tag.locked{background:rgba(255,255,255,.04);color:rgba(232,228,255,.2)}
 
-.vplayer{background:rgba(255,255,255,.02);border:1px solid rgba(155,127,255,.1);border-radius:10px;overflow:hidden;margin-bottom:13px;display:none}
+.vplayer{border-radius:11px;overflow:hidden;margin-bottom:14px;display:none;border:1px solid rgba(167,139,255,.14)}
 .vplayer.open{display:block}
-.vp-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
-.vp-bar-title{font-size:12px;font-weight:600;color:rgba(232,228,255,.6)}
-.vp-close{background:none;border:none;cursor:pointer;color:rgba(232,228,255,.24);font-size:14px;transition:color .2s;padding:2px 5px}
-.vp-close:hover{color:rgba(232,228,255,.65)}
+.vp-bar{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02)}
+.vp-bar-title{font-size:12px;font-weight:600;color:rgba(232,228,255,.65)}
+.vp-close{background:none;border:none;cursor:pointer;color:rgba(232,228,255,.28);font-size:14px;transition:color .2s;padding:2px 6px;border-radius:4px}
+.vp-close:hover{color:rgba(232,228,255,.7);background:rgba(255,255,255,.05)}
 .vp-screen{aspect-ratio:16/9;background:#08071a;position:relative;overflow:hidden}
-.vp-cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:11px;background:linear-gradient(145deg,#0d0b1e,#150f28)}
-.vp-pbtn{width:50px;height:50px;border-radius:50%;background:rgba(155,127,255,.1);border:1.5px solid rgba(155,127,255,.28);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,transform .2s}
-.vp-pbtn:hover{background:rgba(155,127,255,.22);transform:scale(1.05)}
-.vp-hint{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(232,228,255,.2)}
+.vp-cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:linear-gradient(145deg,#0d0b1e,#150f28)}
+.vp-pbtn{width:52px;height:52px;border-radius:50%;background:rgba(167,139,255,.12);border:1.5px solid rgba(167,139,255,.32);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,transform .2s}
+.vp-pbtn:hover{background:rgba(167,139,255,.24);transform:scale(1.06)}
+.vp-hint{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(232,228,255,.22)}
 
-.resume-card{background:rgba(155,127,255,.05);border:1px solid rgba(155,127,255,.1);border-radius:9px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px}
-.resume-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(155,127,255,.38);margin-bottom:3px}
-.resume-title{font-size:12px;font-weight:600;color:rgba(232,228,255,.62)}
-.resume-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:7px 13px;border-radius:4px;background:#9b7fff;color:#06050f;border:none;cursor:pointer;white-space:nowrap;transition:background .2s}
-.resume-btn:hover{background:#b09aff}
+.resume-card{background:linear-gradient(135deg,rgba(167,139,255,.07),rgba(100,70,220,.04));border:1px solid rgba(167,139,255,.14);border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px}
+.resume-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(167,139,255,.42);margin-bottom:4px}
+.resume-title{font-size:12px;font-weight:600;color:rgba(232,228,255,.65)}
+.resume-btn{font-family:'Manrope',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;padding:8px 16px;border-radius:5px;background:#a78bff;color:#06050f;border:none;cursor:pointer;white-space:nowrap;transition:background .2s,transform .15s}
+.resume-btn:hover{background:#c4b0ff;transform:translateY(-1px)}
 
 /* ── TOOLKIT ── */
-.tk-block{background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.055);border-radius:12px;padding:22px 20px;margin-bottom:12px}
-.tk-block-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+.tk-block{border-radius:12px;padding:22px 20px;margin-bottom:10px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.065)}
+.tk-block:hover{border-color:rgba(167,139,255,.16)}
+.tk-block-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
 .tk-block-title{font-size:14px;font-weight:700;color:#e8e4ff;margin-bottom:3px;letter-spacing:-.01em}
-.tk-block-sub{font-size:11px;font-weight:300;color:rgba(232,228,255,.3);line-height:1.55}
+.tk-block-sub{font-size:11px;font-weight:300;color:rgba(232,228,255,.32);line-height:1.55}
 .tk-form{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
 .tk-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .tk-row.three{grid-template-columns:1fr 1fr 1fr}
-.tkf{display:flex;flex-direction:column;gap:4px}
-.tkf-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,228,255,.26)}
-.tkf-input{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:9px 11px;font-family:'Manrope',sans-serif;font-size:12px;color:#e8e4ff;outline:none;transition:border-color .2s;width:100%}
-.tkf-input:focus{border-color:rgba(155,127,255,.32)}
-.tkf-input::placeholder{color:rgba(232,228,255,.18)}
-.tkf-sel{background:#0c0a1e;border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:9px 11px;font-family:'Manrope',sans-serif;font-size:12px;color:#e8e4ff;outline:none;cursor:pointer;width:100%;-webkit-appearance:none;transition:border-color .2s}
-.tkf-sel:focus{border-color:rgba(155,127,255,.32)}
-.tkf-sel option{background:#0c0a1e}
-.tk-btn{align-self:flex-start;font-family:'Manrope',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;background:#9b7fff;color:#06050f;border:none;padding:9px 20px;border-radius:5px;cursor:pointer;transition:background .2s}
-.tk-btn:hover{background:#b09aff}
+.tk-row.full{grid-template-columns:1fr}
+.tkf{display:flex;flex-direction:column;gap:5px}
+.tkf-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,228,255,.28)}
+.tkf-input{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:7px;padding:9px 12px;font-family:'Manrope',sans-serif;font-size:12px;color:#e8e4ff;outline:none;transition:border-color .2s,background .2s;width:100%}
+.tkf-input:focus{border-color:rgba(167,139,255,.38);background:rgba(255,255,255,.055)}
+.tkf-input::placeholder{color:rgba(232,228,255,.2)}
+.tkf-sel{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:7px;padding:9px 12px;font-family:'Manrope',sans-serif;font-size:12px;color:#e8e4ff;outline:none;cursor:pointer;width:100%;-webkit-appearance:none;transition:border-color .2s}
+.tkf-sel:focus{border-color:rgba(167,139,255,.38)}
+.tkf-sel option{background:#0e0c1e}
+.tk-btn{align-self:flex-start;font-family:'Manrope',sans-serif;font-size:11px;font-weight:700;letter-spacing:.05em;background:#a78bff;color:#06050f;border:none;padding:9px 20px;border-radius:6px;cursor:pointer;transition:background .2s,transform .15s}
+.tk-btn:hover{background:#c4b0ff;transform:translateY(-1px)}
 .tk-output{margin-top:2px}
-.tk-output-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(155,127,255,.4);margin-bottom:8px}
-.tk-ta{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:13px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.7;color:rgba(232,228,255,.7);resize:vertical;outline:none;transition:border-color .2s}
-.tk-ta:focus{border-color:rgba(155,127,255,.28)}
-.tk-copy-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:rgba(155,127,255,.08);border:1px solid rgba(155,127,255,.18);color:#a78bff;padding:7px 14px;border-radius:4px;cursor:pointer;margin-top:8px;display:inline-block;transition:background .18s}
-.tk-copy-btn:hover{background:rgba(155,127,255,.16)}
-.tk-copy-btn-sm{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;background:rgba(155,127,255,.07);border:1px solid rgba(155,127,255,.15);color:rgba(155,127,255,.7);padding:6px 12px;border-radius:4px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background .18s}
-.tk-copy-btn-sm:hover{background:rgba(155,127,255,.14)}
+.tk-output-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(167,139,255,.42);margin-bottom:8px}
+.tk-ta{width:100%;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:13px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.75;color:rgba(232,228,255,.72);resize:vertical;outline:none;transition:border-color .2s}
+.tk-ta:focus{border-color:rgba(167,139,255,.3)}
+.tk-copy-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:rgba(167,139,255,.09);border:1px solid rgba(167,139,255,.2);color:#a78bff;padding:7px 14px;border-radius:5px;cursor:pointer;margin-top:9px;display:inline-block;transition:background .18s}
+.tk-copy-btn:hover{background:rgba(167,139,255,.18)}
+.tk-copy-btn-sm{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;background:rgba(167,139,255,.07);border:1px solid rgba(167,139,255,.16);color:rgba(167,139,255,.75);padding:6px 12px;border-radius:4px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background .18s}
+.tk-copy-btn-sm:hover{background:rgba(167,139,255,.14)}
 
-/* PRICE RESULT */
-.price-result{display:flex;align-items:center;gap:0;background:rgba(155,127,255,.04);border:1px solid rgba(155,127,255,.1);border-radius:9px;overflow:hidden;margin-top:4px}
+/* ROI CALC */
+.roi-output{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(167,139,255,.08);border:1px solid rgba(167,139,255,.12);border-radius:10px;overflow:hidden;margin-top:6px}
+.roi-col{background:#0e0c1e;padding:16px 18px;text-align:center}
+.roi-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:rgba(232,228,255,.25);margin-bottom:7px}
+.roi-val{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;color:#e8e4ff}
+.roi-val.green{color:#7fcc9a}
+.roi-val.accent{color:#a78bff}
+.roi-sub{font-size:10px;font-weight:300;color:rgba(232,228,255,.28);margin-top:3px}
+
+/* PRICE CALC */
+.price-result{display:flex;align-items:center;background:rgba(167,139,255,.05);border:1px solid rgba(167,139,255,.12);border-radius:10px;overflow:hidden;margin-top:6px}
 .pr-col{flex:1;padding:16px 18px;text-align:center}
 .pr-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:rgba(232,228,255,.25);margin-bottom:6px}
-.pr-val{font-family:'Bebas Neue',sans-serif;font-size:24px;color:#e8e4ff;line-height:1}
+.pr-val{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#e8e4ff;line-height:1}
 .pr-val.accent{color:#a78bff}
-.pr-divider{width:1px;height:40px;background:rgba(155,127,255,.12)}
+.pr-val.green{color:#7fcc9a}
+.pr-divider{width:1px;height:44px;background:rgba(167,139,255,.14)}
+
+/* FOLLOW-UP SCRIPTS */
+.followup-tabs{display:flex;gap:4px;margin-bottom:14px}
+.ftab{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;border-radius:5px;border:1px solid rgba(255,255,255,.07);background:none;color:rgba(232,228,255,.3);cursor:pointer;transition:all .18s}
+.ftab.active{background:rgba(167,139,255,.1);border-color:rgba(167,139,255,.25);color:#a78bff}
+.ftab:hover:not(.active){border-color:rgba(255,255,255,.14);color:rgba(232,228,255,.6)}
+.followup-content{display:none}
+.followup-content.active{display:block}
 
 /* DISCOVERY */
-.discovery-grid{display:flex;flex-direction:column;gap:14px}
-.dq-phase{}
-.dq-phase-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(155,127,255,.4);margin-bottom:9px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.04)}
-.dq-list{display:flex;flex-direction:column;gap:6px}
-.dq-item{display:flex;gap:12px;align-items:flex-start;padding:9px 10px;border-radius:7px;transition:background .18s}
+.discovery-grid{display:flex;flex-direction:column;gap:12px}
+.dq-phase-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(167,139,255,.4);margin-bottom:9px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.05)}
+.dq-list{display:flex;flex-direction:column;gap:5px}
+.dq-item{display:flex;gap:12px;align-items:flex-start;padding:9px 10px;border-radius:7px;transition:background .18s;cursor:default}
 .dq-item:hover{background:rgba(255,255,255,.025)}
-.dq-num{font-family:'Bebas Neue',sans-serif;font-size:18px;color:rgba(155,127,255,.3);line-height:1;flex-shrink:0;width:22px;margin-top:1px}
+.dq-num{font-family:'Bebas Neue',sans-serif;font-size:18px;color:rgba(167,139,255,.3);line-height:1;flex-shrink:0;width:22px;margin-top:1px}
 .dq-text{font-size:13px;font-weight:300;color:rgba(232,228,255,.62);line-height:1.55}
 
 /* OBJECTIONS */
 .obj-list{display:flex;flex-direction:column;gap:4px}
-.obj-item{border:1px solid rgba(255,255,255,.055);border-radius:8px;overflow:hidden;cursor:pointer;transition:border-color .18s}
-.obj-item:hover{border-color:rgba(155,127,255,.2)}
-.obj-item.open{border-color:rgba(155,127,255,.22);background:rgba(155,127,255,.03)}
-.obj-q{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}
+.obj-item{border:1px solid rgba(255,255,255,.06);border-radius:9px;overflow:hidden;cursor:pointer;transition:border-color .18s}
+.obj-item:hover{border-color:rgba(167,139,255,.22)}
+.obj-item.open{border-color:rgba(167,139,255,.25);background:rgba(167,139,255,.03)}
+.obj-q{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 15px}
 .obj-q-text{font-size:13px;font-weight:600;color:rgba(232,228,255,.72)}
-.obj-arrow{color:rgba(232,228,255,.3);transition:transform .22s;flex-shrink:0}
+.obj-arrow{color:rgba(232,228,255,.28);transition:transform .22s;flex-shrink:0}
 .obj-item.open .obj-arrow{transform:rotate(180deg);color:#a78bff}
-.obj-a{display:none;padding:0 14px 14px;font-size:13px;font-weight:300;color:rgba(232,228,255,.5);line-height:1.72;border-top:1px solid rgba(255,255,255,.04)}
+.obj-a{display:none;padding:0 15px 14px;font-size:13px;font-weight:300;color:rgba(232,228,255,.5);line-height:1.72;border-top:1px solid rgba(255,255,255,.04);padding-top:12px}
 .obj-item.open .obj-a{display:block}
 
-@media(max-width:700px){
-  .tk-row,.tk-row.three{grid-template-columns:1fr}
-  .price-result{flex-direction:column}
-  .pr-divider{width:100%;height:1px}
-}
+/* ── SHOP ── */
+.shop-intro{font-size:13px;font-weight:300;color:rgba(232,228,255,.38);line-height:1.7;margin-bottom:22px;max-width:520px}
+.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
+.shop-card{background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.065);border-radius:13px;padding:22px 20px;display:flex;flex-direction:column;gap:0;position:relative;overflow:hidden;transition:border-color .22s,transform .2s,box-shadow .2s;cursor:pointer}
+.shop-card::before{content:'';position:absolute;top:-60px;right:-60px;width:180px;height:180px;background:radial-gradient(circle,rgba(167,139,255,.07),transparent 65%);border-radius:50%;pointer-events:none}
+.shop-card:hover{border-color:rgba(167,139,255,.28);transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.35)}
+.shop-card.featured{border-color:rgba(167,139,255,.22);background:rgba(167,139,255,.05)}
+.shop-card.featured::before{background:radial-gradient(circle,rgba(167,139,255,.12),transparent 65%)}
+.sc-badge{display:inline-block;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;border-radius:20px;margin-bottom:14px;align-self:flex-start}
+.sc-badge.popular{background:rgba(167,139,255,.18);color:#c4b0ff;border:1px solid rgba(167,139,255,.28)}
+.sc-badge.new{background:rgba(100,200,120,.1);color:rgba(120,210,140,.7);border:1px solid rgba(100,200,120,.2)}
+.sc-badge.quick{background:rgba(220,185,100,.1);color:rgba(210,180,100,.7);border:1px solid rgba(210,180,100,.2)}
+.sc-price{font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1;color:#e8e4ff;margin-bottom:4px;letter-spacing:.01em}
+.sc-price span{font-size:20px;color:rgba(232,228,255,.4);font-family:'DM Mono',monospace;font-weight:300;letter-spacing:0}
+.sc-title{font-size:15px;font-weight:700;color:#e8e4ff;margin-bottom:8px;letter-spacing:-.01em}
+.sc-desc{font-size:12px;font-weight:300;color:rgba(232,228,255,.35);line-height:1.65;flex:1;margin-bottom:18px}
+.sc-includes{display:flex;flex-direction:column;gap:5px;margin-bottom:18px}
+.sc-include{display:flex;align-items:flex-start;gap:8px;font-size:11px;font-weight:300;color:rgba(232,228,255,.45);line-height:1.45}
+.sc-include::before{content:'';width:4px;height:4px;border-radius:50%;background:rgba(167,139,255,.55);flex-shrink:0;margin-top:6px}
+.sc-btn{font-family:'Manrope',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:11px;border-radius:7px;border:none;cursor:pointer;transition:background .2s,transform .15s;text-align:center;display:block;width:100%}
+.sc-btn.primary{background:#a78bff;color:#06050f}
+.sc-btn.primary:hover{background:#c4b0ff;transform:translateY(-1px)}
+.sc-btn.secondary{background:rgba(255,255,255,.07);color:rgba(232,228,255,.65);border:1px solid rgba(255,255,255,.1)}
+.sc-btn.secondary:hover{background:rgba(255,255,255,.1);color:#e8e4ff;transform:translateY(-1px)}
+.shop-note{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(232,228,255,.16);text-align:center;margin-top:4px}
 
 /* ── CHAT ── */
-.chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 50px - 90px - 56px);min-height:300px}
-.online-bar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(155,127,255,.04);border:1px solid rgba(155,127,255,.07);border-radius:7px;margin-bottom:12px;flex-shrink:0}
+.chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 52px - 88px - 56px);min-height:300px}
+.online-bar{display:flex;align-items:center;gap:8px;padding:8px 13px;background:rgba(167,139,255,.04);border:1px solid rgba(167,139,255,.09);border-radius:8px;margin-bottom:13px;flex-shrink:0}
 .online-dot{width:6px;height:6px;border-radius:50%;background:#7fcc9a;animation:blink 2s infinite}
 .online-txt{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(232,228,255,.24)}
-.online-n{font-family:'DM Mono',monospace;font-size:9px;color:#9b7fff;margin-left:auto}
-.msgs{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding-bottom:8px;scrollbar-width:thin;scrollbar-color:rgba(155,127,255,.1) transparent}
+.online-n{font-family:'DM Mono',monospace;font-size:9px;color:#a78bff;margin-left:auto}
+.msgs{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:13px;padding-bottom:10px;scrollbar-width:thin;scrollbar-color:rgba(167,139,255,.1) transparent}
 .msgs::-webkit-scrollbar{width:3px}
-.msgs::-webkit-scrollbar-thumb{background:rgba(155,127,255,.16);border-radius:2px}
-.msg{display:flex;gap:8px;align-items:flex-start}
+.msgs::-webkit-scrollbar-thumb{background:rgba(167,139,255,.18);border-radius:2px}
+.msg{display:flex;gap:9px;align-items:flex-start}
 .msg.me{flex-direction:row-reverse}
-.msg-av{width:28px;height:28px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,rgba(155,127,255,.28),rgba(100,70,220,.2));border:1px solid rgba(155,127,255,.16);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#c4b0ff}
-.msg-body{max-width:78%}
-.msg-meta{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.msg-av{width:30px;height:30px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,rgba(167,139,255,.3),rgba(100,70,220,.22));border:1px solid rgba(167,139,255,.2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#c4b0ff;letter-spacing:.04em}
+.msg-body{max-width:76%}
+.msg-meta{display:flex;align-items:center;gap:6px;margin-bottom:4px}
 .msg.me .msg-meta{flex-direction:row-reverse}
-.msg-name{font-size:11px;font-weight:600;color:rgba(232,228,255,.48)}
-.msg-time{font-family:'DM Mono',monospace;font-size:8px;color:rgba(232,228,255,.16)}
-.msg-bub{background:rgba(255,255,255,.038);border:1px solid rgba(255,255,255,.05);border-radius:10px;border-top-left-radius:3px;padding:9px 12px;font-size:13px;font-weight:300;color:rgba(232,228,255,.68);line-height:1.58}
-.msg.me .msg-bub{background:rgba(155,127,255,.09);border-color:rgba(155,127,255,.15);border-top-left-radius:10px;border-top-right-radius:3px}
-.chat-input-row{padding-top:10px;border-top:1px solid rgba(255,255,255,.04);display:flex;gap:8px;align-items:flex-end;flex-shrink:0}
-.chat-ta{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:9px;padding:10px 12px;font-family:'Manrope',sans-serif;font-size:13px;font-weight:300;color:#e8e4ff;resize:none;outline:none;transition:border-color .2s;line-height:1.5;max-height:86px;overflow-y:auto}
-.chat-ta::placeholder{color:rgba(232,228,255,.18)}
-.chat-ta:focus{border-color:rgba(155,127,255,.25)}
-.send-btn{width:36px;height:36px;border-radius:7px;flex-shrink:0;background:#9b7fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .18s}
-.send-btn:hover{background:#b09aff}
+.msg-name{font-size:11px;font-weight:600;color:rgba(232,228,255,.52)}
+.msg-time{font-family:'DM Mono',monospace;font-size:8px;color:rgba(232,228,255,.18)}
+.msg-bub{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:11px;border-top-left-radius:3px;padding:10px 13px;font-size:13px;font-weight:300;color:rgba(232,228,255,.7);line-height:1.6}
+.msg.me .msg-bub{background:rgba(167,139,255,.1);border-color:rgba(167,139,255,.18);border-top-left-radius:11px;border-top-right-radius:3px}
+.chat-input-row{padding-top:11px;border-top:1px solid rgba(255,255,255,.05);display:flex;gap:8px;align-items:flex-end;flex-shrink:0}
+.chat-ta{flex:1;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 13px;font-family:'Manrope',sans-serif;font-size:13px;font-weight:300;color:#e8e4ff;resize:none;outline:none;transition:border-color .2s;line-height:1.5;max-height:88px;overflow-y:auto}
+.chat-ta::placeholder{color:rgba(232,228,255,.2)}
+.chat-ta:focus{border-color:rgba(167,139,255,.28)}
+.send-btn{width:38px;height:38px;border-radius:8px;flex-shrink:0;background:#a78bff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .18s,transform .15s}
+.send-btn:hover{background:#c4b0ff;transform:scale(1.05)}
 
 /* ── RESOURCES ── */
-.res-section{margin-bottom:24px}
-.res-sec-title{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:rgba(155,127,255,.32);margin-bottom:9px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.04)}
+.res-section{margin-bottom:22px}
+.res-sec-title{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:rgba(167,139,255,.34);margin-bottom:9px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.05)}
 .res-list{display:flex;flex-direction:column;gap:5px}
-.res-card{display:flex;align-items:center;gap:11px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.048);border-radius:9px;padding:12px 13px;text-decoration:none;transition:border-color .18s,background .18s,transform .18s;cursor:pointer}
-.res-card:hover{border-color:rgba(155,127,255,.2);background:rgba(155,127,255,.03);transform:translateX(3px)}
+.res-card{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.05);border-radius:9px;padding:12px 14px;text-decoration:none;transition:border-color .18s,background .18s,transform .18s;cursor:pointer}
+.res-card:hover{border-color:rgba(167,139,255,.22);background:rgba(167,139,255,.035);transform:translateX(3px)}
 .res-bar{width:2px;height:30px;border-radius:2px;flex-shrink:0}
-.res-bar.y{background:rgba(212,168,75,.45)}
-.res-bar.b{background:rgba(100,140,255,.45)}
-.res-bar.p{background:rgba(155,127,255,.6)}
-.res-bar.g{background:rgba(100,200,120,.4)}
-.res-bar.r{background:rgba(255,100,100,.3)}
+.res-bar.y{background:rgba(210,175,90,.5)}
+.res-bar.b{background:rgba(100,145,255,.5)}
+.res-bar.p{background:rgba(167,139,255,.65)}
+.res-bar.g{background:rgba(100,200,120,.45)}
+.res-bar.r{background:rgba(255,110,110,.35)}
 .res-info{flex:1;min-width:0}
 .res-title{font-size:12px;font-weight:600;color:#e8e4ff;margin-bottom:2px}
-.res-desc{font-size:10px;font-weight:300;color:rgba(232,228,255,.26);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.res-desc{font-size:10px;font-weight:300;color:rgba(232,228,255,.28);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .res-tag{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:20px;flex-shrink:0;margin-right:3px}
-.res-tag.t{background:rgba(155,127,255,.12);color:#a78bff}
-.res-tag.p{background:rgba(200,100,100,.07);color:rgba(220,120,120,.5)}
-.res-tag.f{background:rgba(100,200,120,.09);color:rgba(120,210,140,.55)}
-.res-arrow{color:rgba(232,228,255,.15);flex-shrink:0;font-size:12px;transition:transform .18s,color .18s}
-.res-card:hover .res-arrow{transform:translateX(3px);color:rgba(155,127,255,.45)}
+.res-tag.t{background:rgba(167,139,255,.12);color:#a78bff}
+.res-tag.p{background:rgba(200,100,100,.08);color:rgba(220,120,120,.55)}
+.res-tag.f{background:rgba(100,200,120,.09);color:rgba(120,210,140,.6)}
+.res-arrow{color:rgba(232,228,255,.16);flex-shrink:0;font-size:12px;transition:transform .18s,color .18s}
+.res-card:hover .res-arrow{transform:translateX(3px);color:rgba(167,139,255,.5)}
 
 @media(max-width:700px){
   .sidebar{width:46px}
   .nav-item .nav-label,.nav-badge{display:none}
   .nav-item{padding:11px;justify-content:center}
-  .content{padding:14px 12px}
-  .form-row{grid-template-columns:1fr}
-  .form-row.tri{grid-template-columns:1fr 1fr}
+  .content{padding:16px 12px}
+  .shop-grid{grid-template-columns:1fr}
+  .tk-row,.tk-row.three{grid-template-columns:1fr}
+  .roi-output,.price-result{flex-direction:column}
+  .pr-divider{width:100%;height:1px}
+  .roi-output{grid-template-columns:1fr}
   .tb-name,.tb-sep,.tb-logo{display:none}
-  .pipe-stages{overflow-x:auto}
 }
+
 /* ════════════════════════════════
    SHARED ANIMATIONS & UTILS
 ════════════════════════════════ */
@@ -388,7 +434,7 @@ h1 .lit{background:linear-gradient(90deg,#a78bff 0%,#c4b0ff 50%,#a78bff 100%);ba
       <span class="tb-pill"><span class="live-dot"></span>Member</span>
     </div>
     <div class="tb-right">
-      <div style="display:flex;align-items:center;gap:8px">
+      <div style="display:flex;align-items:center;gap:9px">
         <div class="tb-avatar" id="user-av">--</div>
         <span class="tb-name" id="user-nm">--</span>
       </div>
@@ -410,6 +456,11 @@ h1 .lit{background:linear-gradient(90deg,#a78bff 0%,#c4b0ff 50%,#a78bff 100%);ba
         <span class="nav-label">Community</span>
         <span class="nav-badge" id="chat-badge">7</span>
       </button>
+      <div class="nav-sep"></div>
+      <button class="nav-item" onclick="showPanel('shop',this)">
+        <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="nav-label">Get Help</span>
+      </button>
       <button class="nav-item" onclick="showPanel('resources',this)">
         <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         <span class="nav-label">Resources</span>
@@ -423,7 +474,7 @@ h1 .lit{background:linear-gradient(90deg,#a78bff 0%,#c4b0ff 50%,#a78bff 100%);ba
         <div class="sh"><div class="sh-tag">Your journey</div><div class="sh-title">The Full Method</div></div>
         <div class="prog-row">
           <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
-          <span class="prog-label" id="prog-label">1 / 3 modules</span>
+          <span class="prog-label">1 / 3 modules complete</span>
         </div>
         <div class="vplayer" id="vplayer">
           <div class="vp-bar">
@@ -432,21 +483,15 @@ h1 .lit{background:linear-gradient(90deg,#a78bff 0%,#c4b0ff 50%,#a78bff 100%);ba
           </div>
           <div class="vp-screen" id="vp-screen">
             <div class="vp-cover">
-              <div class="vp-pbtn" onclick="loadVid()">
-                <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </div>
+              <div class="vp-pbtn" onclick="loadVid()"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
               <span class="vp-hint">Click to watch</span>
             </div>
           </div>
         </div>
         <div class="modules">
-          <div class="mod" onclick="openVid(0)">
+          <div class="mod card" onclick="openVid(0)" style="border-color:rgba(80,190,110,.18)">
             <div class="mod-inner">
-              <div class="mod-thumb">
-                <div class="mod-ico done">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="rgba(100,200,120,.8)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                </div>
-              </div>
+              <div class="mod-thumb"><div class="mod-ico done"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="rgba(100,210,130,.9)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div></div>
               <div class="mod-info">
                 <div class="mod-num">Module 01</div>
                 <div class="mod-title">The Untapped Market — Why Internal Systems Win</div>
@@ -454,13 +499,9 @@ h1 .lit{background:linear-gradient(90deg,#a78bff 0%,#c4b0ff 50%,#a78bff 100%);ba
               </div>
             </div>
           </div>
-          <div class="mod" onclick="openVid(1)">
+          <div class="mod card" onclick="openVid(1)">
             <div class="mod-inner">
-              <div class="mod-thumb">
-                <div class="mod-ico play">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="#c4b0ff" style="margin-left:2px"><path d="M8 5v14l11-7z"/></svg>
-                </div>
-              </div>
+              <div class="mod-thumb"><div class="mod-ico play"><svg width="11" height="11" viewBox="0 0 24 24" fill="#c4b0ff" style="margin-left:2px"><path d="M8 5v14l11-7z"/></svg></div></div>
               <div class="mod-info">
                 <div class="mod-num">Module 02</div>
                 <div class="mod-title">Build — From Discovery to Delivery in Under 2 Weeks</div>
@@ -468,13 +509,9 @@ h1 .lit{background:linear-gradient(90deg,#a78bff 0%,#c4b0ff 50%,#a78bff 100%);ba
               </div>
             </div>
           </div>
-          <div class="mod locked">
+          <div class="mod card locked">
             <div class="mod-inner">
-              <div class="mod-thumb">
-                <div class="mod-ico lock">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="rgba(232,228,255,.25)"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                </div>
-              </div>
+              <div class="mod-thumb"><div class="mod-ico lock"><svg width="11" height="13" viewBox="0 0 24 24" fill="rgba(232,228,255,.25)"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></div></div>
               <div class="mod-info">
                 <div class="mod-num">Module 03</div>
                 <div class="mod-title">Close — Scripts, Pricing Frameworks & Getting Paid</div>
@@ -484,10 +521,7 @@ h1 .lit{background:linear-gradient(90deg,#a78bff 0%,#c4b0ff 50%,#a78bff 100%);ba
           </div>
         </div>
         <div class="resume-card">
-          <div>
-            <div class="resume-label">Continue where you left off</div>
-            <div class="resume-title">Module 02 — Build Fast & Deliver</div>
-          </div>
+          <div><div class="resume-label">Continue where you left off</div><div class="resume-title">Module 02 — Build Fast & Deliver</div></div>
           <button class="resume-btn" onclick="openVid(1)">Resume</button>
         </div>
       </div>
@@ -496,272 +530,353 @@ h1 .lit{background:linear-gradient(90deg,#a78bff 0%,#c4b0ff 50%,#a78bff 100%);ba
       <div class="panel" id="panel-toolkit">
         <div class="sh"><div class="sh-tag">Your unfair advantage</div><div class="sh-title">Toolkit</div></div>
 
-        <!-- SCRIPTS GENERATOR -->
+        <!-- ROI CALCULATOR -->
         <div class="tk-block">
           <div class="tk-block-head">
-            <div>
-              <div class="tk-block-title">Cold Email Generator</div>
-              <div class="tk-block-sub">Enter a company and their likely pain point — get a ready-to-send email</div>
+            <div><div class="tk-block-title">Client ROI Calculator</div><div class="tk-block-sub">Show your client exactly how much their manual process costs them — on the call, in real time</div></div>
+          </div>
+          <div class="tk-form">
+            <div class="tk-row three">
+              <div class="tkf"><label class="tkf-label">Employees doing this task</label><input class="tkf-input" id="roi-emp" type="number" placeholder="4" oninput="calcROI()"></div>
+              <div class="tkf"><label class="tkf-label">Hours per employee per week</label><input class="tkf-input" id="roi-hrs" type="number" placeholder="6" oninput="calcROI()"></div>
+              <div class="tkf"><label class="tkf-label">Average hourly cost ($)</label><input class="tkf-input" id="roi-rate" type="number" placeholder="35" oninput="calcROI()"></div>
             </div>
+            <div class="tk-row">
+              <div class="tkf"><label class="tkf-label">Time saved by system (%)</label><input class="tkf-input" id="roi-saved" type="number" placeholder="80" oninput="calcROI()"></div>
+              <div class="tkf"><label class="tkf-label">Your project price ($)</label><input class="tkf-input" id="roi-price" type="number" placeholder="8000" oninput="calcROI()"></div>
+            </div>
+          </div>
+          <div class="roi-output">
+            <div class="roi-col"><div class="roi-label">Annual waste</div><div class="roi-val" id="roi-annual">—</div><div class="roi-sub">currently lost per year</div></div>
+            <div class="roi-col"><div class="roi-label">Annual savings</div><div class="roi-val green" id="roi-savings">—</div><div class="roi-sub">after your system</div></div>
+            <div class="roi-col"><div class="roi-label">Payback period</div><div class="roi-val accent" id="roi-payback">—</div><div class="roi-sub">until fully paid off</div></div>
+          </div>
+        </div>
+
+        <!-- COLD EMAIL GENERATOR -->
+        <div class="tk-block">
+          <div class="tk-block-head">
+            <div><div class="tk-block-title">Cold Email Generator</div><div class="tk-block-sub">Fill in the details — get a personalised, ready-to-send email</div></div>
           </div>
           <div class="tk-form">
             <div class="tk-row">
               <div class="tkf"><label class="tkf-label">Company name</label><input class="tkf-input" id="ce-company" placeholder="Acme Manufacturing"></div>
-              <div class="tkf"><label class="tkf-label">Industry</label><input class="tkf-input" id="ce-industry" placeholder="Manufacturing, logistics, retail..."></div>
+              <div class="tkf"><label class="tkf-label">Industry</label><input class="tkf-input" id="ce-industry" placeholder="Manufacturing, logistics..."></div>
             </div>
-            <div class="tk-row">
-              <div class="tkf" style="grid-column:1/-1"><label class="tkf-label">Their pain point (what they probably do manually right now)</label><input class="tkf-input" id="ce-pain" placeholder="Tracking employee onboarding in Excel, manual inventory counts every week..."></div>
+            <div class="tk-row full">
+              <div class="tkf"><label class="tkf-label">Their likely pain point (what they do manually)</label><input class="tkf-input" id="ce-pain" placeholder="Employee onboarding tracked in Excel across 3 departments..."></div>
             </div>
             <button class="tk-btn" onclick="generateEmail()">Generate email</button>
           </div>
           <div class="tk-output" id="ce-output" style="display:none">
-            <div class="tk-output-label">Generated email — edit before sending</div>
+            <div class="tk-output-label">Ready to send — edit before using</div>
             <textarea class="tk-ta" id="ce-result" rows="12"></textarea>
             <button class="tk-copy-btn" onclick="copyText('ce-result')">Copy to clipboard</button>
           </div>
         </div>
 
-        <!-- PRICING CALCULATOR -->
+        <!-- FOLLOW-UP SCRIPTS -->
         <div class="tk-block">
           <div class="tk-block-head">
-            <div>
-              <div class="tk-block-title">Deal Value Calculator</div>
-              <div class="tk-block-sub">Estimate what to charge based on the client's situation</div>
-            </div>
+            <div><div class="tk-block-title">Follow-Up Scripts</div><div class="tk-block-sub">Most deals close on the 3rd to 5th touch. Use these after your first email.</div></div>
           </div>
-          <div class="tk-form">
-            <div class="tk-row three">
-              <div class="tkf">
-                <label class="tkf-label">Company size</label>
-                <select class="tkf-sel" id="pc-size" onchange="calcPrice()">
-                  <option value="small">Small (under 50 employees)</option>
-                  <option value="mid">Mid (50–200 employees)</option>
-                  <option value="large">Large (200+ employees)</option>
-                </select>
-              </div>
-              <div class="tkf">
-                <label class="tkf-label">System complexity</label>
-                <select class="tkf-sel" id="pc-complexity" onchange="calcPrice()">
-                  <option value="simple">Simple (1 database, basic automations)</option>
-                  <option value="medium">Medium (multiple tables, workflows)</option>
-                  <option value="complex">Complex (integrations, custom logic)</option>
-                </select>
-              </div>
-              <div class="tkf">
-                <label class="tkf-label">Number of users</label>
-                <select class="tkf-sel" id="pc-users" onchange="calcPrice()">
-                  <option value="few">1–5 users</option>
-                  <option value="some">6–20 users</option>
-                  <option value="many">21+ users</option>
-                </select>
-              </div>
-            </div>
-            <div class="tk-row three">
-              <div class="tkf">
-                <label class="tkf-label">Timeline pressure</label>
-                <select class="tkf-sel" id="pc-urgency" onchange="calcPrice()">
-                  <option value="normal">Normal (3–4 weeks)</option>
-                  <option value="rushed">Rushed (under 2 weeks)</option>
-                  <option value="asap">ASAP (under 1 week)</option>
-                </select>
-              </div>
-              <div class="tkf">
-                <label class="tkf-label">Includes training</label>
-                <select class="tkf-sel" id="pc-training" onchange="calcPrice()">
-                  <option value="no">No</option>
-                  <option value="yes">Yes</option>
-                </select>
-              </div>
-              <div class="tkf">
-                <label class="tkf-label">Ongoing maintenance</label>
-                <select class="tkf-sel" id="pc-retainer" onchange="calcPrice()">
-                  <option value="no">No</option>
-                  <option value="yes">Yes — monthly retainer</option>
-                </select>
-              </div>
-            </div>
+          <div class="followup-tabs">
+            <button class="ftab active" onclick="switchTab(this,'fu-d3')">Day 3</button>
+            <button class="ftab" onclick="switchTab(this,'fu-d7')">Day 7</button>
+            <button class="ftab" onclick="switchTab(this,'fu-d14')">Day 14</button>
+            <button class="ftab" onclick="switchTab(this,'fu-ghost')">No reply</button>
           </div>
-          <div class="price-result" id="price-result">
-            <div class="pr-col">
-              <div class="pr-label">Recommended range</div>
-              <div class="pr-val" id="pr-range">$3,500 — $6,000</div>
-            </div>
-            <div class="pr-divider"></div>
-            <div class="pr-col">
-              <div class="pr-label">Ideal quote</div>
-              <div class="pr-val accent" id="pr-ideal">$5,000</div>
-            </div>
-            <div class="pr-divider"></div>
-            <div class="pr-col">
-              <div class="pr-label">Monthly retainer</div>
-              <div class="pr-val" id="pr-retainer">—</div>
-            </div>
+          <div class="followup-content active" id="fu-d3">
+            <textarea class="tk-ta" rows="8" readonly>Subject: Re: Quick question about [Company]'s [process]
+
+Hi [First name],
+
+Just following up on my note from a few days ago — wanted to make sure it didn't get buried.
+
+I work with [industry] companies to automate the internal processes that eat up their team's time. If [process] is something your team is still handling manually, I'd love to show you what a system could look like.
+
+Would a 20-minute call this week work for you?
+
+[Your name]</textarea>
+            <button class="tk-copy-btn" onclick="copyTA(this)">Copy</button>
+          </div>
+          <div class="followup-content" id="fu-d7">
+            <textarea class="tk-ta" rows="9" readonly>Subject: One thing I noticed about [Company]
+
+Hi [First name],
+
+I did a bit of research on [Company] before reaching out. A lot of businesses in [industry] are losing 8–12 hours per week on [process] — and most don't realise how much that adds up to until someone puts a number on it.
+
+For a team of [X], that's typically $30–50K in lost productivity per year.
+
+I'd be happy to run the numbers for your situation on a quick call — no pitch, just the math. Interested?
+
+[Your name]</textarea>
+            <button class="tk-copy-btn" onclick="copyTA(this)">Copy</button>
+          </div>
+          <div class="followup-content" id="fu-d14">
+            <textarea class="tk-ta" rows="8" readonly>Subject: Last one from me
+
+Hi [First name],
+
+I've reached out a couple of times — I don't want to keep bothering you if the timing isn't right.
+
+If [process] is something you'd like to revisit later, just reply and I'll follow up when it makes sense. Otherwise, I'll leave you alone.
+
+Either way, happy to help if you ever need it.
+
+[Your name]</textarea>
+            <button class="tk-copy-btn" onclick="copyTA(this)">Copy</button>
+          </div>
+          <div class="followup-content" id="fu-ghost">
+            <textarea class="tk-ta" rows="7" readonly>Subject: Still worth a look?
+
+Hi [First name],
+
+I know things get busy. I'll keep this short:
+
+I build internal systems for [industry] companies that eliminate manual work. If [process] is still something your team is dealing with, I have 30 minutes free this week.
+
+Worth a call?
+
+[Your name]</textarea>
+            <button class="tk-copy-btn" onclick="copyTA(this)">Copy</button>
           </div>
         </div>
 
-        <!-- DISCOVERY QUESTIONS -->
+        <!-- PRICE CALC -->
         <div class="tk-block">
           <div class="tk-block-head">
-            <div>
-              <div class="tk-block-title">Discovery Call Framework</div>
-              <div class="tk-block-sub">Questions to ask in order — copy to your notes before every call</div>
-            </div>
-            <button class="tk-copy-btn-sm" onclick="copyDiscovery()">Copy all</button>
+            <div><div class="tk-block-title">Deal Value Calculator</div><div class="tk-block-sub">Estimate what to quote based on the client's situation</div></div>
           </div>
-          <div class="discovery-grid" id="discovery-grid">
-            <div class="dq-phase">
-              <div class="dq-phase-label">Phase 1 — Understand the current state</div>
-              <div class="dq-list">
-                <div class="dq-item"><div class="dq-num">01</div><div class="dq-text">Walk me through how your team handles [process] today, step by step.</div></div>
-                <div class="dq-item"><div class="dq-num">02</div><div class="dq-text">How many people touch this process every week, and how much time does it take them?</div></div>
-                <div class="dq-item"><div class="dq-num">03</div><div class="dq-text">What tools are you using right now — Excel, email, paper? What's broken about it?</div></div>
-                <div class="dq-item"><div class="dq-num">04</div><div class="dq-text">What happens when something falls through the cracks? Can you give me an example?</div></div>
+          <div class="tk-form">
+            <div class="tk-row three">
+              <div class="tkf"><label class="tkf-label">Company size</label>
+                <select class="tkf-sel" id="pc-size" onchange="calcPrice()">
+                  <option value="small">Small — under 50</option>
+                  <option value="mid">Mid — 50 to 200</option>
+                  <option value="large">Large — 200+</option>
+                </select>
+              </div>
+              <div class="tkf"><label class="tkf-label">System complexity</label>
+                <select class="tkf-sel" id="pc-complexity" onchange="calcPrice()">
+                  <option value="simple">Simple — 1 database</option>
+                  <option value="medium">Medium — multi-table</option>
+                  <option value="complex">Complex — integrations</option>
+                </select>
+              </div>
+              <div class="tkf"><label class="tkf-label">Urgency</label>
+                <select class="tkf-sel" id="pc-urgency" onchange="calcPrice()">
+                  <option value="normal">Normal — 3 to 4 weeks</option>
+                  <option value="rushed">Rushed — under 2 weeks</option>
+                  <option value="asap">ASAP — under 1 week</option>
+                </select>
               </div>
             </div>
-            <div class="dq-phase">
-              <div class="dq-phase-label">Phase 2 — Quantify the pain</div>
+            <div class="tk-row">
+              <div class="tkf"><label class="tkf-label">Training included</label>
+                <select class="tkf-sel" id="pc-training" onchange="calcPrice()"><option value="no">No</option><option value="yes">Yes</option></select>
+              </div>
+              <div class="tkf"><label class="tkf-label">Monthly retainer</label>
+                <select class="tkf-sel" id="pc-retainer" onchange="calcPrice()"><option value="no">No</option><option value="yes">Yes</option></select>
+              </div>
+            </div>
+          </div>
+          <div class="price-result">
+            <div class="pr-col"><div class="pr-label">Range</div><div class="pr-val" id="pr-range">—</div></div>
+            <div class="pr-divider"></div>
+            <div class="pr-col"><div class="pr-label">Ideal quote</div><div class="pr-val accent" id="pr-ideal">—</div></div>
+            <div class="pr-divider"></div>
+            <div class="pr-col"><div class="pr-label">Retainer /mo</div><div class="pr-val green" id="pr-retainer">—</div></div>
+          </div>
+        </div>
+
+        <!-- DISCOVERY -->
+        <div class="tk-block">
+          <div class="tk-block-head">
+            <div><div class="tk-block-title">Discovery Call Framework</div><div class="tk-block-sub">12 questions in order — copy to your notes before every call</div></div>
+            <button class="tk-copy-btn-sm" onclick="copyDiscovery()">Copy all</button>
+          </div>
+          <div class="discovery-grid">
+            <div><div class="dq-phase-label">Phase 1 — Understand the current state</div>
+              <div class="dq-list">
+                <div class="dq-item"><div class="dq-num">01</div><div class="dq-text">Walk me through how your team handles [process] today, step by step.</div></div>
+                <div class="dq-item"><div class="dq-num">02</div><div class="dq-text">How many people touch this process each week, and how much time does it take them?</div></div>
+                <div class="dq-item"><div class="dq-num">03</div><div class="dq-text">What tools are you using right now — Excel, email, paper? What's broken about it?</div></div>
+                <div class="dq-item"><div class="dq-num">04</div><div class="dq-text">What happens when something falls through the cracks? Can you give me a recent example?</div></div>
+              </div>
+            </div>
+            <div><div class="dq-phase-label">Phase 2 — Quantify the pain</div>
               <div class="dq-list">
                 <div class="dq-item"><div class="dq-num">05</div><div class="dq-text">If I could eliminate this problem entirely, what would that free up for your team?</div></div>
                 <div class="dq-item"><div class="dq-num">06</div><div class="dq-text">Has this caused a mistake that cost you money or a client? What was that worth?</div></div>
-                <div class="dq-item"><div class="dq-num">07</div><div class="dq-text">Have you tried to fix this before? What happened?</div></div>
+                <div class="dq-item"><div class="dq-num">07</div><div class="dq-text">Have you tried to fix this before internally? What happened?</div></div>
               </div>
             </div>
-            <div class="dq-phase">
-              <div class="dq-phase-label">Phase 3 — Qualify budget and timeline</div>
+            <div><div class="dq-phase-label">Phase 3 — Qualify budget and decision</div>
               <div class="dq-list">
-                <div class="dq-item"><div class="dq-num">08</div><div class="dq-text">Is solving this a priority this quarter, or is it more of a nice-to-have for later?</div></div>
+                <div class="dq-item"><div class="dq-num">08</div><div class="dq-text">Is solving this a priority this quarter, or is it more of a nice-to-have?</div></div>
                 <div class="dq-item"><div class="dq-num">09</div><div class="dq-text">Have you budgeted for this kind of project? Roughly what range were you thinking?</div></div>
                 <div class="dq-item"><div class="dq-num">10</div><div class="dq-text">Who else needs to be involved in the decision — is it just you?</div></div>
               </div>
             </div>
-            <div class="dq-phase">
-              <div class="dq-phase-label">Phase 4 — Close the call</div>
+            <div><div class="dq-phase-label">Phase 4 — Close the call</div>
               <div class="dq-list">
                 <div class="dq-item"><div class="dq-num">11</div><div class="dq-text">Based on what you've told me, I think I can build exactly what you need. Would it make sense for me to send you a proposal this week?</div></div>
-                <div class="dq-item"><div class="dq-num">12</div><div class="dq-text">If the proposal looks good, what would the next step look like on your end?</div></div>
+                <div class="dq-item"><div class="dq-num">12</div><div class="dq-text">If the proposal looks good, what would next steps look like on your end?</div></div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- OBJECTION HANDLER -->
+        <!-- OBJECTIONS -->
         <div class="tk-block">
           <div class="tk-block-head">
-            <div>
-              <div class="tk-block-title">Objection Responses</div>
-              <div class="tk-block-sub">Click an objection to see exactly what to say</div>
-            </div>
+            <div><div class="tk-block-title">Objection Responses</div><div class="tk-block-sub">Click an objection to see what to say — word for word</div></div>
           </div>
           <div class="obj-list">
-            <div class="obj-item" onclick="toggleObj(this)">
-              <div class="obj-q">
-                <span class="obj-q-text">"It's too expensive."</span>
-                <svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-              <div class="obj-a">I understand — price is always a consideration. Let me ask: if this system saves your team 10 hours per week, what's that worth over the next year? Most clients find the system pays for itself within 2–3 months. Would it help if I showed you how I arrived at this number?</div>
-            </div>
-            <div class="obj-item" onclick="toggleObj(this)">
-              <div class="obj-q">
-                <span class="obj-q-text">"We'll build it internally."</span>
-                <svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-              <div class="obj-a">Absolutely — and many companies try that. The challenge is that internal teams are usually pulled between this project and their actual job. I can deliver a working system in under two weeks. What's a realistic timeline if your team takes it on themselves?</div>
-            </div>
-            <div class="obj-item" onclick="toggleObj(this)">
-              <div class="obj-q">
-                <span class="obj-q-text">"Not the right time."</span>
-                <svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-              <div class="obj-a">I hear that a lot. Can I ask — what needs to happen for this to become a priority? If it's a Q3 budget issue, I can hold a proposal and follow up then. I'd rather work with your timeline than push for something that doesn't fit.</div>
-            </div>
-            <div class="obj-item" onclick="toggleObj(this)">
-              <div class="obj-q">
-                <span class="obj-q-text">"Can you do it for cheaper?"</span>
-                <svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-              <div class="obj-a">I can look at reducing scope — for example, we could phase the project and start with the core module only. That said, I'd rather not cut corners on something your team will use every day. What part of the system is most critical to you?</div>
-            </div>
-            <div class="obj-item" onclick="toggleObj(this)">
-              <div class="obj-q">
-                <span class="obj-q-text">"We already have software for that."</span>
-                <svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-              <div class="obj-a">Good to know — what are you using? The issue with most generic software is that it's built for everyone, which means it fits no one perfectly. What I build is designed specifically around your workflow. Is your current tool covering everything you need, or are there still gaps?</div>
-            </div>
-            <div class="obj-item" onclick="toggleObj(this)">
-              <div class="obj-q">
-                <span class="obj-q-text">"Send me some information and I'll look at it."</span>
-                <svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-              <div class="obj-a">Of course. Before I send anything — is there a specific part you want me to focus on, or a concern I haven't addressed yet? I want to make sure what I send is actually useful, not just a generic deck. And when should I follow up after you've had a chance to read it?</div>
-            </div>
+            <div class="obj-item" onclick="toggleObj(this)"><div class="obj-q"><span class="obj-q-text">"It's too expensive."</span><svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="obj-a">I understand — price is always a consideration. Let me ask: if this system saves your team 10 hours a week, what's that worth over a year? Most clients find the system pays for itself within 2–3 months. Would it help if I showed you how I arrived at this number?</div></div>
+            <div class="obj-item" onclick="toggleObj(this)"><div class="obj-q"><span class="obj-q-text">"We'll build it internally."</span><svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="obj-a">Absolutely — and many companies try that. The challenge is that internal teams are usually pulled between this project and their actual job. I can deliver a working system in under two weeks. What's a realistic timeline if your team takes it on themselves?</div></div>
+            <div class="obj-item" onclick="toggleObj(this)"><div class="obj-q"><span class="obj-q-text">"Not the right time."</span><svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="obj-a">I hear that a lot. Can I ask — what needs to happen for this to become a priority? If it's a Q3 budget issue, I can hold a proposal and follow up then. I'd rather work with your timeline than push for something that doesn't fit.</div></div>
+            <div class="obj-item" onclick="toggleObj(this)"><div class="obj-q"><span class="obj-q-text">"Can you do it for cheaper?"</span><svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="obj-a">I can look at reducing scope — we could phase the project and start with the core module only. That said, I'd rather not cut corners on something your team will use every day. What part of the system is most critical to you right now?</div></div>
+            <div class="obj-item" onclick="toggleObj(this)"><div class="obj-q"><span class="obj-q-text">"We already have software for that."</span><svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="obj-a">Good to know — what are you using? Generic software is built for everyone, which means it fits no one perfectly. What I build is designed around your exact workflow. Is your current tool covering everything, or are there still gaps?</div></div>
+            <div class="obj-item" onclick="toggleObj(this)"><div class="obj-q"><span class="obj-q-text">"Send me some information."</span><svg class="obj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="obj-a">Of course. Before I send anything — is there a specific concern I haven't addressed yet? I want to make sure what I send is useful, not generic. And when should I follow up after you've had a chance to read it?</div></div>
           </div>
         </div>
-
       </div>
 
       <!-- CHAT -->
       <div class="panel" id="panel-chat">
         <div class="sh"><div class="sh-tag">Community</div><div class="sh-title">Member Chat</div></div>
         <div class="chat-wrap">
-          <div class="online-bar">
-            <span class="online-dot"></span>
-            <span class="online-txt">Live</span>
-            <span class="online-n" id="online-n">8 members online</span>
-          </div>
+          <div class="online-bar"><span class="online-dot"></span><span class="online-txt">Live</span><span class="online-n" id="online-n">8 members online</span></div>
           <div class="msgs" id="msgs"></div>
           <div class="chat-input-row">
             <textarea class="chat-ta" id="chat-ta" placeholder="Message the group..." rows="1"></textarea>
-            <button class="send-btn" onclick="sendMsg()">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="#06050f"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
-            </button>
+            <button class="send-btn" onclick="sendMsg()"><svg width="14" height="14" viewBox="0 0 24 24" fill="#06050f"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></button>
           </div>
         </div>
+      </div>
+
+      <!-- SHOP -->
+      <div class="panel" id="panel-shop">
+        <div class="sh"><div class="sh-tag">Go further</div><div class="sh-title">Get Help</div></div>
+        <p class="shop-intro">If you're stuck, want to move faster, or just want an expert eye on your work — these are direct ways to work with us beyond the course.</p>
+        <div class="shop-grid">
+
+          <div class="shop-card" onclick="bookItem('30min-call')">
+            <span class="sc-badge quick">Quick win</span>
+            <div class="sc-price">$100<span> CAD</span></div>
+            <div class="sc-title">30-Minute Strategy Call</div>
+            <div class="sc-desc">Stuck on pricing, a prospect, or how to scope a project? Jump on a call and get direct answers in 30 minutes.</div>
+            <div class="sc-includes">
+              <div class="sc-include">Recorded and sent to you after</div>
+              <div class="sc-include">Bring any question — sales, tech, pricing</div>
+              <div class="sc-include">Book within 48 hours</div>
+            </div>
+            <button class="sc-btn secondary">Book a call</button>
+          </div>
+
+          <div class="shop-card featured" onclick="bookItem('system-audit')">
+            <span class="sc-badge popular">Most popular</span>
+            <div class="sc-price">$250<span> CAD</span></div>
+            <div class="sc-title">System Audit & Debug</div>
+            <div class="sc-desc">Send us your system and we'll find what's broken, what's missing, and what to fix first. Written report delivered in 48 hours.</div>
+            <div class="sc-includes">
+              <div class="sc-include">Detailed written audit of your build</div>
+              <div class="sc-include">Specific fixes with step-by-step instructions</div>
+              <div class="sc-include">Works with Airtable, Notion, Make.com</div>
+              <div class="sc-include">48-hour turnaround guaranteed</div>
+            </div>
+            <button class="sc-btn primary">Get an audit</button>
+          </div>
+
+          <div class="shop-card" onclick="bookItem('done-for-you')">
+            <span class="sc-badge new">Full service</span>
+            <div class="sc-price">$500<span> CAD</span></div>
+            <div class="sc-title">We Build It For You</div>
+            <div class="sc-desc">Not ready to build yourself? Send us your client's requirements and we build the full system for you — delivered in 10 business days.</div>
+            <div class="sc-includes">
+              <div class="sc-include">Full system built to your client's specs</div>
+              <div class="sc-include">Handoff documentation included</div>
+              <div class="sc-include">You deliver it under your name</div>
+              <div class="sc-include">One round of revisions included</div>
+            </div>
+            <button class="sc-btn secondary">Get it built</button>
+          </div>
+
+          <div class="shop-card" onclick="bookItem('proposal-review')">
+            <span class="sc-badge quick">Fast</span>
+            <div class="sc-price">$75<span> CAD</span></div>
+            <div class="sc-title">Proposal Review</div>
+            <div class="sc-desc">Send your proposal before it goes to the client. We'll review the pricing, framing, and language — and tell you exactly what to change.</div>
+            <div class="sc-includes">
+              <div class="sc-include">Line-by-line written feedback</div>
+              <div class="sc-include">Delivered within 24 hours</div>
+              <div class="sc-include">Works on any proposal format</div>
+            </div>
+            <button class="sc-btn secondary">Submit a proposal</button>
+          </div>
+
+          <div class="shop-card" onclick="bookItem('monthly-mentor')">
+            <span class="sc-badge popular">Ongoing</span>
+            <div class="sc-price">$200<span>/mo</span></div>
+            <div class="sc-title">Monthly Mentorship</div>
+            <div class="sc-desc">One 45-minute call per month, unlimited async questions by email, and priority access to new resources. Cancel anytime.</div>
+            <div class="sc-includes">
+              <div class="sc-include">1 x 45-min call per month</div>
+              <div class="sc-include">Unlimited email Q&A between calls</div>
+              <div class="sc-include">Early access to new templates</div>
+              <div class="sc-include">No commitment — cancel anytime</div>
+            </div>
+            <button class="sc-btn secondary">Start mentorship</button>
+          </div>
+
+          <div class="shop-card" onclick="bookItem('cold-email-review')">
+            <span class="sc-badge quick">Fast</span>
+            <div class="sc-price">$50<span> CAD</span></div>
+            <div class="sc-title">Cold Email Review</div>
+            <div class="sc-desc">Write your cold email and we'll tell you why it's not getting replies — and rewrite the subject line and opening for you.</div>
+            <div class="sc-includes">
+              <div class="sc-include">Rewritten subject line and opener</div>
+              <div class="sc-include">Feedback on tone, length and CTA</div>
+              <div class="sc-include">Delivered within 24 hours</div>
+            </div>
+            <button class="sc-btn secondary">Submit your email</button>
+          </div>
+
+        </div>
+        <div class="shop-note">All services are delivered directly by the course instructor — not outsourced</div>
       </div>
 
       <!-- RESOURCES -->
       <div class="panel" id="panel-resources">
         <div class="sh"><div class="sh-tag">Knowledge base</div><div class="sh-title">Resources</div></div>
-        <div class="res-section">
-          <div class="res-sec-title">Prospecting & outreach</div>
-          <div class="res-list">
-            <a class="res-card" href="#" onclick="return false"><div class="res-bar y"></div><div class="res-info"><div class="res-title">Cold Email Scripts (5 templates)</div><div class="res-desc">Subject lines and body copy proven to book discovery calls with ops managers and CTOs</div></div><span class="res-tag p">PDF</span><span class="res-arrow">&#8594;</span></a>
-            <a class="res-card" href="#" onclick="return false"><div class="res-bar y"></div><div class="res-info"><div class="res-title">LinkedIn Outreach Sequence</div><div class="res-desc">3-message sequence — connection request, pain-point follow-up, value drop. Gets replies.</div></div><span class="res-tag t">Template</span><span class="res-arrow">&#8594;</span></a>
-            <a class="res-card" href="#" onclick="return false"><div class="res-bar y"></div><div class="res-info"><div class="res-title">Target Industry List</div><div class="res-desc">12 industries with highest demand — manufacturing, logistics, construction, professional services</div></div><span class="res-tag f">Guide</span><span class="res-arrow">&#8594;</span></a>
-          </div>
-        </div>
-        <div class="res-section">
-          <div class="res-sec-title">Discovery & scoping</div>
-          <div class="res-list">
-            <a class="res-card" href="#" onclick="return false"><div class="res-bar b"></div><div class="res-info"><div class="res-title">Discovery Call Script — 30-Minute Framework</div><div class="res-desc">Questions to uncover pain, budget, and timeline. Includes objection handling for "we'll do it internally"</div></div><span class="res-tag t">Template</span><span class="res-arrow">&#8594;</span></a>
-            <a class="res-card" href="#" onclick="return false"><div class="res-bar b"></div><div class="res-info"><div class="res-title">Client Intake Form (Notion)</div><div class="res-desc">Capture current workflow, pain points, data sources, and success criteria before you scope anything</div></div><span class="res-tag t">Template</span><span class="res-arrow">&#8594;</span></a>
-            <a class="res-card" href="#" onclick="return false"><div class="res-bar b"></div><div class="res-info"><div class="res-title">Scope of Work Template</div><div class="res-desc">Define deliverables, exclusions, revision rounds, and timeline clearly — prevents scope creep</div></div><span class="res-tag p">PDF</span><span class="res-arrow">&#8594;</span></a>
-          </div>
-        </div>
-        <div class="res-section">
-          <div class="res-sec-title">Pricing & proposals</div>
-          <div class="res-list">
-            <a class="res-card" href="#" onclick="return false"><div class="res-bar p"></div><div class="res-info"><div class="res-title">Pricing Framework — Quote $5K to $30K with Confidence</div><div class="res-desc">Value-based pricing formula, tiered options structure, and why hourly kills your income</div></div><span class="res-tag p">PDF</span><span class="res-arrow">&#8594;</span></a>
-            <a class="res-card" href="#" onclick="return false"><div class="res-bar p"></div><div class="res-info"><div class="res-title">Proposal Template (Google Docs)</div><div class="res-desc">4-page structure: problem, solution, investment, timeline. Designed to get signed, not just read.</div></div><span class="res-tag t">Template</span><span class="res-arrow">&#8594;</span></a>
-            <a class="res-card" href="#" onclick="return false"><div class="res-bar p"></div><div class="res-info"><div class="res-title">Objection Handling — 9 Real Scenarios</div><div class="res-desc">"Too expensive", "We'll build it in-house", "Let us think about it" — exact word-for-word responses</div></div><span class="res-tag p">PDF</span><span class="res-arrow">&#8594;</span></a>
-          </div>
-        </div>
-        <div class="res-section">
-          <div class="res-sec-title">Building the system</div>
-          <div class="res-list">
-            <a class="res-card" href="#" onclick="return false"><div class="res-bar g"></div><div class="res-info"><div class="res-title">No-Code Stack Setup — Airtable + Make + Notion</div><div class="res-desc">Step-by-step installation and configuration of the exact stack that powers 90% of internal systems</div></div><span class="res-tag f">Guide</span><span class="res-arrow">&#8594;</span></a>
-            <a class="res-card" href="#" onclick="return false"><div class="res-bar g"></div><div class="res-info"><div class="res-title">10 System Blueprints — Clone and Customize</div><div class="res-desc">HR onboarding, inventory tracker, client reporting, expense approval, employee scheduling — ready to deploy</div></div><span class="res-tag t">Templates</span><span class="res-arrow">&#8594;</span></a>
-            <a class="res-card" href="#" onclick="return false"><div class="res-bar g"></div><div class="res-info"><div class="res-title">Automation Recipes — Make.com (15 flows)</div><div class="res-desc">Email triggers, form-to-database, Slack alerts, approval chains, weekly report generation</div></div><span class="res-tag t">Templates</span><span class="res-arrow">&#8594;</span></a>
-            <a class="res-card" href="#" onclick="return false"><div class="res-bar g"></div><div class="res-info"><div class="res-title">Client Handoff Checklist + Retainer Upsell Script</div><div class="res-desc">What to deliver, how to document and train the team, and how to convert the project into monthly revenue</div></div><span class="res-tag p">PDF</span><span class="res-arrow">&#8594;</span></a>
-          </div>
-        </div>
-        <div class="res-section">
-          <div class="res-sec-title">Legal & admin</div>
-          <div class="res-list">
-            <a class="res-card" href="#" onclick="return false"><div class="res-bar r"></div><div class="res-info"><div class="res-title">Freelance Contract — Bilingual FR / EN</div><div class="res-desc">Covers scope, payment terms, IP ownership, confidentiality, and kill fees. Reviewed by a lawyer.</div></div><span class="res-tag p">PDF</span><span class="res-arrow">&#8594;</span></a>
-            <a class="res-card" href="#" onclick="return false"><div class="res-bar r"></div><div class="res-info"><div class="res-title">Invoice Template — Deposit, Milestone, Final</div><div class="res-desc">Google Docs template with three payment structure versions and automatic total calculation</div></div><span class="res-tag t">Template</span><span class="res-arrow">&#8594;</span></a>
-          </div>
-        </div>
+        <div class="res-section"><div class="res-sec-title">Prospecting & outreach</div><div class="res-list">
+          <a class="res-card" href="#" onclick="return false"><div class="res-bar y"></div><div class="res-info"><div class="res-title">Cold Email Scripts (5 templates)</div><div class="res-desc">Subject lines and body copy proven to book calls with ops managers and CTOs</div></div><span class="res-tag p">PDF</span><span class="res-arrow">&#8594;</span></a>
+          <a class="res-card" href="#" onclick="return false"><div class="res-bar y"></div><div class="res-info"><div class="res-title">LinkedIn Outreach Sequence</div><div class="res-desc">3-message sequence — connection, pain-point follow-up, value drop. Gets replies.</div></div><span class="res-tag t">Template</span><span class="res-arrow">&#8594;</span></a>
+          <a class="res-card" href="#" onclick="return false"><div class="res-bar y"></div><div class="res-info"><div class="res-title">Target Industry List</div><div class="res-desc">12 industries with highest demand — manufacturing, logistics, construction, professional services</div></div><span class="res-tag f">Guide</span><span class="res-arrow">&#8594;</span></a>
+        </div></div>
+        <div class="res-section"><div class="res-sec-title">Discovery & scoping</div><div class="res-list">
+          <a class="res-card" href="#" onclick="return false"><div class="res-bar b"></div><div class="res-info"><div class="res-title">Discovery Call Script — 30-Minute Framework</div><div class="res-desc">Questions to uncover pain, budget, and timeline with objection handling included</div></div><span class="res-tag t">Template</span><span class="res-arrow">&#8594;</span></a>
+          <a class="res-card" href="#" onclick="return false"><div class="res-bar b"></div><div class="res-info"><div class="res-title">Client Intake Form (Notion)</div><div class="res-desc">Capture workflow, pain points, data sources, and success criteria before scoping</div></div><span class="res-tag t">Template</span><span class="res-arrow">&#8594;</span></a>
+          <a class="res-card" href="#" onclick="return false"><div class="res-bar b"></div><div class="res-info"><div class="res-title">Scope of Work Template</div><div class="res-desc">Define deliverables, exclusions, revision rounds and timeline — prevents scope creep</div></div><span class="res-tag p">PDF</span><span class="res-arrow">&#8594;</span></a>
+        </div></div>
+        <div class="res-section"><div class="res-sec-title">Pricing & proposals</div><div class="res-list">
+          <a class="res-card" href="#" onclick="return false"><div class="res-bar p"></div><div class="res-info"><div class="res-title">Pricing Framework — Quote $5K to $30K with Confidence</div><div class="res-desc">Value-based pricing formula, tiered options, and why hourly pricing kills your income</div></div><span class="res-tag p">PDF</span><span class="res-arrow">&#8594;</span></a>
+          <a class="res-card" href="#" onclick="return false"><div class="res-bar p"></div><div class="res-info"><div class="res-title">Proposal Template (Google Docs)</div><div class="res-desc">4-page structure: problem, solution, investment, timeline. Designed to get signed.</div></div><span class="res-tag t">Template</span><span class="res-arrow">&#8594;</span></a>
+          <a class="res-card" href="#" onclick="return false"><div class="res-bar p"></div><div class="res-info"><div class="res-title">Objection Handling — 9 Real Scenarios</div><div class="res-desc">"Too expensive", "We'll build it in-house", "Let us think about it" — word-for-word responses</div></div><span class="res-tag p">PDF</span><span class="res-arrow">&#8594;</span></a>
+        </div></div>
+        <div class="res-section"><div class="res-sec-title">Building the system</div><div class="res-list">
+          <a class="res-card" href="#" onclick="return false"><div class="res-bar g"></div><div class="res-info"><div class="res-title">No-Code Stack Setup — Airtable + Make + Notion</div><div class="res-desc">Step-by-step configuration of the stack that powers 90% of internal systems</div></div><span class="res-tag f">Guide</span><span class="res-arrow">&#8594;</span></a>
+          <a class="res-card" href="#" onclick="return false"><div class="res-bar g"></div><div class="res-info"><div class="res-title">10 System Blueprints — Clone and Customize</div><div class="res-desc">HR onboarding, inventory, expense approval, employee scheduling — ready to deploy</div></div><span class="res-tag t">Templates</span><span class="res-arrow">&#8594;</span></a>
+          <a class="res-card" href="#" onclick="return false"><div class="res-bar g"></div><div class="res-info"><div class="res-title">Automation Recipes — Make.com (15 flows)</div><div class="res-desc">Email triggers, form-to-database, Slack alerts, approval chains, weekly reports</div></div><span class="res-tag t">Templates</span><span class="res-arrow">&#8594;</span></a>
+          <a class="res-card" href="#" onclick="return false"><div class="res-bar g"></div><div class="res-info"><div class="res-title">Client Handoff + Retainer Upsell Script</div><div class="res-desc">How to document, train the client, and convert the project into monthly recurring revenue</div></div><span class="res-tag p">PDF</span><span class="res-arrow">&#8594;</span></a>
+        </div></div>
+        <div class="res-section"><div class="res-sec-title">Legal & admin</div><div class="res-list">
+          <a class="res-card" href="#" onclick="return false"><div class="res-bar r"></div><div class="res-info"><div class="res-title">Freelance Contract — Bilingual FR / EN</div><div class="res-desc">Covers scope, payment, IP ownership, confidentiality and kill fees. Lawyer-reviewed.</div></div><span class="res-tag p">PDF</span><span class="res-arrow">&#8594;</span></a>
+          <a class="res-card" href="#" onclick="return false"><div class="res-bar r"></div><div class="res-info"><div class="res-title">Invoice Template — Deposit, Milestone, Final</div><div class="res-desc">Google Docs with three payment structure versions and automatic totals</div></div><span class="res-tag t">Template</span><span class="res-arrow">&#8594;</span></a>
+        </div></div>
       </div>
 
     </div>
@@ -773,8 +888,7 @@ const USERS = { '123456':'David' };
 let me = null, curVid = null;
 
 // ── DOTS ──
-const cv = document.getElementById('dots');
-const cx = cv.getContext('2d');
+const cv = document.getElementById('dots'), cx = cv.getContext('2d');
 let W, H, pts = [], T = 0;
 function sz() {
   const h = cv.parentElement.parentElement;
@@ -792,7 +906,7 @@ function df() {
     cx.fillStyle = `rgba(167,139,255,${.06 + .05 * Math.abs(Math.sin(p.ph + T * .3))})`; cx.fill();
   });
   for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
-    const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y, d = Math.sqrt(dx*dx + dy*dy);
+    const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y, d = Math.sqrt(dx*dx+dy*dy);
     if (d < 56) { cx.beginPath(); cx.moveTo(pts[i].x, pts[i].y); cx.lineTo(pts[j].x, pts[j].y); cx.strokeStyle = `rgba(140,110,255,${.02*(1-d/56)})`; cx.lineWidth = .5; cx.stroke(); }
   }
   requestAnimationFrame(df);
@@ -813,7 +927,6 @@ function closeLogin() { document.getElementById('login-screen').classList.remove
 
 const digits = document.querySelectorAll('.digit');
 const lBtn = document.getElementById('login-btn');
-
 digits.forEach((d, i) => {
   d.addEventListener('input', e => {
     const v = e.target.value.replace(/\D/g, '');
@@ -823,9 +936,7 @@ digits.forEach((d, i) => {
     lBtn.disabled = getCode().length < 6;
   });
   d.addEventListener('keydown', e => {
-    if (e.key === 'Backspace' && !d.value && i > 0) {
-      digits[i - 1].focus(); digits[i - 1].value = ''; digits[i - 1].classList.remove('filled');
-    }
+    if (e.key === 'Backspace' && !d.value && i > 0) { digits[i-1].focus(); digits[i-1].value = ''; digits[i-1].classList.remove('filled'); }
   });
   d.addEventListener('paste', e => {
     e.preventDefault();
@@ -835,9 +946,7 @@ digits.forEach((d, i) => {
     if (p.length >= 6) digits[5].focus();
   });
 });
-
 function getCode() { return Array.from(digits).map(d => d.value).join(''); }
-
 lBtn.addEventListener('click', () => {
   const code = getCode();
   if (USERS[code]) { me = { code, name: USERS[code] }; doLogin(); }
@@ -847,7 +956,6 @@ lBtn.addEventListener('click', () => {
     setTimeout(() => { document.getElementById('login-error').classList.remove('show'); digits.forEach(d => d.style.borderColor = ''); }, 2500);
   }
 });
-
 function doLogin() {
   const ls = document.getElementById('login-screen');
   ls.style.transition = 'opacity .4s'; ls.style.opacity = '0';
@@ -858,7 +966,6 @@ function doLogin() {
     initPlatform();
   }, 400);
 }
-
 function logout() {
   me = null;
   document.getElementById('platform').classList.remove('show');
@@ -867,7 +974,7 @@ function logout() {
   lBtn.disabled = true;
 }
 
-// ── PLATFORM INIT ──
+// ── INIT ──
 function initPlatform() {
   document.getElementById('user-av').textContent = me.name.slice(0, 2).toUpperCase();
   document.getElementById('user-nm').textContent = me.name;
@@ -898,10 +1005,8 @@ const VIDS = [
   { title: 'Module 03 — Close & Get Paid',     url: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
 ];
 function openVid(i) {
-  if (i === 2) return;
-  curVid = i;
-  const p = document.getElementById('vplayer');
-  p.classList.add('open');
+  if (i === 2) return; curVid = i;
+  const p = document.getElementById('vplayer'); p.classList.add('open');
   document.getElementById('vp-title').textContent = VIDS[i].title;
   document.getElementById('vp-screen').innerHTML = `<div class="vp-cover"><div class="vp-pbtn" onclick="loadVid()"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div><span class="vp-hint">Click to watch</span></div>`;
   p.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -910,20 +1015,16 @@ function loadVid() {
   if (curVid === null) return;
   document.getElementById('vp-screen').innerHTML = `<iframe src="${VIDS[curVid].url}?autoplay=1" allow="autoplay;fullscreen" style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe>`;
 }
-function closeVid() {
-  document.getElementById('vplayer').classList.remove('open');
-  document.getElementById('vp-screen').innerHTML = '';
-  curVid = null;
-}
+function closeVid() { document.getElementById('vplayer').classList.remove('open'); document.getElementById('vp-screen').innerHTML = ''; curVid = null; }
 
 // ── CHAT ──
 const SEED = [
   { name: 'Marc-Antoine', time: '10:42', text: "Closed my first deal — $8,500. Cold email script worked on the third attempt." },
-  { name: 'Sarah K.',     time: '11:05', text: "Congrats. Module 02 was the turning point for me — the discovery call framework is solid." },
-  { name: 'Julien R.',    time: '11:28', text: "For the Airtable setup in the resource guide — free plan or do we need Pro?" },
-  { name: 'Marc-Antoine', time: '11:31', text: "Free handles most clients. Pro only if they need more than 1,200 records per table." },
-  { name: 'Karim B.',     time: '12:14', text: "Anyone targeting manufacturing? Seems very underserved — no one is selling to them." },
-  { name: 'Sarah K.',     time: '12:19', text: "Yes, closed one last month. Pain point is always manual tracking in Excel across departments." },
+  { name: 'Sarah K.',     time: '11:05', text: "Congrats. The discovery call framework from module 02 is what made the difference for me." },
+  { name: 'Julien R.',    time: '11:28', text: "For Airtable — free plan or Pro? The guide isn't clear on that." },
+  { name: 'Marc-Antoine', time: '11:31', text: "Free works for most clients. Pro only if they need more than 1,200 records per table." },
+  { name: 'Karim B.',     time: '12:14', text: "Anyone targeting manufacturing? Seems very underserved — nobody pitching to them." },
+  { name: 'Sarah K.',     time: '12:19', text: "Yes, closed one last month. Pain point is always Excel tracking across departments." },
   { name: 'Emma T.',      time: '13:02', text: "Finished module 02 last night. Starting my first build this weekend." },
 ];
 function initChat() {
@@ -945,22 +1046,35 @@ function sendMsg() {
   ta.value = ''; ta.style.height = 'auto'; c.scrollTop = c.scrollHeight;
 }
 document.getElementById('chat-ta').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); } });
-document.getElementById('chat-ta').addEventListener('input', function () { this.style.height = 'auto'; this.style.height = Math.min(this.scrollHeight, 86) + 'px'; });
+document.getElementById('chat-ta').addEventListener('input', function () { this.style.height = 'auto'; this.style.height = Math.min(this.scrollHeight, 88) + 'px'; });
 
 // ── TOOLKIT ──
+function calcROI() {
+  const emp = parseFloat(document.getElementById('roi-emp').value) || 0;
+  const hrs = parseFloat(document.getElementById('roi-hrs').value) || 0;
+  const rate = parseFloat(document.getElementById('roi-rate').value) || 0;
+  const savedPct = parseFloat(document.getElementById('roi-saved').value) || 80;
+  const price = parseFloat(document.getElementById('roi-price').value) || 0;
+  const annual = Math.round(emp * hrs * rate * 52);
+  const savings = Math.round(annual * savedPct / 100);
+  const payback = savings > 0 ? (price / (savings / 12)).toFixed(1) : null;
+  document.getElementById('roi-annual').textContent = annual ? '$' + annual.toLocaleString() : '—';
+  document.getElementById('roi-savings').textContent = savings ? '$' + savings.toLocaleString() : '—';
+  document.getElementById('roi-payback').textContent = payback ? payback + ' mo' : '—';
+}
+
 function generateEmail() {
   const co = document.getElementById('ce-company').value.trim();
-  const ind = document.getElementById('ce-industry').value.trim();
+  const ind = document.getElementById('ce-industry').value.trim() || 'your industry';
   const pain = document.getElementById('ce-pain').value.trim();
-  if (!co || !pain) { alert('Please fill in the company name and pain point.'); return; }
-  const industry = ind || 'your industry';
+  if (!co || !pain) { alert('Fill in the company name and pain point.'); return; }
   const email = `Subject: Quick question about ${co}'s ${pain.split(' ').slice(0,4).join(' ').toLowerCase()}
 
 Hi [First name],
 
-I work with ${industry} companies to build internal systems that replace the manual processes their teams are stuck with — things like ${pain.toLowerCase()}.
+I work with ${ind} companies to build internal systems that replace the manual processes their teams are stuck with — things like ${pain.toLowerCase()}.
 
-Most of our clients were spending 8–15 hours a week on this before we automated it. After we build the system, that time goes to zero.
+Most clients were spending 8–15 hours a week on this before we automated it. After the system is live, that drops to zero.
 
 I'd love to understand how ${co} handles this today. Would you be open to a 20-minute call this week?
 
@@ -970,49 +1084,54 @@ I'd love to understand how ${co} handles this today. Would you be open to a 20-m
   document.getElementById('ce-output').style.display = 'block';
 }
 
+function switchTab(btn, id) {
+  document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.followup-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
 function calcPrice() {
   const sizeEl = document.getElementById('pc-size'); if (!sizeEl) return;
-  const size = sizeEl.value;
-  const complexity = document.getElementById('pc-complexity').value;
-  const users = document.getElementById('pc-users').value;
-  const urgency = document.getElementById('pc-urgency').value;
-  const training = document.getElementById('pc-training').value;
-  const retainer = document.getElementById('pc-retainer').value;
-  const base = { simple: 3500, medium: 7000, complex: 14000 }[complexity];
-  const sizeM = { small: 1, mid: 1.2, large: 1.5 }[size];
-  const userM = { few: 1, some: 1.15, many: 1.3 }[users];
-  const urgencyM = { normal: 1, rushed: 1.25, asap: 1.5 }[urgency];
-  const trainingAdd = training === 'yes' ? 800 : 0;
+  const base = { simple: 3500, medium: 7000, complex: 14000 }[document.getElementById('pc-complexity').value];
+  const sizeM = { small: 1, mid: 1.2, large: 1.5 }[sizeEl.value];
+  const urgM = { normal: 1, rushed: 1.25, asap: 1.5 }[document.getElementById('pc-urgency').value];
+  const trainAdd = document.getElementById('pc-training').value === 'yes' ? 800 : 0;
+  const ret = document.getElementById('pc-retainer').value === 'yes';
   const low = Math.round(base * sizeM * 0.85 / 500) * 500;
-  const high = Math.round(base * sizeM * userM * urgencyM * 1.1 / 500) * 500;
-  const ideal = Math.round((low + high) / 2 / 250) * 250 + trainingAdd;
-  const monthly = retainer === 'yes' ? Math.round(ideal * 0.08 / 50) * 50 : 0;
+  const high = Math.round(base * sizeM * urgM * 1.1 / 500) * 500;
+  const ideal = Math.round((low + high) / 2 / 250) * 250 + trainAdd;
+  const monthly = ret ? Math.round(ideal * 0.08 / 50) * 50 : 0;
   document.getElementById('pr-range').textContent = '$' + low.toLocaleString() + ' — $' + high.toLocaleString();
   document.getElementById('pr-ideal').textContent = '$' + ideal.toLocaleString();
-  document.getElementById('pr-retainer').textContent = monthly ? '$' + monthly.toLocaleString() + '/mo' : '—';
+  document.getElementById('pr-retainer').textContent = monthly ? '$' + monthly.toLocaleString() : '—';
 }
+document.addEventListener('DOMContentLoaded', calcPrice);
 
 function copyText(id) {
   const el = document.getElementById(id);
   navigator.clipboard.writeText(el.value || el.textContent).then(() => {
-    const btn = el.nextElementSibling;
-    if (btn) { const orig = btn.textContent; btn.textContent = 'Copied'; setTimeout(() => btn.textContent = orig, 1800); }
+    const btn = el.nextElementSibling; if (!btn) return;
+    const orig = btn.textContent; btn.textContent = 'Copied'; setTimeout(() => btn.textContent = orig, 1800);
   });
 }
-
+function copyTA(btn) {
+  const ta = btn.previousElementSibling;
+  navigator.clipboard.writeText(ta.value).then(() => { const orig = btn.textContent; btn.textContent = 'Copied'; setTimeout(() => btn.textContent = orig, 1800); });
+}
 function copyDiscovery() {
-  const lines = Array.from(document.querySelectorAll('.dq-item')).map(el => {
-    const num = el.querySelector('.dq-num').textContent;
-    const txt = el.querySelector('.dq-text').textContent;
-    return num + '. ' + txt;
-  });
+  const lines = Array.from(document.querySelectorAll('.dq-item')).map(el => el.querySelector('.dq-num').textContent + '. ' + el.querySelector('.dq-text').textContent);
   navigator.clipboard.writeText(lines.join('\n')).then(() => {
-    const btn = document.querySelector('.tk-copy-btn-sm');
-    if (btn) { const orig = btn.textContent; btn.textContent = 'Copied'; setTimeout(() => btn.textContent = orig, 1800); }
+    const btn = document.querySelector('.tk-copy-btn-sm'); if (!btn) return;
+    const orig = btn.textContent; btn.textContent = 'Copied'; setTimeout(() => btn.textContent = orig, 1800);
   });
 }
-
 function toggleObj(el) { el.classList.toggle('open'); }
+
+function bookItem(id) {
+  const labels = { '30min-call':'30-Minute Strategy Call — $100','system-audit':'System Audit & Debug — $250','done-for-you':'We Build It For You — $500','proposal-review':'Proposal Review — $75','monthly-mentor':'Monthly Mentorship — $200/mo','cold-email-review':'Cold Email Review — $50' };
+  alert('Booking: ' + (labels[id] || id) + '\n\nReplace this with your payment link (Stripe, Gumroad, Calendly, etc.)');
+}
 </script>
 </body>
 </html>
