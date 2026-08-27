@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Prix du BTC en direct</title>
+<title>Prix du BTC en direct (WebSocket temps réel)</title>
 <style>
   /* ====== Style façon Bitbo : fond sombre, prix orange, indicateur "live" ====== */
   .btc-ticker {
@@ -17,8 +17,13 @@
     box-shadow: 0 2px 10px rgba(0,0,0,.35);
   }
   .btc-ticker__icon { font-size: 28px; line-height: 1; }
-  .btc-ticker__price { font-size: 28px; font-weight: 700; letter-spacing: .5px; }
-  .btc-ticker__change { font-size: 15px; font-weight: 600; }
+  .btc-ticker__price {
+    font-size: 28px; font-weight: 700; letter-spacing: .5px;
+    transition: color .15s ease;
+  }
+  .btc-ticker__price.flash-up   { color: #3fb950 !important; }
+  .btc-ticker__price.flash-down { color: #f85149 !important; }
+  .btc-ticker__change { font-size: 15px; font-weight: 600; margin-left: 8px; }
   .btc-ticker__change.up   { color: #3fb950; }
   .btc-ticker__change.down { color: #f85149; }
   .btc-ticker__live {
@@ -29,6 +34,7 @@
     width: 8px; height: 8px; border-radius: 50%; background: #3fb950;
     animation: pulse 1.6s infinite;
   }
+  .btc-ticker__dot.offline { background: #f85149; animation: none; }
   @keyframes pulse {
     0%   { box-shadow: 0 0 0 0 rgba(63,185,80,.6); }
     70%  { box-shadow: 0 0 0 8px rgba(63,185,80,0); }
@@ -42,79 +48,115 @@
   <div class="btc-ticker" id="btcTicker">
     <span class="btc-ticker__icon">₿</span>
     <div>
-      <div><span class="btc-ticker__price" id="btcPrice">--</span>
-           <span class="btc-ticker__change" id="btcChange"></span></div>
-      <div class="btc-ticker__live"><span class="btc-ticker__dot"></span> Live</div>
+      <div>
+        <span class="btc-ticker__price" id="btcPrice">--</span>
+        <span class="btc-ticker__change" id="btcChange"></span>
+      </div>
+      <div class="btc-ticker__live">
+        <span class="btc-ticker__dot" id="btcDot"></span>
+        <span id="btcStatus">Connexion...</span>
+      </div>
     </div>
   </div>
 
   <script>
   (function () {
-    // Devise affichée : "usd", "eur" ou "cad"
-    var CURRENCY = "usd";
-    // Fréquence de rafraîchissement (en millisecondes). CoinGecko public tolère
-    // largement un appel toutes les 15-30 secondes sans clé API.
-    var REFRESH_MS = 20000;
+    // Paire suivie. BTCUSDT = Bitcoin en dollars US (paire la plus liquide,
+    // donc celle qui "tick" le plus souvent — plusieurs fois par seconde).
+    var SYMBOL = "btcusdt";
+    var CURRENCY = "USD";
 
     var priceEl  = document.getElementById("btcPrice");
     var changeEl = document.getElementById("btcChange");
+    var dotEl    = document.getElementById("btcDot");
+    var statusEl = document.getElementById("btcStatus");
+
+    var lastPrice = null;
+    var openPrice24h = null; // pour calculer la variation sur 24h
+    var ws = null;
+    var reconnectDelay = 1000;
 
     function formatPrice(value) {
       return new Intl.NumberFormat("fr-FR", {
         style: "currency",
-        currency: CURRENCY.toUpperCase(),
-        maximumFractionDigits: 0
+        currency: CURRENCY,
+        maximumFractionDigits: 2
       }).format(value);
     }
 
-    // Source n°1 : CoinGecko — endpoint public, gratuit, sans clé API, avec CORS.
-    function fetchFromCoinGecko() {
-      var url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=" +
-                CURRENCY + "&include_24hr_change=true";
-      return fetch(url).then(function (r) {
-        if (!r.ok) throw new Error("CoinGecko HTTP " + r.status);
-        return r.json();
-      }).then(function (data) {
-        return {
-          price: data.bitcoin[CURRENCY],
-          change: data.bitcoin[CURRENCY + "_24h_change"]
-        };
-      });
+    function applyPrice(newPrice) {
+      var flashClass = null;
+      if (lastPrice !== null) {
+        if (newPrice > lastPrice) flashClass = "flash-up";
+        else if (newPrice < lastPrice) flashClass = "flash-down";
+      }
+      lastPrice = newPrice;
+      priceEl.textContent = formatPrice(newPrice);
+
+      if (flashClass) {
+        priceEl.classList.remove("flash-up", "flash-down");
+        void priceEl.offsetWidth; // force le redémarrage de la transition CSS
+        priceEl.classList.add(flashClass);
+      }
+
+      if (openPrice24h) {
+        var pct = ((newPrice - openPrice24h) / openPrice24h) * 100;
+        changeEl.textContent = (pct >= 0 ? "▲ +" : "▼ ") + pct.toFixed(2) + "% (24h)";
+        changeEl.className = "btc-ticker__change " + (pct >= 0 ? "up" : "down");
+      }
     }
 
-    // Source n°2 (secours) : Binance — public aussi, sans clé, si CoinGecko est
-    // indisponible ou bloqué (ex. limite de débit atteinte).
-    function fetchFromBinance() {
-      var pair = "BTC" + CURRENCY.toUpperCase();
-      var url = "https://api.binance.com/api/v3/ticker/24hr?symbol=" + pair;
-      return fetch(url).then(function (r) {
-        if (!r.ok) throw new Error("Binance HTTP " + r.status);
-        return r.json();
-      }).then(function (data) {
-        return {
-          price: parseFloat(data.lastPrice),
-          change: parseFloat(data.priceChangePercent)
-        };
-      });
+    function setStatus(text, offline) {
+      statusEl.textContent = text;
+      dotEl.classList.toggle("offline", !!offline);
     }
 
-    function update() {
-      fetchFromCoinGecko()
-        .catch(fetchFromBinance)
-        .then(function (result) {
-          priceEl.textContent = formatPrice(result.price);
-          var pct = result.change;
-          changeEl.textContent = (pct >= 0 ? "▲ +" : "▼ ") + pct.toFixed(2) + "%";
-          changeEl.className = "btc-ticker__change " + (pct >= 0 ? "up" : "down");
+    // Récupère une première valeur + le prix d'ouverture 24h via une simple
+    // requête REST publique (pas de clé), le temps que le WebSocket se connecte.
+    function loadInitial() {
+      fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=" + SYMBOL.toUpperCase())
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          openPrice24h = parseFloat(d.openPrice);
+          applyPrice(parseFloat(d.lastPrice));
         })
-        .catch(function (err) {
-          console.error("Impossible de récupérer le prix du BTC :", err);
-          priceEl.textContent = "Erreur";
-        });
+        .catch(function () { /* le WebSocket prendra le relais de toute façon */ });
     }
 
-    update();
-    setInterval(update, REFRESH_MS);
+    // ====== Le vrai temps réel : WebSocket public Binance, sans clé API ======
+    // Le flux "@trade" pousse un message à CHAQUE transaction exécutée sur la
+    // paire, donc en pratique plusieurs fois par seconde pour BTCUSDT : c'est
+    // ça qui donne un prix qui change vraiment "en direct" et pas juste
+    // rafraîchi toutes les X secondes.
+    function connect() {
+      setStatus("Connexion...");
+      ws = new WebSocket("wss://stream.binance.com:9443/ws/" + SYMBOL + "@trade");
+
+      ws.onopen = function () {
+        setStatus("Live");
+        reconnectDelay = 1000; // reset du délai de reconnexion
+      };
+
+      ws.onmessage = function (event) {
+        var data = JSON.parse(event.data);
+        // "p" = prix de la transaction dans le message @trade de Binance
+        applyPrice(parseFloat(data.p));
+      };
+
+      ws.onerror = function () {
+        setStatus("Erreur de connexion", true);
+      };
+
+      ws.onclose = function () {
+        setStatus("Reconnexion...", true);
+        // Reconnexion automatique avec un délai croissant (max 15s)
+        setTimeout(connect, reconnectDelay);
+        reconnectDelay = Math.min(reconnectDelay * 2, 15000);
+      };
+    }
+
+    loadInitial();
+    connect();
   })();
   </script>
 
