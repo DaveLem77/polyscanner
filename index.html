@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>SignoScope</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -60,24 +65,56 @@
   .empty-state {
     position: absolute; inset: 0;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 22px; text-align: center; padding: 32px;
+    gap: 26px; text-align: center; padding: 40px 28px;
     z-index: 5;
-    background: radial-gradient(ellipse 700px 500px at 50% 30%, rgba(52,229,199,0.10), transparent 65%), #060807;
+    background:
+      radial-gradient(ellipse 90% 60% at 50% 22%, rgba(52,229,199,0.16), transparent 60%),
+      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(52,229,199,0.08), transparent 60%),
+      #050807;
   }
-  .empty-state .glyph { font-size: 46px; filter: grayscale(0.2); }
+
+  .glyph-orb {
+    width: 104px; height: 104px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 50px;
+    background: radial-gradient(circle at 35% 30%, rgba(52,229,199,0.28), rgba(52,229,199,0.04) 70%);
+    border: 1px solid rgba(52,229,199,0.35);
+    box-shadow: 0 0 0 1px rgba(52,229,199,0.08), 0 20px 50px -18px rgba(52,229,199,0.5);
+    animation: breathe 3.4s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 1px rgba(52,229,199,0.08), 0 20px 50px -18px rgba(52,229,199,0.5); }
+    50% { transform: scale(1.045); box-shadow: 0 0 0 1px rgba(52,229,199,0.14), 0 24px 60px -16px rgba(52,229,199,0.65); }
+  }
+
   .empty-state h1 {
-    margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.01em;
+    margin: 0;
+    font-size: clamp(32px, 10vw, 44px);
+    font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(180deg, #ffffff 30%, var(--accent) 130%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .empty-state p { margin: 0; max-width: 30ch; color: var(--text-dim); font-size: 14.5px; line-height: 1.55; }
+  .empty-state p {
+    margin: 0; max-width: 30ch; color: var(--text-dim);
+    font-size: clamp(15px, 4vw, 17px); line-height: 1.6;
+  }
   .cta {
-    font-family: var(--sans); font-weight: 700; font-size: 16px;
+    font-family: var(--sans); font-weight: 700; font-size: 17px;
     color: var(--accent-ink); background: var(--accent);
-    border: none; border-radius: 100px; padding: 16px 30px;
-    cursor: pointer; box-shadow: 0 8px 28px -8px rgba(52,229,199,0.55);
+    border: none; border-radius: 100px; padding: 18px 36px;
+    cursor: pointer; box-shadow: 0 10px 32px -8px rgba(52,229,199,0.6);
+    display: inline-flex; align-items: center; gap: 10px;
   }
   .cta:active { transform: scale(0.97); }
   .cta:disabled { opacity: 0.6; }
-  .empty-hint { font-family: var(--mono); font-size: 11px; color: var(--text-faint); letter-spacing: 0.04em; }
+  .empty-facts {
+    display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  }
+  .empty-facts span {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; color: var(--text-faint);
+    background: rgba(255,255,255,0.05); border: 1px solid var(--hairline);
+    padding: 6px 12px; border-radius: 100px;
+  }
 
   /* ---------- top bar ---------- */
 
@@ -283,20 +320,26 @@
 
   @media (prefers-reduced-motion: reduce) {
     .live-pill .rec { animation: none !important; }
+    .glyph-orb { animation: none !important; }
   }
 </style>
-
+</head>
+<body>
 <div class="stage" id="stage">
   <video id="video" playsinline autoplay muted></video>
   <div class="scrim-top"></div>
   <div class="scrim-bottom"></div>
 
   <div class="empty-state" id="emptyState">
-    <div class="glyph">✋</div>
+    <div class="glyph-orb">✋</div>
     <h1>SignoScope</h1>
     <p>Montre un chiffre en configuration de comptage (0 à 5) et vois-le traduit en français, en direct, par-dessus la caméra.</p>
-    <button class="cta" id="mainBtn">Activer la caméra</button>
-    <div class="empty-hint">Traitement 100&nbsp;% local — rien n'est envoyé nulle part</div>
+    <button class="cta" id="mainBtn"><span>📷</span> Activer la caméra</button>
+    <div class="empty-facts">
+      <span>🔒 100% local</span>
+      <span>⚡ Temps réel</span>
+      <span>🖐️ 0 à 5</span>
+    </div>
   </div>
 
   <div class="topbar" id="topbar" style="display:none;">
@@ -542,7 +585,7 @@
 
   let stream = null;
   let loopTimer = null;
-  let currentFacing = "environment";
+  let currentFacing = "user";
   let phase = "idle";
   let skinRef = null;
   let debugOn = false;
@@ -561,14 +604,30 @@
     if (p === "calibrating") stage.classList.add("calibrating");
   }
 
-  function rectFromVideo() {
+  // The <video> fills an arbitrary-aspect-ratio viewport with object-fit:cover,
+  // so the visible frame is a crop of the source video whose size/offset depend
+  // on both the video's native resolution and the on-screen box's aspect ratio.
+  // These helpers map an on-screen element's rect (e.g. the guide box the user
+  // sees) to the matching rectangle in the *source* video's pixel coordinates,
+  // so what we analyze is always exactly what's drawn on screen.
+  function videoMapping() {
     const vw = video.videoWidth, vh = video.videoHeight;
-    const s = Math.min(vw, vh);
-    const sx0 = (vw - s) / 2, sy0 = (vh - s) / 2;
-    const boxFrac = 0.72; // matches the guide's visual footprint
-    const boxSize = s * boxFrac;
-    const boxOff = (s - boxSize) / 2;
-    return { x: sx0 + boxOff, y: sy0 + boxOff, w: boxSize, h: boxSize };
+    const vr = video.getBoundingClientRect();
+    const scale = Math.max(vr.width / vw, vr.height / vh);
+    const cropX = (vw - vr.width / scale) / 2;
+    const cropY = (vh - vr.height / scale) / 2;
+    return { vw, vh, scale, cropX, cropY, vr };
+  }
+
+  function screenRectToSource(screenRect, m, mirrored) {
+    const relLeft = screenRect.left - m.vr.left;
+    const relTop = screenRect.top - m.vr.top;
+    let sx = m.cropX + relLeft / m.scale;
+    const sy = m.cropY + relTop / m.scale;
+    const sw = screenRect.width / m.scale;
+    const sh = screenRect.height / m.scale;
+    if (mirrored) sx = m.vw - sx - sw; // video content is CSS-flipped for display; drawImage reads the un-flipped frame
+    return { x: sx, y: sy, w: sw, h: sh };
   }
 
   async function startCamera() {
@@ -639,13 +698,15 @@
   }
 
   function doCalibration() {
-    const vw = video.videoWidth, vh = video.videoHeight;
-    if (!vw || !vh) return;
-    const s = Math.min(vw, vh);
-    const sx0 = (vw - s) / 2, sy0 = (vh - s) / 2;
-    const circleFrac = 0.29 * 0.5;
-    const cxV = sx0 + s / 2, cyV = sy0 + s / 2;
-    const rV = s * circleFrac * 0.85;
+    if (!video.videoWidth || !video.videoHeight) return;
+    const mirrored = stage.classList.contains("mirror");
+    const m = videoMapping();
+    const targetRect = calibTarget.getBoundingClientRect();
+    const src = screenRectToSource(targetRect, m, mirrored);
+    // sample a bit inside the drawn circle for margin
+    const shrink = 0.8;
+    const cxV = src.x + src.w / 2, cyV = src.y + src.h / 2;
+    const rV = Math.min(src.w, src.h) / 2 * shrink;
 
     const tmp = document.createElement("canvas");
     tmp.width = 60; tmp.height = 60;
@@ -709,7 +770,10 @@
 
   function tick() {
     if (!video.videoWidth || !video.videoHeight || !skinRef) return;
-    const rect = rectFromVideo();
+    const mirrored = stage.classList.contains("mirror");
+    const m = videoMapping();
+    const guideRect = guide.getBoundingClientRect();
+    const rect = screenRectToSource(guideRect, m, mirrored);
     analysisCtx.drawImage(video, rect.x, rect.y, rect.w, rect.h, 0, 0, GRID, GRID);
     const imgData = analysisCtx.getImageData(0, 0, GRID, GRID);
     const data = imgData.data;
@@ -801,3 +865,5 @@
   }
 })();
 </script>
+</body>
+</html>
