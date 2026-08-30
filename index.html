@@ -189,6 +189,14 @@
     text-shadow: 0 0 34px rgba(52,229,199,0.45), 0 2px 24px rgba(0,0,0,0.55);
   }
 
+  .caption-label {
+    font-family: var(--sans); font-weight: 700; font-size: 15px;
+    letter-spacing: 0.01em; color: var(--text-dim);
+    text-shadow: 0 1px 10px rgba(0,0,0,0.6);
+    margin-top: -4px;
+  }
+  .caption-label.confident { color: var(--text); }
+
   .status-text { font-size: 13.5px; color: var(--text-dim); text-shadow: 0 1px 10px rgba(0,0,0,0.6); }
 
   .meterline {
@@ -296,7 +304,7 @@
   <div class="empty-state" id="emptyState">
     <div class="glyph-orb">✋</div>
     <h1>SignoScope</h1>
-    <p>Montre une main et le nombre de doigts levés (0 à 5) s'affiche en français, en direct, par-dessus la caméra.</p>
+    <p>Montre un geste de la main — compter, pouce levé, victoire, OK… — et vois-le nommé en français, en direct, par-dessus la caméra.</p>
     <button class="cta" id="mainBtn"><span id="mainBtnIcon">📷</span> <span id="mainBtnLabel">Activer la caméra</span></button>
     <div class="empty-facts" id="loadStatus">
       <span id="loadStatusText">🧠 Suivi de main en direct</span>
@@ -311,6 +319,7 @@
 
   <div class="caption-wrap" id="captionWrap" style="display:none;">
     <div class="caption-word" id="captionWord">–</div>
+    <div class="caption-label" id="captionLabel"></div>
     <div class="meterline"><span id="confBar"></span></div>
     <div class="status-text" id="statusLine">Montre une main à la caméra.</div>
     <div class="transcript-row" id="transcriptRow"><span class="transcript-empty">Les chiffres reconnus s'accumuleront ici…</span></div>
@@ -328,7 +337,7 @@
   <div class="sheet" id="infoSheet">
     <div class="handle"></div>
     <h2>Portée volontairement limitée</h2>
-    <p>Ce prototype reconnaît le <b>nombre de doigts levés</b> (0 à 5), comme pour compter — pas l'alphabet manuel ni des mots signés complets. Ces derniers demandent des formes de main précises que je ne peux pas garantir exactes sans référence vérifiée.</p>
+    <p>Ce prototype reconnaît des <b>gestes de la main courants et largement reconnus</b> (compter jusqu'à cinq, pouce levé, victoire, OK, etc.) — pas une langue des signes spécifique. Le vocabulaire d'une vraie langue des signes (LSQ, LSF, ASL…) demande des formes de main précises que je ne peux pas garantir exactes sans référence vérifiée, donc je ne l'affiche pas comme tel ici.</p>
     <p>Le suivi de main utilise un modèle de vision par ordinateur pré-entraîné (MediaPipe, par Google) chargé une seule fois au démarrage — ensuite, tout le traitement vidéo reste local, sur ton appareil.</p>
     <p><b>Cette page a besoin d'accès internet</b> au premier chargement (pour télécharger le modèle), puis d'un accès caméra en HTTPS pour fonctionner.</p>
     <button class="close" id="closeSheet">Compris</button>
@@ -355,6 +364,7 @@
   const errorBox = document.getElementById("errorBox");
   const captionWrap = document.getElementById("captionWrap");
   const captionWord = document.getElementById("captionWord");
+  const captionLabel = document.getElementById("captionLabel");
   const statusLine = document.getElementById("statusLine");
   const confBar = document.getElementById("confBar");
   const transcriptRow = document.getElementById("transcriptRow");
@@ -363,7 +373,56 @@
   const sheetScrim = document.getElementById("sheetScrim");
   const closeSheet = document.getElementById("closeSheet");
 
-  const WORDS = ["zéro", "un", "deux", "trois", "quatre", "cinq"];
+  // Named hand-shape gestures, classified from finger-extension geometry.
+  // These are common, widely-understood hand gestures — not a claim about
+  // any specific sign language's actual vocabulary (see the info sheet).
+  const GESTURES = {
+    fist:   { glyph: "✊", label: "poing fermé" },
+    one:    { glyph: "1", label: "un" },
+    two:    { glyph: "2", label: "deux — victoire" },
+    three:  { glyph: "3", label: "trois" },
+    four:   { glyph: "4", label: "quatre" },
+    five:   { glyph: "5", label: "cinq — main ouverte" },
+    thumbsUp:   { glyph: "👍", label: "pouce levé" },
+    thumbsDown: { glyph: "👎", label: "pouce baissé" },
+    shaka:  { glyph: "🤙", label: "salut (shaka)" },
+    rock:   { glyph: "🤘", label: "rock" },
+    ily:    { glyph: "🤟", label: "je t'aime" },
+    ok:     { glyph: "👌", label: "d'accord (OK)" },
+  };
+
+  function classifyGesture(lm, vw, vh) {
+    function d(a, b) {
+      const dx = (lm[a].x - lm[b].x) * vw, dy = (lm[a].y - lm[b].y) * vh;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+    const wrist = 0;
+    const fingerDefs = [{ tip: 8, pip: 6 }, { tip: 12, pip: 10 }, { tip: 16, pip: 14 }, { tip: 20, pip: 18 }];
+    const [i, m, r, p] = fingerDefs.map((f) => d(f.tip, wrist) > d(f.pip, wrist) * 1.05);
+    const handSpan = d(0, 9) || 1;
+    const t = d(4, 5) > handSpan * 0.55;
+    const pinch = d(4, 8) < handSpan * 0.4;
+    const thumbUp = (lm[0].y - lm[4].y) * vh > handSpan * 0.35;
+    const thumbDown = (lm[4].y - lm[0].y) * vh > handSpan * 0.35;
+
+    let key;
+    if (pinch && m && r && p) key = "ok";
+    else if (t && !i && !m && !r && !p && thumbUp) key = "thumbsUp";
+    else if (t && !i && !m && !r && !p && thumbDown) key = "thumbsDown";
+    else if (t && !i && !m && !r && p) key = "shaka";
+    else if (t && i && !m && !r && p) key = "ily";
+    else if (!t && i && !m && !r && p) key = "rock";
+    else if (!t && !i && !m && !r && !p) key = "fist";
+    else if (!t && i && !m && !r && !p) key = "one";
+    else if (!t && i && m && !r && !p) key = "two";
+    else if (!t && i && m && r && !p) key = "three";
+    else if (!t && i && m && r && p) key = "four";
+    else if (t && i && m && r && p) key = "five";
+    else key = t ? "thumbsUp" : "fist"; // fallback for ambiguous combos
+
+    const flags = [t, i, m, r, p];
+    return { key, flags };
+  }
   const CONNECTIONS = [
     [0,1],[1,2],[2,3],[3,4],
     [0,5],[5,6],[6,7],[7,8],
@@ -650,7 +709,9 @@
     if (!result.landmarks || result.landmarks.length === 0) {
       history.length = 0;
       captionWord.classList.remove("confident");
+      captionLabel.classList.remove("confident");
       captionWord.textContent = "–";
+      captionLabel.textContent = "";
       confBar.style.width = "0%";
       confBar.style.background = "var(--bad)";
       statusLine.textContent = "Montre une main à la caméra, doigts bien écartés.";
@@ -661,40 +722,33 @@
     const lm = result.landmarks[0];
     const vw = video.videoWidth, vh = video.videoHeight;
 
-    function d(a, b) {
-      const dx = (lm[a].x - lm[b].x) * vw, dy = (lm[a].y - lm[b].y) * vh;
-      return Math.sqrt(dx * dx + dy * dy);
-    }
-    const wrist = 0;
-    const fingerDefs = [{ tip: 8, pip: 6 }, { tip: 12, pip: 10 }, { tip: 16, pip: 14 }, { tip: 20, pip: 18 }];
-    const extendedFlags4 = fingerDefs.map((f) => d(f.tip, wrist) > d(f.pip, wrist) * 1.05);
-    const handSpan = d(0, 9) || 1;
-    const thumbExtended = d(4, 5) > handSpan * 0.55;
-    const extendedFlags = [thumbExtended, ...extendedFlags4];
-    const count = extendedFlags.filter(Boolean).length;
+    const { key, flags } = classifyGesture(lm, vw, vh);
 
-    if (debugOn) drawSkeleton(lm, extendedFlags);
+    if (debugOn) drawSkeleton(lm, flags);
 
-    history.push(count);
+    history.push(key);
     if (history.length > HISTORY_LEN) history.shift();
-    const counts = new Array(6).fill(0);
-    history.forEach((c) => counts[c]++);
-    let vote = count, voteN = -1;
-    for (let i = 0; i < 6; i++) if (counts[i] > voteN) { voteN = counts[i]; vote = i; }
+    const tally = {};
+    history.forEach((k) => { tally[k] = (tally[k] || 0) + 1; });
+    let vote = key, voteN = -1;
+    for (const k in tally) if (tally[k] > voteN) { voteN = tally[k]; vote = k; }
     const agree = voteN / history.length;
     const pct = Math.round(agree * 100);
 
-    captionWord.textContent = String(vote);
+    const g = GESTURES[vote] || GESTURES.fist;
+    captionWord.textContent = g.glyph;
     confBar.style.width = pct + "%";
 
     const stable = history.length >= 5 && agree >= 0.7;
     if (stable) {
       captionWord.classList.add("confident");
+      captionLabel.classList.add("confident");
       confBar.style.background = "var(--good)";
-      statusLine.textContent = "« " + WORDS[vote] + " »";
+      captionLabel.textContent = g.label;
+      statusLine.textContent = "";
       const t = performance.now();
       if (vote !== lastCommitted || t - lastCommitTime > 1500) {
-        transcriptWords.push(WORDS[vote]);
+        transcriptWords.push(g.glyph + " " + g.label);
         if (transcriptWords.length > 60) transcriptWords.shift();
         lastCommitted = vote;
         lastCommitTime = t;
@@ -702,7 +756,9 @@
       }
     } else {
       captionWord.classList.remove("confident");
+      captionLabel.classList.remove("confident");
       confBar.style.background = "var(--warn)";
+      captionLabel.textContent = g.label;
       statusLine.textContent = "Stabilise ta main pour confirmer…";
     }
   }
