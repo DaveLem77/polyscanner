@@ -480,7 +480,7 @@
   function clearError() { errorBox.classList.remove("show"); errorBox.textContent = ""; }
 
   async function loadModel() {
-    const STEP_TIMEOUT = 20000;
+    const STEP_TIMEOUT = 15000;
     try {
       setLoadStatus("Étape 1/2 — chargement du moteur de vision…");
       const vision = await withTimeout(
@@ -490,20 +490,14 @@
       );
 
       const modelAssetPath = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task";
-      setLoadStatus("Étape 2/2 — téléchargement du modèle de main…");
+      let secs = 0;
+      setLoadStatus("Étape 2/2 — téléchargement du modèle de main… (0s)");
+      const ticker = setInterval(() => { secs++; setLoadStatus("Étape 2/2 — téléchargement du modèle de main… (" + secs + "s)"); }, 1000);
+      // CPU delegate only: a GPU attempt that times out doesn't actually stop
+      // running in the background, and racing it against a CPU fallback made
+      // failures take far longer (and sometimes never resolve) than a single
+      // clean attempt. CPU is plenty fast for this model.
       try {
-        handLandmarker = await withTimeout(
-          HandLandmarker.createFromOptions(vision, {
-            baseOptions: { modelAssetPath, delegate: "GPU" },
-            runningMode: "VIDEO",
-            numHands: 1
-          }),
-          STEP_TIMEOUT,
-          "model-gpu"
-        );
-      } catch (gpuErr) {
-        // some browsers/devices lack a working GPU delegate — fall back to CPU
-        setLoadStatus("Étape 2/2 — téléchargement du modèle de main (CPU)…");
         handLandmarker = await withTimeout(
           HandLandmarker.createFromOptions(vision, {
             baseOptions: { modelAssetPath, delegate: "CPU" },
@@ -511,8 +505,10 @@
             numHands: 1
           }),
           STEP_TIMEOUT,
-          "model-cpu"
+          "model"
         );
+      } finally {
+        clearInterval(ticker);
       }
       modelReady = true;
       mainBtnIcon.textContent = "📷";
