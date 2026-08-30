@@ -68,63 +68,149 @@
     background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
   }
 
-  /* ---------- empty state ---------- */
+  /* ---------- empty state (light, scrollable landing screen) ---------- */
 
   .empty-state {
+    --l-bg: #f4f9f8;
+    --l-surface: #ffffff;
+    --l-border: #e1eae8;
+    --l-text: #0f2a26;
+    --l-text-dim: #52706a;
+    --l-text-faint: #8aa19c;
+    --l-accent: #0ea89a;
+    --l-accent-ink: #ffffff;
+    --l-accent-soft: rgba(14,168,154,0.10);
+    --l-accent-soft-2: rgba(14,168,154,0.18);
+
     position: absolute; inset: 0;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 26px; text-align: center; padding: 40px 28px;
     z-index: 5;
-    background:
-      radial-gradient(ellipse 90% 60% at 50% 22%, rgba(52,229,199,0.16), transparent 60%),
-      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(52,229,199,0.08), transparent 60%),
-      #050807;
+    background: var(--l-bg);
+    color: var(--l-text);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .es-scroll {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 28px 20px calc(env(safe-area-inset-bottom, 0px) + 128px);
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+  }
+
+  .es-hero {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; gap: 16px; padding-top: 6px;
+  }
+
+  .es-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em;
+    color: var(--l-accent); background: var(--l-accent-soft);
+    border: 1px solid var(--l-accent-soft-2);
+    padding: 6px 13px; border-radius: 100px;
   }
 
   .glyph-orb {
-    width: 104px; height: 104px; border-radius: 50%;
+    width: 92px; height: 92px; border-radius: 32px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 50px;
-    background: radial-gradient(circle at 35% 30%, rgba(52,229,199,0.28), rgba(52,229,199,0.04) 70%);
-    border: 1px solid rgba(52,229,199,0.35);
-    box-shadow: 0 0 0 1px rgba(52,229,199,0.08), 0 20px 50px -18px rgba(52,229,199,0.5);
-    animation: breathe 3.4s ease-in-out infinite;
+    font-size: 44px;
+    background: linear-gradient(160deg, #ffffff, var(--l-accent-soft));
+    border: 1px solid var(--l-border);
+    box-shadow: 0 16px 32px -18px rgba(14,168,154,0.45);
+    animation: breathe 3.6s ease-in-out infinite;
   }
   @keyframes breathe {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 0 1px rgba(52,229,199,0.08), 0 20px 50px -18px rgba(52,229,199,0.5); }
-    50% { transform: scale(1.045); box-shadow: 0 0 0 1px rgba(52,229,199,0.14), 0 24px 60px -16px rgba(52,229,199,0.65); }
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
   }
 
   .empty-state h1 {
     margin: 0;
-    font-size: clamp(32px, 10vw, 44px);
+    font-size: clamp(30px, 9vw, 40px);
     font-weight: 800; letter-spacing: -0.02em;
-    background: linear-gradient(180deg, #ffffff 30%, var(--accent) 130%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
+    color: var(--l-text);
   }
-  .empty-state p {
-    margin: 0; max-width: 30ch; color: var(--text-dim);
+  .es-tagline {
+    margin: 0; max-width: 32ch; color: var(--l-text-dim);
     font-size: clamp(15px, 4vw, 17px); line-height: 1.6;
   }
-  .cta {
-    font-family: var(--sans); font-weight: 700; font-size: 17px;
-    color: var(--accent-ink); background: var(--accent);
-    border: none; border-radius: 100px; padding: 18px 36px;
-    cursor: pointer; box-shadow: 0 10px 32px -8px rgba(52,229,199,0.6);
-    display: inline-flex; align-items: center; gap: 10px;
+
+  .es-section { display: flex; flex-direction: column; gap: 14px; }
+  .es-eyebrow {
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--l-text-faint); padding: 0 2px;
   }
-  .cta:active { transform: scale(0.97); }
-  .cta:disabled { opacity: 0.6; }
-  .empty-facts { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-  .empty-facts span {
-    font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; color: var(--text-faint);
-    background: rgba(255,255,255,0.05); border: 1px solid var(--hairline);
-    padding: 6px 12px; border-radius: 100px;
+
+  .es-steps { display: flex; flex-direction: column; gap: 10px; }
+  .es-step {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: var(--l-surface); border: 1px solid var(--l-border);
+    border-radius: 16px; padding: 14px 16px;
+  }
+  .es-step-num {
+    flex: none; width: 28px; height: 28px; border-radius: 50%;
+    background: var(--l-accent-soft); color: var(--l-accent);
+    font-family: var(--mono); font-weight: 600; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .es-step b { font-weight: 700; font-size: 14.5px; }
+  .es-step div > span { display: block; color: var(--l-text-dim); font-size: 13.5px; line-height: 1.5; margin-top: 2px; }
+
+  .es-gesture-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    gap: 10px;
+  }
+  .es-gesture {
+    background: var(--l-surface); border: 1px solid var(--l-border);
+    border-radius: 14px; padding: 12px 8px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    text-align: center;
+  }
+  .es-gesture .g-emoji { font-size: 24px; line-height: 1; }
+  .es-gesture .g-label { font-size: 10.5px; color: var(--l-text-dim); line-height: 1.3; font-weight: 600; }
+
+  .es-info-card {
+    background: var(--l-surface); border: 1px solid var(--l-border);
+    border-radius: 16px; padding: 6px 16px;
+  }
+  .es-info-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 13px 0; font-size: 13.5px; color: var(--l-text-dim); line-height: 1.55;
+  }
+  .es-info-row + .es-info-row { border-top: 1px solid var(--l-border); }
+  .es-info-row .g-emoji { font-size: 17px; flex: none; margin-top: -1px; }
+  .es-info-row b { color: var(--l-text); }
+  .es-info-row a { color: var(--l-accent); font-weight: 600; text-decoration: none; }
+
+  .es-cta-bar {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 14px 20px calc(env(safe-area-inset-bottom, 0px) + 16px);
+    background: linear-gradient(to top, var(--l-bg) 60%, transparent);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+
+  .cta {
+    width: 100%; max-width: 380px;
+    font-family: var(--sans); font-weight: 700; font-size: 16.5px;
+    color: var(--l-accent-ink); background: var(--l-accent);
+    border: none; border-radius: 100px; padding: 17px 30px;
+    cursor: pointer; box-shadow: 0 12px 28px -10px rgba(14,168,154,0.55);
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .cta:active { transform: scale(0.98); }
+  .cta:disabled { opacity: 0.55; }
+
+  #loadStatus { display: flex; justify-content: center; }
+  #loadStatusText {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; color: var(--l-text-faint);
   }
 
   .spinner {
     width: 16px; height: 16px; border-radius: 50%;
-    border: 2.5px solid rgba(4,33,28,0.35); border-top-color: var(--accent-ink);
+    border: 2.5px solid rgba(255,255,255,0.4); border-top-color: #fff;
     animation: spin 0.8s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -302,12 +388,69 @@
   <div class="scrim-bottom"></div>
 
   <div class="empty-state" id="emptyState">
-    <div class="glyph-orb">✋</div>
-    <h1>SignoScope</h1>
-    <p>Montre un geste de la main — compter, pouce levé, victoire, OK… — et vois-le nommé en français, en direct, par-dessus la caméra.</p>
-    <button class="cta" id="mainBtn"><span id="mainBtnIcon">📷</span> <span id="mainBtnLabel">Activer la caméra</span></button>
-    <div class="empty-facts" id="loadStatus">
-      <span id="loadStatusText">🧠 Suivi de main en direct</span>
+    <div class="es-scroll">
+
+      <div class="es-hero">
+        <div class="es-badge">🧠 VISION PAR ORDINATEUR · 100% LOCAL</div>
+        <div class="glyph-orb">✋</div>
+        <h1>SignoScope</h1>
+        <p class="es-tagline">Montre un geste de la main à la caméra et entends sa traduction en français, en direct.</p>
+      </div>
+
+      <div class="es-section">
+        <div class="es-eyebrow">Comment ça marche</div>
+        <div class="es-steps">
+          <div class="es-step">
+            <div class="es-step-num">1</div>
+            <div><b>Autorise la caméra</b><span>Ton téléphone garde tout en local — rien n'est envoyé ni enregistré.</span></div>
+          </div>
+          <div class="es-step">
+            <div class="es-step-num">2</div>
+            <div><b>Montre un geste</b><span>Une forme de main claire, à environ un bras de distance de l'écran.</span></div>
+          </div>
+          <div class="es-step">
+            <div class="es-step-num">3</div>
+            <div><b>Entends la traduction</b><span>Le mot s'affiche à l'écran et est lu à voix haute automatiquement.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="es-section">
+        <div class="es-eyebrow">14 gestes reconnus</div>
+        <div class="es-gesture-grid">
+          <div class="es-gesture"><span class="g-emoji">✊</span><span class="g-label">Poing</span></div>
+          <div class="es-gesture"><span class="g-emoji">☝️</span><span class="g-label">Un</span></div>
+          <div class="es-gesture"><span class="g-emoji">✌️</span><span class="g-label">Deux</span></div>
+          <div class="es-gesture"><span class="g-emoji">🤟</span><span class="g-label">Trois</span></div>
+          <div class="es-gesture"><span class="g-emoji">🖐️</span><span class="g-label">Quatre</span></div>
+          <div class="es-gesture"><span class="g-emoji">🖐️</span><span class="g-label">Cinq</span></div>
+          <div class="es-gesture"><span class="g-emoji">👍</span><span class="g-label">Pouce levé</span></div>
+          <div class="es-gesture"><span class="g-emoji">👎</span><span class="g-label">Pouce baissé</span></div>
+          <div class="es-gesture"><span class="g-emoji">🤙</span><span class="g-label">Shaka</span></div>
+          <div class="es-gesture"><span class="g-emoji">🤘</span><span class="g-label">Rock</span></div>
+          <div class="es-gesture"><span class="g-emoji">🤟</span><span class="g-label">Je t'aime</span></div>
+          <div class="es-gesture"><span class="g-emoji">👌</span><span class="g-label">D'accord</span></div>
+          <div class="es-gesture"><span class="g-emoji">🔫</span><span class="g-label">Pistolet</span></div>
+          <div class="es-gesture"><span class="g-emoji">🖖</span><span class="g-label">Vulcain</span></div>
+        </div>
+      </div>
+
+      <div class="es-section">
+        <div class="es-eyebrow">À savoir</div>
+        <div class="es-info-card">
+          <div class="es-info-row"><span class="g-emoji">🔒</span><span><b>Tout reste sur ton téléphone.</b> Aucune image ni vidéo n'est envoyée à un serveur.</span></div>
+          <div class="es-info-row"><span class="g-emoji">🔊</span><span><b>Voix automatique.</b> Chaque geste confirmé est lu à voix haute — coupe le son avec l'icône en haut à droite.</span></div>
+          <div class="es-info-row"><span class="g-emoji">ℹ️</span><span><b>Gestes courants, pas une langue des signes officielle.</b> Reconnaît des formes de main largement connues — pas le vocabulaire exact de la LSQ ou d'une autre langue des signes.</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="es-cta-bar">
+      <button class="cta" id="mainBtn"><span id="mainBtnIcon">📷</span> <span id="mainBtnLabel">Activer la caméra</span></button>
+      <div class="empty-facts" id="loadStatus">
+        <span id="loadStatusText">🧠 Suivi de main en direct</span>
+      </div>
     </div>
   </div>
 
@@ -381,18 +524,20 @@
   // These are common, widely-understood hand gestures — not a claim about
   // any specific sign language's actual vocabulary (see the info sheet).
   const GESTURES = {
-    fist:   { glyph: "✊", label: "poing fermé" },
-    one:    { glyph: "1", label: "un" },
-    two:    { glyph: "2", label: "deux — victoire" },
-    three:  { glyph: "3", label: "trois" },
-    four:   { glyph: "4", label: "quatre" },
-    five:   { glyph: "5", label: "cinq — main ouverte" },
+    fist:      { glyph: "✊", label: "poing fermé" },
+    one:       { glyph: "1", label: "un" },
+    two:       { glyph: "2", label: "deux — victoire" },
+    three:     { glyph: "3", label: "trois" },
+    four:      { glyph: "4", label: "quatre" },
+    five:      { glyph: "5", label: "cinq — main ouverte" },
     thumbsUp:   { glyph: "👍", label: "pouce levé" },
     thumbsDown: { glyph: "👎", label: "pouce baissé" },
-    shaka:  { glyph: "🤙", label: "salut (shaka)" },
-    rock:   { glyph: "🤘", label: "rock" },
-    ily:    { glyph: "🤟", label: "je t'aime" },
-    ok:     { glyph: "👌", label: "d'accord (OK)" },
+    shaka:     { glyph: "🤙", label: "salut (shaka)" },
+    rock:      { glyph: "🤘", label: "rock" },
+    ily:       { glyph: "🤟", label: "je t'aime" },
+    ok:        { glyph: "👌", label: "d'accord (OK)" },
+    fingerGun: { glyph: "🔫", label: "pistolet" },
+    vulcan:    { glyph: "🖖", label: "salut vulcain" },
   };
 
   function classifyGesture(lm, vw, vh) {
@@ -409,8 +554,16 @@
     const thumbUp = (lm[0].y - lm[4].y) * vh > handSpan * 0.35;
     const thumbDown = (lm[4].y - lm[0].y) * vh > handSpan * 0.35;
 
+    // Vulcan salute: all five fingers extended, but split into two pairs
+    // (index+middle vs ring+pinky) with a visibly wider gap between the
+    // middle and ring fingertips than between the other neighboring tips.
+    const gapIM = d(8, 12), gapMR = d(12, 16), gapRP = d(16, 20);
+    const vulcanSplit = gapMR > ((gapIM + gapRP) / 2) * 1.6;
+
     let key;
-    if (pinch && m && r && p) key = "ok";
+    if (t && i && m && r && p && vulcanSplit) key = "vulcan";
+    else if (pinch && m && r && p) key = "ok";
+    else if (t && i && !m && !r && !p) key = "fingerGun";
     else if (t && !i && !m && !r && !p && thumbUp) key = "thumbsUp";
     else if (t && !i && !m && !r && !p && thumbDown) key = "thumbsDown";
     else if (t && !i && !m && !r && p) key = "shaka";
