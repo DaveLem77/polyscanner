@@ -470,9 +470,24 @@
     if (!voiceOn || !("speechSynthesis" in window)) return;
     speechSynthesis.cancel(); // don't queue stale words behind a new one
     const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = "fr-CA";
+    // fr-FR is the most universally available French locale across TTS
+    // engines; if we actually found an installed voice, use its own lang
+    // (fr-CA when available) so the accent matches.
+    utter.lang = frenchVoice ? frenchVoice.lang : "fr-FR";
     if (frenchVoice) utter.voice = frenchVoice;
     utter.rate = 1;
+    speechSynthesis.speak(utter);
+  }
+
+  let speechUnlocked = false;
+  function unlockSpeech() {
+    if (speechUnlocked || !("speechSynthesis" in window)) return;
+    speechUnlocked = true;
+    // iOS Safari (and some Android browsers) silently ignore every
+    // speechSynthesis.speak() call unless the very first one happens
+    // synchronously inside a real tap/click — so we fire one right here.
+    const utter = new SpeechSynthesisUtterance(" ");
+    utter.volume = 0;
     speechSynthesis.speak(utter);
   }
 
@@ -619,6 +634,7 @@
   }
 
   mainBtn.addEventListener("click", () => {
+    unlockSpeech(); // must run synchronously inside a real tap, or iOS/Safari silently blocks all later speech
     if (modelFailed) {
       modelFailed = false;
       clearError();
