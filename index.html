@@ -46,6 +46,14 @@
   }
   .stage.mirror video { transform: scaleX(-1); }
 
+  #overlay {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    z-index: 3;
+    pointer-events: none;
+  }
+  #overlay[hidden] { display: none; }
+
   .scrim-top, .scrim-bottom {
     position: absolute; left: 0; right: 0;
     pointer-events: none;
@@ -107,14 +115,19 @@
   }
   .cta:active { transform: scale(0.97); }
   .cta:disabled { opacity: 0.6; }
-  .empty-facts {
-    display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
-  }
+  .empty-facts { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
   .empty-facts span {
     font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; color: var(--text-faint);
     background: rgba(255,255,255,0.05); border: 1px solid var(--hairline);
     padding: 6px 12px; border-radius: 100px;
   }
+
+  .spinner {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 2.5px solid rgba(4,33,28,0.35); border-top-color: var(--accent-ink);
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
   /* ---------- top bar ---------- */
 
@@ -133,6 +146,7 @@
     font-size: 15px; cursor: pointer;
   }
   .iconbtn:active { transform: scale(0.93); }
+  .iconbtn.active { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
 
   .live-pill {
     display: none; align-items: center; gap: 7px;
@@ -148,34 +162,6 @@
     box-shadow: 0 0 6px #ff5a5a; animation: blink 1.4s ease-in-out infinite;
   }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-  /* ---------- guide + calibration ---------- */
-
-  .guide {
-    position: absolute; left: 50%; top: 44%;
-    width: min(72vw, 78vh); aspect-ratio: 1/1;
-    transform: translate(-50%, -50%);
-    z-index: 3; opacity: 0; transition: opacity 0.3s ease;
-    pointer-events: none;
-  }
-  .stage.live .guide { opacity: 1; }
-  .guide .corner { position: absolute; width: 26px; height: 26px; border: 2px solid rgba(244,250,249,0.55); }
-  .guide .tl { top: 0; left: 0; border-right: none; border-bottom: none; border-top-left-radius: 14px; }
-  .guide .tr { top: 0; right: 0; border-left: none; border-bottom: none; border-top-right-radius: 14px; }
-  .guide .bl { bottom: 0; left: 0; border-right: none; border-top: none; border-bottom-left-radius: 14px; }
-  .guide .br { bottom: 0; right: 0; border-left: none; border-top: none; border-bottom-right-radius: 14px; }
-
-  .calib-target {
-    position: absolute; left: 50%; top: 44%;
-    width: min(58vw, 62vh); aspect-ratio: 1/1;
-    transform: translate(-50%, -50%);
-    border-radius: 50%; border: 2px dashed var(--accent);
-    display: none; align-items: center; justify-content: center; text-align: center;
-    color: var(--accent); font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.03em;
-    padding: 16px; z-index: 4;
-    background: radial-gradient(circle, rgba(52,229,199,0.14), transparent 70%);
-  }
-  .stage.calibrating .calib-target { display: flex; }
 
   /* ---------- caption overlay (the "translation") ---------- */
 
@@ -203,10 +189,7 @@
     text-shadow: 0 0 34px rgba(52,229,199,0.45), 0 2px 24px rgba(0,0,0,0.55);
   }
 
-  .status-text {
-    font-size: 13.5px; color: var(--text-dim);
-    text-shadow: 0 1px 10px rgba(0,0,0,0.6);
-  }
+  .status-text { font-size: 13.5px; color: var(--text-dim); text-shadow: 0 1px 10px rgba(0,0,0,0.6); }
 
   .meterline {
     width: min(58vw, 260px); height: 4px; border-radius: 100px;
@@ -217,10 +200,7 @@
     background: var(--bad); transition: width 0.18s ease, background-color 0.18s ease;
   }
 
-  .transcript-row {
-    display: flex; gap: 7px; flex-wrap: wrap; justify-content: center;
-    max-height: 44px; overflow: hidden;
-  }
+  .transcript-row { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; max-height: 44px; overflow: hidden; }
   .transcript-row .chip {
     font-family: var(--mono); font-size: 12px; color: var(--text-dim);
     background: var(--glass); backdrop-filter: blur(8px);
@@ -247,30 +227,13 @@
     cursor: pointer; position: relative;
   }
   .shutter::before {
-    content: ""; width: 54px; height: 54px; border-radius: 50%;
-    background: var(--accent);
-    transition: background 0.2s ease, border-radius 0.2s ease, width 0.2s ease, height 0.2s ease;
+    content: ""; width: 26px; height: 26px; border-radius: 8px;
+    background: #ff5a5a;
   }
-  .stage.live .shutter::before { background: #ff5a5a; border-radius: 14px; width: 26px; height: 26px; }
   .shutter:active { transform: scale(0.96); }
-  .shutter[disabled] { opacity: 0.55; }
 
   .controls-bar .iconbtn.ghost { width: 46px; height: 46px; font-size: 16px; }
   .controls-bar .iconbtn[hidden] { visibility: hidden; }
-
-  /* ---------- debug PIP ---------- */
-
-  #matrix {
-    position: absolute; z-index: 6;
-    top: calc(env(safe-area-inset-top, 0px) + 62px);
-    right: 14px;
-    width: 84px; height: 84px;
-    border-radius: 12px;
-    border: 1px solid var(--hairline);
-    image-rendering: pixelated;
-    box-shadow: 0 10px 24px -10px rgba(0,0,0,0.6);
-  }
-  #matrix[hidden] { display: none; }
 
   /* ---------- info sheet ---------- */
 
@@ -297,7 +260,6 @@
   .sheet h2 { margin: 0 0 10px; font-size: 17px; font-weight: 700; }
   .sheet p { margin: 0 0 10px; font-size: 13.5px; line-height: 1.6; color: var(--text-dim); }
   .sheet p:last-of-type { margin-bottom: 18px; }
-  .sheet a { color: var(--accent); }
   .sheet button.close {
     width: 100%; padding: 13px; border-radius: 12px; border: 1px solid var(--hairline);
     background: rgba(255,255,255,0.06); color: var(--text); font-family: var(--sans);
@@ -327,16 +289,17 @@
 <body>
 <div class="stage" id="stage">
   <video id="video" playsinline autoplay muted></video>
+  <canvas id="overlay" hidden></canvas>
   <div class="scrim-top"></div>
   <div class="scrim-bottom"></div>
 
   <div class="empty-state" id="emptyState">
     <div class="glyph-orb">✋</div>
     <h1>SignoScope</h1>
-    <p>Montre un chiffre en configuration de comptage (0 à 5) et vois-le traduit en français, en direct, par-dessus la caméra.</p>
-    <button class="cta" id="mainBtn"><span>📷</span> Activer la caméra</button>
+    <p>Montre une main et le nombre de doigts levés (0 à 5) s'affiche en français, en direct, par-dessus la caméra.</p>
+    <button class="cta" id="mainBtn"><span id="mainBtnIcon">📷</span> <span id="mainBtnLabel">Activer la caméra</span></button>
     <div class="empty-facts">
-      <span>🔒 100% local</span>
+      <span>🧠 Suivi de main en direct</span>
       <span>⚡ Temps réel</span>
       <span>🖐️ 0 à 5</span>
     </div>
@@ -345,36 +308,20 @@
   <div class="topbar" id="topbar" style="display:none;">
     <button class="iconbtn" id="infoBtn" aria-label="À propos">ⓘ</button>
     <div class="live-pill"><span class="rec"></span>EN DIRECT</div>
-    <button class="iconbtn" id="debugBtn" aria-label="Afficher la vision du modèle">◎</button>
+    <button class="iconbtn" id="debugBtn" aria-label="Afficher le suivi de la main">◎</button>
   </div>
-
-  <div class="guide" id="guide">
-    <div class="corner tl"></div><div class="corner tr"></div>
-    <div class="corner bl"></div><div class="corner br"></div>
-  </div>
-  <div class="calib-target" id="calibTarget">Place ta paume à plat ici, en pleine lumière</div>
-
-  <canvas id="matrix" width="100" height="100" hidden></canvas>
 
   <div class="caption-wrap" id="captionWrap" style="display:none;">
     <div class="caption-word" id="captionWord">–</div>
     <div class="meterline"><span id="confBar"></span></div>
-    <div class="status-text" id="statusLine">Montre une main dans le cadre.</div>
+    <div class="status-text" id="statusLine">Montre une main à la caméra.</div>
     <div class="transcript-row" id="transcriptRow"><span class="transcript-empty">Les chiffres reconnus s'accumuleront ici…</span></div>
   </div>
 
   <div class="controls-bar" id="controlsBar" style="display:none;">
     <button class="iconbtn ghost" id="camToggle" aria-label="Changer de caméra">⟲</button>
     <button class="shutter" id="shutterBtn" aria-label="Arrêter"></button>
-    <button class="iconbtn ghost" id="recalBtn" aria-label="Recalibrer">↺</button>
-  </div>
-
-  <div class="controls-bar" id="calibBar" style="display:none; gap: 14px;">
-    <button class="cta" id="calibBtn">Calibrer ma peau</button>
-  </div>
-
-  <div class="controls-bar" id="clearBar" style="display:none; bottom: calc(env(safe-area-inset-bottom, 0px) + 100px);">
-    <button class="iconbtn ghost" id="clearBtn" aria-label="Effacer la transcription" style="width:auto; padding: 0 16px; border-radius: 100px; font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.04em;">Effacer</button>
+    <button class="iconbtn ghost" id="clearBtn" aria-label="Effacer" style="width:auto; padding: 0 14px; border-radius: 100px; font-family: 'IBM Plex Mono', monospace; font-size: 11px;">Effacer</button>
   </div>
 
   <div class="error-toast" id="errorBox"></div>
@@ -384,181 +331,27 @@
     <div class="handle"></div>
     <h2>Portée volontairement limitée</h2>
     <p>Ce prototype reconnaît le <b>nombre de doigts levés</b> (0 à 5), comme pour compter — pas l'alphabet manuel ni des mots signés complets. Ces derniers demandent des formes de main précises que je ne peux pas garantir exactes sans référence vérifiée.</p>
-    <p>La détection utilise une segmentation de couleur de peau (calibrée sur toi) et un comptage géométrique des doigts — aucun réseau de neurones, aucune image transmise. Fonctionne mieux sur fond dégagé et en bonne lumière.</p>
+    <p>Le suivi de main utilise un modèle de vision par ordinateur pré-entraîné (MediaPipe, par Google) chargé une seule fois au démarrage — ensuite, tout le traitement vidéo reste local, sur ton appareil.</p>
+    <p><b>Cette page a besoin d'accès internet</b> au premier chargement (pour télécharger le modèle), puis d'un accès caméra en HTTPS pour fonctionner.</p>
     <button class="close" id="closeSheet">Compris</button>
   </div>
 </div>
 
-<script>
-(function () {
-  "use strict";
-
-  /* ================= geometric hand-shape analysis ================= */
-
-  const GRID = 100;
-
-  function largestComponent(mask, N) {
-    const visited = new Uint8Array(N * N);
-    let bestCells = null, bestSize = 0;
-    const stackX = new Int32Array(N * N);
-    const stackY = new Int32Array(N * N);
-    for (let y = 0; y < N; y++) {
-      for (let x = 0; x < N; x++) {
-        const idx = y * N + x;
-        if (!mask[idx] || visited[idx]) continue;
-        let sp = 0;
-        stackX[sp] = x; stackY[sp] = y; sp++;
-        visited[idx] = 1;
-        const cellsX = [], cellsY = [];
-        while (sp > 0) {
-          sp--;
-          const cx2 = stackX[sp], cy2 = stackY[sp];
-          cellsX.push(cx2); cellsY.push(cy2);
-          const nbs = [[cx2+1,cy2],[cx2-1,cy2],[cx2,cy2+1],[cx2,cy2-1]];
-          for (let k = 0; k < 4; k++) {
-            const nx = nbs[k][0], ny = nbs[k][1];
-            if (nx < 0 || nx >= N || ny < 0 || ny >= N) continue;
-            const nidx = ny * N + nx;
-            if (mask[nidx] && !visited[nidx]) {
-              visited[nidx] = 1;
-              stackX[sp] = nx; stackY[sp] = ny; sp++;
-            }
-          }
-        }
-        if (cellsX.length > bestSize) { bestSize = cellsX.length; bestCells = { x: cellsX, y: cellsY }; }
-      }
-    }
-    return { cells: bestCells, size: bestSize };
-  }
-
-  function distanceTransform(mask, N) {
-    const dist = new Int32Array(N * N).fill(-1);
-    const qx = new Int32Array(N * N), qy = new Int32Array(N * N);
-    let qh = 0, qt = 0;
-    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
-      const idx = y * N + x;
-      if (!mask[idx]) { dist[idx] = 0; qx[qt] = x; qy[qt] = y; qt++; }
-    }
-    while (qh < qt) {
-      const x = qx[qh], y = qy[qh]; qh++;
-      const d = dist[y * N + x];
-      const nbs = [[x+1,y],[x-1,y],[x,y+1],[x,y-1]];
-      for (let k = 0; k < 4; k++) {
-        const nx = nbs[k][0], ny = nbs[k][1];
-        if (nx < 0 || nx >= N || ny < 0 || ny >= N) continue;
-        const nidx = ny * N + nx;
-        if (dist[nidx] === -1) { dist[nidx] = d + 1; qx[qt] = nx; qy[qt] = ny; qt++; }
-      }
-    }
-    return dist;
-  }
-
-  function analyzeHand(mask, N, opts) {
-    opts = opts || {};
-    const minAreaFrac = opts.minAreaFrac != null ? opts.minAreaFrac : 0.025;
-    const peakThresholdFrac = 0.72;
-    const minSeparationDeg = 20;
-    const wristExcludeDeg = 40;
-    const wristAngleDeg = -90;
-
-    const { cells, size } = largestComponent(mask, N);
-    if (!cells || size < N * N * minAreaFrac) return { ok: false };
-
-    const compMask = new Uint8Array(N * N);
-    for (let i = 0; i < size; i++) compMask[cells.y[i] * N + cells.x[i]] = 1;
-
-    const dist = distanceTransform(compMask, N);
-    let cx = 0, cy = 0, bestD = -1;
-    for (let i = 0; i < size; i++) {
-      const x = cells.x[i], y = cells.y[i];
-      const d = dist[y * N + x];
-      if (d > bestD) { bestD = d; cx = x; cy = y; }
-    }
-
-    const NBINS = 180;
-    const profile = new Float64Array(NBINS);
-    let rMax = 0;
-    for (let i = 0; i < size; i++) {
-      const dx = cells.x[i] - cx, dy = -(cells.y[i] - cy);
-      const r = Math.sqrt(dx * dx + dy * dy);
-      const ang = Math.atan2(dy, dx) * 180 / Math.PI;
-      const bin = Math.floor(((ang + 180) / 360) * NBINS) % NBINS;
-      if (r > profile[bin]) profile[bin] = r;
-      if (r > rMax) rMax = r;
-    }
-    if (rMax <= 0) return { ok: false };
-
-    for (let pass = 0; pass < 2; pass++) {
-      for (let i = 0; i < NBINS; i++) {
-        if (profile[i] === 0) {
-          const prev = profile[(i - 1 + NBINS) % NBINS];
-          const next = profile[(i + 1) % NBINS];
-          if (prev > 0 && next > 0) profile[i] = (prev + next) / 2;
-        }
-      }
-    }
-
-    const smooth = new Float64Array(NBINS);
-    const W = 3;
-    for (let i = 0; i < NBINS; i++) {
-      let s = 0, c = 0;
-      for (let k = -W; k <= W; k++) { s += profile[(i + k + NBINS) % NBINS]; c++; }
-      smooth[i] = s / c;
-    }
-
-    const threshold = rMax * peakThresholdFrac;
-    const binDeg = 360 / NBINS;
-    const above = new Uint8Array(NBINS);
-    for (let i = 0; i < NBINS; i++) above[i] = smooth[i] >= threshold ? 1 : 0;
-
-    const candidates = [];
-    let anyAbove = false;
-    for (let i = 0; i < NBINS; i++) if (above[i]) { anyAbove = true; break; }
-    if (anyAbove) {
-      let start = 0;
-      while (start < NBINS && above[start]) start++;
-      if (start === NBINS) start = 0;
-      const order = [];
-      for (let k = 0; k < NBINS; k++) order.push((start + k) % NBINS);
-      let i = 0;
-      while (i < order.length) {
-        if (!above[order[i]]) { i++; continue; }
-        let j = i, maxV = -Infinity, maxIdx = order[i];
-        while (j < order.length && above[order[j]]) {
-          if (smooth[order[j]] > maxV) { maxV = smooth[order[j]]; maxIdx = order[j]; }
-          j++;
-        }
-        const angDeg = maxIdx * binDeg - 180 + binDeg / 2;
-        candidates.push({ angDeg, v: maxV });
-        i = j;
-      }
-    }
-
-    function angDist(a, b) { let d = Math.abs(a - b) % 360; if (d > 180) d = 360 - d; return d; }
-    const filtered = candidates.filter((c) => angDist(c.angDeg, wristAngleDeg) > wristExcludeDeg);
-    filtered.sort((a, b) => b.v - a.v);
-    const accepted = [];
-    for (const c of filtered) {
-      if (accepted.every((a) => angDist(a.angDeg, c.angDeg) > minSeparationDeg)) accepted.push(c);
-    }
-
-    const count = Math.min(5, accepted.length);
-    return { ok: true, count, cx, cy, rMax, peaks: accepted };
-  }
-
-  /* ================= UI wiring ================= */
+<script type="module">
+  import { HandLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
 
   const stage = document.getElementById("stage");
   const video = document.getElementById("video");
+  const overlay = document.getElementById("overlay");
+  const overlayCtx = overlay.getContext("2d");
   const emptyState = document.getElementById("emptyState");
   const topbar = document.getElementById("topbar");
-  const guide = document.getElementById("guide");
-  const calibTarget = document.getElementById("calibTarget");
   const mainBtn = document.getElementById("mainBtn");
+  const mainBtnIcon = document.getElementById("mainBtnIcon");
+  const mainBtnLabel = document.getElementById("mainBtnLabel");
   const shutterBtn = document.getElementById("shutterBtn");
-  const calibBtn = document.getElementById("calibBtn");
-  const recalBtn = document.getElementById("recalBtn");
   const camToggle = document.getElementById("camToggle");
+  const clearBtn = document.getElementById("clearBtn");
   const infoBtn = document.getElementById("infoBtn");
   const debugBtn = document.getElementById("debugBtn");
   const errorBox = document.getElementById("errorBox");
@@ -566,74 +359,84 @@
   const captionWord = document.getElementById("captionWord");
   const statusLine = document.getElementById("statusLine");
   const confBar = document.getElementById("confBar");
-  const matrixCanvas = document.getElementById("matrix");
-  const matrixCtx = matrixCanvas.getContext("2d");
   const transcriptRow = document.getElementById("transcriptRow");
-  const clearBtn = document.getElementById("clearBtn");
   const controlsBar = document.getElementById("controlsBar");
-  const calibBar = document.getElementById("calibBar");
-  const clearBar = document.getElementById("clearBar");
   const infoSheet = document.getElementById("infoSheet");
   const sheetScrim = document.getElementById("sheetScrim");
   const closeSheet = document.getElementById("closeSheet");
 
-  const analysisCanvas = document.createElement("canvas");
-  analysisCanvas.width = GRID; analysisCanvas.height = GRID;
-  const analysisCtx = analysisCanvas.getContext("2d", { willReadFrequently: true });
-
   const WORDS = ["zéro", "un", "deux", "trois", "quatre", "cinq"];
+  const CONNECTIONS = [
+    [0,1],[1,2],[2,3],[3,4],
+    [0,5],[5,6],[6,7],[7,8],
+    [0,9],[9,10],[10,11],[11,12],
+    [0,13],[13,14],[14,15],[15,16],
+    [0,17],[17,18],[18,19],[19,20],
+    [5,9],[9,13],[13,17]
+  ];
 
+  let handLandmarker = null;
+  let modelReady = false;
+  let modelFailed = false;
   let stream = null;
-  let loopTimer = null;
-  let currentFacing = "user";
-  let phase = "idle";
-  let skinRef = null;
+  let rafId = null;
   let debugOn = false;
+  let lastVideoTime = -1;
   const history = [];
-  const HISTORY_LEN = 6;
+  const HISTORY_LEN = 8;
   let transcriptWords = [];
   let lastCommitted = null;
   let lastCommitTime = 0;
+  let currentFacing = "user";
 
   function showError(msg) { errorBox.textContent = msg; errorBox.classList.add("show"); }
   function clearError() { errorBox.classList.remove("show"); errorBox.textContent = ""; }
 
-  function setPhaseClass(p) {
-    stage.classList.remove("live", "calibrating");
-    if (p === "live") stage.classList.add("live");
-    if (p === "calibrating") stage.classList.add("calibrating");
+  async function loadModel() {
+    try {
+      const vision = await FilesetResolver.forVisionTasks(
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
+      );
+      const modelAssetPath = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task";
+      try {
+        handLandmarker = await HandLandmarker.createFromOptions(vision, {
+          baseOptions: { modelAssetPath, delegate: "GPU" },
+          runningMode: "VIDEO",
+          numHands: 1
+        });
+      } catch (gpuErr) {
+        // some browsers/devices lack a working GPU delegate — fall back to CPU
+        handLandmarker = await HandLandmarker.createFromOptions(vision, {
+          baseOptions: { modelAssetPath, delegate: "CPU" },
+          runningMode: "VIDEO",
+          numHands: 1
+        });
+      }
+      modelReady = true;
+      mainBtnIcon.textContent = "📷";
+      mainBtnLabel.textContent = "Activer la caméra";
+      mainBtn.disabled = false;
+    } catch (err) {
+      modelFailed = true;
+      mainBtnIcon.textContent = "⚠️";
+      mainBtnLabel.textContent = "Modèle indisponible";
+      mainBtn.disabled = true;
+      showError("Le modèle de suivi de main n'a pas pu se charger. Cette page a besoin d'un accès internet actif (elle télécharge le modèle depuis Google au premier chargement) — vérifie ta connexion et recharge la page. Elle doit aussi être servie en HTTPS (ou en localhost), pas ouverte comme simple fichier.");
+    }
   }
 
-  // The <video> fills an arbitrary-aspect-ratio viewport with object-fit:cover,
-  // so the visible frame is a crop of the source video whose size/offset depend
-  // on both the video's native resolution and the on-screen box's aspect ratio.
-  // These helpers map an on-screen element's rect (e.g. the guide box the user
-  // sees) to the matching rectangle in the *source* video's pixel coordinates,
-  // so what we analyze is always exactly what's drawn on screen.
-  function videoMapping() {
-    const vw = video.videoWidth, vh = video.videoHeight;
-    const vr = video.getBoundingClientRect();
-    const scale = Math.max(vr.width / vw, vr.height / vh);
-    const cropX = (vw - vr.width / scale) / 2;
-    const cropY = (vh - vr.height / scale) / 2;
-    return { vw, vh, scale, cropX, cropY, vr };
-  }
+  mainBtnIcon.textContent = "";
+  mainBtnLabel.innerHTML = 'Chargement du modèle… <span class="spinner" style="display:inline-block;vertical-align:-2px;"></span>';
+  mainBtn.disabled = true;
+  loadModel();
 
-  function screenRectToSource(screenRect, m, mirrored) {
-    const relLeft = screenRect.left - m.vr.left;
-    const relTop = screenRect.top - m.vr.top;
-    let sx = m.cropX + relLeft / m.scale;
-    const sy = m.cropY + relTop / m.scale;
-    const sw = screenRect.width / m.scale;
-    const sh = screenRect.height / m.scale;
-    if (mirrored) sx = m.vw - sx - sw; // video content is CSS-flipped for display; drawImage reads the un-flipped frame
-    return { x: sx, y: sy, w: sw, h: sh };
-  }
+  function setLive(on) { stage.classList.toggle("live", on); }
 
   async function startCamera() {
+    if (!modelReady) return;
     clearError();
     mainBtn.disabled = true;
-    mainBtn.textContent = "Ouverture de la caméra…";
+    mainBtnLabel.textContent = "Ouverture de la caméra…";
     try {
       const constraints = { video: { facingMode: { ideal: currentFacing }, width: { ideal: 900 }, height: { ideal: 900 } }, audio: false };
       stream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -646,6 +449,10 @@
 
       emptyState.style.display = "none";
       topbar.style.display = "flex";
+      controlsBar.style.display = "flex";
+      captionWrap.style.display = "flex";
+      setLive(true);
+      statusLine.textContent = "Montre une main à la caméra, doigts bien écartés.";
 
       try {
         const devices = await navigator.mediaDevices.enumerateDevices();
@@ -653,10 +460,12 @@
         camToggle.hidden = cams.length <= 1;
       } catch (e) {}
 
-      enterCalibration();
+      resizeOverlay();
+      history.length = 0;
+      rafId = requestAnimationFrame(loop);
     } catch (err) {
       mainBtn.disabled = false;
-      mainBtn.textContent = "Activer la caméra";
+      mainBtnLabel.textContent = "Activer la caméra";
       if (err && err.name === "NotAllowedError") {
         showError("Accès à la caméra refusé. Autorise la caméra pour ce site dans les réglages de ton navigateur, puis réessaie.");
       } else if (err && err.name === "NotFoundError") {
@@ -670,94 +479,46 @@
   }
 
   function stopCamera() {
-    if (loopTimer) { clearInterval(loopTimer); loopTimer = null; }
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
     if (stream) { stream.getTracks().forEach((t) => t.stop()); stream = null; }
     video.srcObject = null;
-    phase = "idle";
-    setPhaseClass("idle");
+    setLive(false);
     emptyState.style.display = "flex";
     topbar.style.display = "none";
     controlsBar.style.display = "none";
-    calibBar.style.display = "none";
-    clearBar.style.display = "none";
     captionWrap.style.display = "none";
-    matrixCanvas.hidden = true;
-    mainBtn.textContent = "Activer la caméra";
+    overlay.hidden = true;
+    mainBtnIcon.textContent = "📷";
+    mainBtnLabel.textContent = "Activer la caméra";
     mainBtn.disabled = false;
     history.length = 0;
-  }
-
-  function enterCalibration() {
-    phase = "calibrating";
-    setPhaseClass("calibrating");
-    controlsBar.style.display = "none";
-    captionWrap.style.display = "none";
-    calibBar.style.display = "flex";
-    clearBar.style.display = "none";
-    statusLine.textContent = "";
-  }
-
-  function doCalibration() {
-    if (!video.videoWidth || !video.videoHeight) return;
-    const mirrored = stage.classList.contains("mirror");
-    const m = videoMapping();
-    const targetRect = calibTarget.getBoundingClientRect();
-    const src = screenRectToSource(targetRect, m, mirrored);
-    // sample a bit inside the drawn circle for margin
-    const shrink = 0.8;
-    const cxV = src.x + src.w / 2, cyV = src.y + src.h / 2;
-    const rV = Math.min(src.w, src.h) / 2 * shrink;
-
-    const tmp = document.createElement("canvas");
-    tmp.width = 60; tmp.height = 60;
-    const tctx = tmp.getContext("2d");
-    tctx.drawImage(video, cxV - rV, cyV - rV, rV * 2, rV * 2, 0, 0, 60, 60);
-    const data = tctx.getImageData(0, 0, 60, 60).data;
-
-    let sumCb = 0, sumCr = 0, sumCb2 = 0, sumCr2 = 0, n = 0;
-    for (let i = 0; i < data.length; i += 4) {
-      const r = data[i], g = data[i + 1], b = data[i + 2];
-      const cb = 128 - 0.168736 * r - 0.331264 * g + 0.5 * b;
-      const cr = 128 + 0.5 * r - 0.418688 * g - 0.081312 * b;
-      sumCb += cb; sumCr += cr; sumCb2 += cb * cb; sumCr2 += cr * cr; n++;
-    }
-    const cbMean = sumCb / n, crMean = sumCr / n;
-    const cbStd = Math.sqrt(Math.max(0, sumCb2 / n - cbMean * cbMean));
-    const crStd = Math.sqrt(Math.max(0, sumCr2 / n - crMean * crMean));
-    const tol = Math.min(30, Math.max(14, 2.4 * Math.max(cbStd, crStd)));
-
-    skinRef = { cb: cbMean, cr: crMean, tol };
-    enterLive();
-  }
-
-  function enterLive() {
-    phase = "live";
-    setPhaseClass("live");
-    calibBar.style.display = "none";
-    controlsBar.style.display = "flex";
-    clearBar.style.display = "flex";
-    captionWrap.style.display = "flex";
-    matrixCanvas.hidden = !debugOn;
-    statusLine.textContent = "Montre une main dans le cadre, doigts bien écartés.";
-    history.length = 0;
-    if (loopTimer) clearInterval(loopTimer);
-    loopTimer = setInterval(tick, 180);
+    overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
   }
 
   mainBtn.addEventListener("click", startCamera);
-  calibBtn.addEventListener("click", doCalibration);
   shutterBtn.addEventListener("click", stopCamera);
-  recalBtn.addEventListener("click", () => { if (loopTimer) { clearInterval(loopTimer); loopTimer = null; } enterCalibration(); });
   camToggle.addEventListener("click", () => {
     currentFacing = currentFacing === "environment" ? "user" : "environment";
     if (stream) { stream.getTracks().forEach((t) => t.stop()); stream = null; }
     startCamera();
   });
   clearBtn.addEventListener("click", () => { transcriptWords = []; lastCommitted = null; renderTranscript(); });
-  debugBtn.addEventListener("click", () => { debugOn = !debugOn; matrixCanvas.hidden = !debugOn || phase !== "live"; });
+  debugBtn.addEventListener("click", () => {
+    debugOn = !debugOn;
+    debugBtn.classList.toggle("active", debugOn);
+    overlay.hidden = !debugOn;
+    if (!debugOn) overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
+  });
   infoBtn.addEventListener("click", () => { infoSheet.classList.add("show"); sheetScrim.classList.add("show"); });
   closeSheet.addEventListener("click", () => { infoSheet.classList.remove("show"); sheetScrim.classList.remove("show"); });
   sheetScrim.addEventListener("click", () => { infoSheet.classList.remove("show"); sheetScrim.classList.remove("show"); });
+  window.addEventListener("resize", resizeOverlay);
+
+  function resizeOverlay() {
+    const rect = stage.getBoundingClientRect();
+    overlay.width = Math.round(rect.width);
+    overlay.height = Math.round(rect.height);
+  }
 
   function renderTranscript() {
     if (transcriptWords.length === 0) {
@@ -768,48 +529,109 @@
     transcriptRow.innerHTML = shown.map((w) => '<span class="chip">' + w + "</span>").join("");
   }
 
-  function tick() {
-    if (!video.videoWidth || !video.videoHeight || !skinRef) return;
-    const mirrored = stage.classList.contains("mirror");
-    const m = videoMapping();
-    const guideRect = guide.getBoundingClientRect();
-    const rect = screenRectToSource(guideRect, m, mirrored);
-    analysisCtx.drawImage(video, rect.x, rect.y, rect.w, rect.h, 0, 0, GRID, GRID);
-    const imgData = analysisCtx.getImageData(0, 0, GRID, GRID);
-    const data = imgData.data;
-    const mask = new Uint8Array(GRID * GRID);
-    let skinCount = 0;
-    for (let i = 0, p = 0; i < GRID * GRID; i++, p += 4) {
-      const r = data[p], g = data[p + 1], b = data[p + 2];
-      const y = 0.299 * r + 0.587 * g + 0.114 * b;
-      const cb = 128 - 0.168736 * r - 0.331264 * g + 0.5 * b;
-      const cr = 128 + 0.5 * r - 0.418688 * g - 0.081312 * b;
-      const dcb = cb - skinRef.cb, dcr = cr - skinRef.cr;
-      const d = Math.sqrt(dcb * dcb + dcr * dcr);
-      if (d < skinRef.tol && y > 18 && y < 245) { mask[i] = 1; skinCount++; }
+  // Distance-based extension test: a finger is "extended" when its tip sits
+  // farther from the wrist than that finger's own middle (PIP) joint does.
+  // Using distances (rather than a simple up/down comparison) keeps this
+  // working regardless of how the hand is rotated on screen.
+  function countFingers(lm, vw, vh) {
+    function d(a, b) {
+      const dx = (lm[a].x - lm[b].x) * vw;
+      const dy = (lm[a].y - lm[b].y) * vh;
+      return Math.sqrt(dx * dx + dy * dy);
     }
+    const wrist = 0;
+    const fingers = [
+      { tip: 8, pip: 6 },   // index
+      { tip: 12, pip: 10 }, // middle
+      { tip: 16, pip: 14 }, // ring
+      { tip: 20, pip: 18 }, // pinky
+    ];
+    let count = 0;
+    for (const f of fingers) {
+      if (d(f.tip, wrist) > d(f.pip, wrist) * 1.05) count++;
+    }
+    // thumb: extended when its tip sits well away from the palm, relative to overall hand size
+    const handSpan = d(0, 9) || 1; // wrist -> middle-finger MCP, as a scale reference
+    if (d(4, 5) > handSpan * 0.55) count++;
+    return count;
+  }
 
-    let result = { ok: false };
-    if (skinCount >= GRID * GRID * 0.025) result = analyzeHand(mask, GRID, {});
+  function drawSkeleton(lm, extendedFlags) {
+    overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
+    const rect = video.getBoundingClientRect();
+    const stageRect = stage.getBoundingClientRect();
+    const mirrored = stage.classList.contains("mirror");
+    const toScreen = (p) => {
+      let x = p.x * rect.width;
+      const y = p.y * rect.height + (rect.top - stageRect.top);
+      if (mirrored) x = rect.width - x;
+      x += rect.left - stageRect.left;
+      return [x, y];
+    };
+    overlayCtx.lineWidth = 2.5;
+    overlayCtx.strokeStyle = "rgba(52,229,199,0.55)";
+    overlayCtx.beginPath();
+    for (const [a, b] of CONNECTIONS) {
+      const [x1, y1] = toScreen(lm[a]);
+      const [x2, y2] = toScreen(lm[b]);
+      overlayCtx.moveTo(x1, y1);
+      overlayCtx.lineTo(x2, y2);
+    }
+    overlayCtx.stroke();
+    const tipIdx = [4, 8, 12, 16, 20];
+    lm.forEach((p, i) => {
+      const [x, y] = toScreen(p);
+      const isTip = tipIdx.indexOf(i);
+      const extended = isTip >= 0 ? extendedFlags[isTip] : false;
+      overlayCtx.beginPath();
+      overlayCtx.arc(x, y, isTip >= 0 ? 5.5 : 3, 0, Math.PI * 2);
+      overlayCtx.fillStyle = isTip >= 0 ? (extended ? "#ffcf5c" : "rgba(244,250,249,0.5)") : "rgba(52,229,199,0.85)";
+      overlayCtx.fill();
+    });
+  }
 
-    if (debugOn) drawMatrix(result.ok ? result : null, mask);
+  function loop() {
+    rafId = requestAnimationFrame(loop);
+    if (!handLandmarker || video.readyState < 2) return;
+    if (video.currentTime === lastVideoTime) return;
+    lastVideoTime = video.currentTime;
 
-    if (!result.ok) {
+    const now = performance.now();
+    const result = handLandmarker.detectForVideo(video, now);
+
+    if (!result.landmarks || result.landmarks.length === 0) {
       history.length = 0;
-      statusLine.textContent = "Montre une main dans le cadre, doigts bien écartés.";
       captionWord.classList.remove("confident");
       captionWord.textContent = "–";
       confBar.style.width = "0%";
       confBar.style.background = "var(--bad)";
+      statusLine.textContent = "Montre une main à la caméra, doigts bien écartés.";
+      if (debugOn) overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
       return;
     }
 
-    history.push(result.count);
-    if (history.length > HISTORY_LEN) history.shift();
+    const lm = result.landmarks[0];
+    const vw = video.videoWidth, vh = video.videoHeight;
 
+    function d(a, b) {
+      const dx = (lm[a].x - lm[b].x) * vw, dy = (lm[a].y - lm[b].y) * vh;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+    const wrist = 0;
+    const fingerDefs = [{ tip: 8, pip: 6 }, { tip: 12, pip: 10 }, { tip: 16, pip: 14 }, { tip: 20, pip: 18 }];
+    const extendedFlags4 = fingerDefs.map((f) => d(f.tip, wrist) > d(f.pip, wrist) * 1.05);
+    const handSpan = d(0, 9) || 1;
+    const thumbExtended = d(4, 5) > handSpan * 0.55;
+    const extendedFlags = [thumbExtended, ...extendedFlags4];
+    const count = extendedFlags.filter(Boolean).length;
+
+    if (debugOn) drawSkeleton(lm, extendedFlags);
+
+    history.push(count);
+    if (history.length > HISTORY_LEN) history.shift();
     const counts = new Array(6).fill(0);
     history.forEach((c) => counts[c]++);
-    let vote = result.count, voteN = -1;
+    let vote = count, voteN = -1;
     for (let i = 0; i < 6; i++) if (counts[i] > voteN) { voteN = counts[i]; vote = i; }
     const agree = voteN / history.length;
     const pct = Math.round(agree * 100);
@@ -817,19 +639,17 @@
     captionWord.textContent = String(vote);
     confBar.style.width = pct + "%";
 
-    const stable = history.length >= 4 && agree >= 0.66;
-
+    const stable = history.length >= 5 && agree >= 0.7;
     if (stable) {
       captionWord.classList.add("confident");
       confBar.style.background = "var(--good)";
       statusLine.textContent = "« " + WORDS[vote] + " »";
-
-      const now = performance.now();
-      if (vote !== lastCommitted || now - lastCommitTime > 1500) {
+      const t = performance.now();
+      if (vote !== lastCommitted || t - lastCommitTime > 1500) {
         transcriptWords.push(WORDS[vote]);
         if (transcriptWords.length > 60) transcriptWords.shift();
         lastCommitted = vote;
-        lastCommitTime = now;
+        lastCommitTime = t;
         renderTranscript();
       }
     } else {
@@ -838,32 +658,6 @@
       statusLine.textContent = "Stabilise ta main pour confirmer…";
     }
   }
-
-  function drawMatrix(result, mask) {
-    const img = matrixCtx.createImageData(GRID, GRID);
-    for (let i = 0; i < GRID * GRID; i++) {
-      const on = mask[i];
-      const p = i * 4;
-      if (on) { img.data[p] = 25; img.data[p + 1] = 200; img.data[p + 2] = 175; img.data[p + 3] = 255; }
-      else { img.data[p] = 10; img.data[p + 1] = 12; img.data[p + 2] = 12; img.data[p + 3] = 255; }
-    }
-    if (result) {
-      for (const pk of result.peaks) {
-        const rad = pk.angDeg * Math.PI / 180;
-        const px = Math.round(result.cx + Math.cos(rad) * result.rMax * 0.9);
-        const py = Math.round(result.cy - Math.sin(rad) * result.rMax * 0.9);
-        for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
-          const x = px + dx, y = py + dy;
-          if (x >= 0 && x < GRID && y >= 0 && y < GRID) {
-            const p = (y * GRID + x) * 4;
-            img.data[p] = 255; img.data[p + 1] = 157; img.data[p + 2] = 61; img.data[p + 3] = 255;
-          }
-        }
-      }
-    }
-    matrixCtx.putImageData(img, 0, 0);
-  }
-})();
 </script>
 </body>
 </html>
