@@ -314,7 +314,10 @@
   <div class="topbar" id="topbar" style="display:none;">
     <button class="iconbtn" id="infoBtn" aria-label="À propos">ⓘ</button>
     <div class="live-pill"><span class="rec"></span>EN DIRECT</div>
-    <button class="iconbtn" id="debugBtn" aria-label="Afficher le suivi de la main">◎</button>
+    <div style="display:flex; gap:10px;">
+      <button class="iconbtn active" id="voiceBtn" aria-label="Couper la voix">🔊</button>
+      <button class="iconbtn" id="debugBtn" aria-label="Afficher le suivi de la main">◎</button>
+    </div>
   </div>
 
   <div class="caption-wrap" id="captionWrap" style="display:none;">
@@ -338,7 +341,7 @@
     <div class="handle"></div>
     <h2>Portée volontairement limitée</h2>
     <p>Ce prototype reconnaît des <b>gestes de la main courants et largement reconnus</b> (compter jusqu'à cinq, pouce levé, victoire, OK, etc.) — pas une langue des signes spécifique. Le vocabulaire d'une vraie langue des signes (LSQ, LSF, ASL…) demande des formes de main précises que je ne peux pas garantir exactes sans référence vérifiée, donc je ne l'affiche pas comme tel ici.</p>
-    <p>Le suivi de main utilise un modèle de vision par ordinateur pré-entraîné (MediaPipe, par Google) chargé une seule fois au démarrage — ensuite, tout le traitement vidéo reste local, sur ton appareil.</p>
+    <p>Le suivi de main utilise un modèle de vision par ordinateur pré-entraîné (MediaPipe, par Google) chargé une seule fois au démarrage — ensuite, tout le traitement vidéo reste local, sur ton appareil. Chaque geste confirmé est aussi lu à voix haute (icône 🔊 en haut à droite pour couper le son).</p>
     <p><b>Cette page a besoin d'accès internet</b> au premier chargement (pour télécharger le modèle), puis d'un accès caméra en HTTPS pour fonctionner.</p>
     <button class="close" id="closeSheet">Compris</button>
   </div>
@@ -361,6 +364,7 @@
   const clearBtn = document.getElementById("clearBtn");
   const infoBtn = document.getElementById("infoBtn");
   const debugBtn = document.getElementById("debugBtn");
+  const voiceBtn = document.getElementById("voiceBtn");
   const errorBox = document.getElementById("errorBox");
   const captionWrap = document.getElementById("captionWrap");
   const captionWord = document.getElementById("captionWord");
@@ -445,6 +449,32 @@
   let lastCommitted = null;
   let lastCommitTime = 0;
   let currentFacing = "user";
+  let voiceOn = true;
+  let frenchVoice = null;
+
+  function pickFrenchVoice() {
+    if (!("speechSynthesis" in window)) return;
+    const voices = speechSynthesis.getVoices();
+    if (!voices.length) return;
+    frenchVoice =
+      voices.find((v) => /fr-CA/i.test(v.lang)) ||
+      voices.find((v) => /^fr/i.test(v.lang)) ||
+      null;
+  }
+  if ("speechSynthesis" in window) {
+    pickFrenchVoice();
+    speechSynthesis.addEventListener("voiceschanged", pickFrenchVoice);
+  }
+
+  function speak(text) {
+    if (!voiceOn || !("speechSynthesis" in window)) return;
+    speechSynthesis.cancel(); // don't queue stale words behind a new one
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "fr-CA";
+    if (frenchVoice) utter.voice = frenchVoice;
+    utter.rate = 1;
+    speechSynthesis.speak(utter);
+  }
 
   function showError(msg) { errorBox.textContent = msg; errorBox.classList.add("show"); }
   function clearError() { errorBox.classList.remove("show"); errorBox.textContent = ""; }
@@ -577,6 +607,7 @@
   function stopCamera() {
     if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
     if (stream) { stream.getTracks().forEach((t) => t.stop()); stream = null; }
+    if ("speechSynthesis" in window) speechSynthesis.cancel();
     video.srcObject = null;
     setLive(false);
     emptyState.style.display = "flex";
@@ -615,6 +646,13 @@
     debugBtn.classList.toggle("active", debugOn);
     overlay.hidden = !debugOn;
     if (!debugOn) overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
+  });
+  voiceBtn.addEventListener("click", () => {
+    voiceOn = !voiceOn;
+    voiceBtn.textContent = voiceOn ? "🔊" : "🔇";
+    voiceBtn.classList.toggle("active", voiceOn);
+    voiceBtn.setAttribute("aria-label", voiceOn ? "Couper la voix" : "Activer la voix");
+    if (!voiceOn && "speechSynthesis" in window) speechSynthesis.cancel();
   });
   infoBtn.addEventListener("click", () => { infoSheet.classList.add("show"); sheetScrim.classList.add("show"); });
   closeSheet.addEventListener("click", () => { infoSheet.classList.remove("show"); sheetScrim.classList.remove("show"); });
@@ -753,6 +791,7 @@
         lastCommitted = vote;
         lastCommitTime = t;
         renderTranscript();
+        speak(g.label);
       }
     } else {
       captionWord.classList.remove("confident");
