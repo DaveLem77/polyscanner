@@ -298,10 +298,8 @@
     <h1>SignoScope</h1>
     <p>Montre une main et le nombre de doigts levés (0 à 5) s'affiche en français, en direct, par-dessus la caméra.</p>
     <button class="cta" id="mainBtn"><span id="mainBtnIcon">📷</span> <span id="mainBtnLabel">Activer la caméra</span></button>
-    <div class="empty-facts">
-      <span>🧠 Suivi de main en direct</span>
-      <span>⚡ Temps réel</span>
-      <span>🖐️ 0 à 5</span>
+    <div class="empty-facts" id="loadStatus">
+      <span id="loadStatusText">🧠 Suivi de main en direct</span>
     </div>
   </div>
 
@@ -393,40 +391,79 @@
   function clearError() { errorBox.classList.remove("show"); errorBox.textContent = ""; }
 
   async function loadModel() {
+    const STEP_TIMEOUT = 20000;
     try {
-      const vision = await FilesetResolver.forVisionTasks(
-        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
+      setLoadStatus("Étape 1/2 — chargement du moteur de vision…");
+      const vision = await withTimeout(
+        FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"),
+        STEP_TIMEOUT,
+        "runtime"
       );
+
       const modelAssetPath = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task";
+      setLoadStatus("Étape 2/2 — téléchargement du modèle de main…");
       try {
-        handLandmarker = await HandLandmarker.createFromOptions(vision, {
-          baseOptions: { modelAssetPath, delegate: "GPU" },
-          runningMode: "VIDEO",
-          numHands: 1
-        });
+        handLandmarker = await withTimeout(
+          HandLandmarker.createFromOptions(vision, {
+            baseOptions: { modelAssetPath, delegate: "GPU" },
+            runningMode: "VIDEO",
+            numHands: 1
+          }),
+          STEP_TIMEOUT,
+          "model-gpu"
+        );
       } catch (gpuErr) {
         // some browsers/devices lack a working GPU delegate — fall back to CPU
-        handLandmarker = await HandLandmarker.createFromOptions(vision, {
-          baseOptions: { modelAssetPath, delegate: "CPU" },
-          runningMode: "VIDEO",
-          numHands: 1
-        });
+        setLoadStatus("Étape 2/2 — téléchargement du modèle de main (CPU)…");
+        handLandmarker = await withTimeout(
+          HandLandmarker.createFromOptions(vision, {
+            baseOptions: { modelAssetPath, delegate: "CPU" },
+            runningMode: "VIDEO",
+            numHands: 1
+          }),
+          STEP_TIMEOUT,
+          "model-cpu"
+        );
       }
       modelReady = true;
       mainBtnIcon.textContent = "📷";
       mainBtnLabel.textContent = "Activer la caméra";
       mainBtn.disabled = false;
+      setLoadStatus("🧠 Prêt — suivi de main en direct");
     } catch (err) {
       modelFailed = true;
       mainBtnIcon.textContent = "⚠️";
-      mainBtnLabel.textContent = "Modèle indisponible";
-      mainBtn.disabled = true;
-      showError("Le modèle de suivi de main n'a pas pu se charger. Cette page a besoin d'un accès internet actif (elle télécharge le modèle depuis Google au premier chargement) — vérifie ta connexion et recharge la page. Elle doit aussi être servie en HTTPS (ou en localhost), pas ouverte comme simple fichier.");
+      mainBtnLabel.textContent = "Réessayer";
+      mainBtn.disabled = false;
+      const detail = err && err.message ? err.message : "erreur inconnue";
+      let where = "au chargement";
+      if (detail.indexOf("TIMEOUT:runtime") === 0) where = "en chargeant le moteur de vision (fichiers WebAssembly)";
+      else if (detail.indexOf("TIMEOUT:model") === 0) where = "en téléchargeant le modèle de main (quelques Mo)";
+      setLoadStatus("⚠️ Échec " + where);
+      showError(
+        "Échec du chargement (" + where + "). Détail technique : " + detail + ". " +
+        "Cette page télécharge des fichiers depuis internet (cdn.jsdelivr.net et storage.googleapis.com) au premier chargement — " +
+        "vérifie ta connexion, essaie de désactiver un VPN/bloqueur de pub, ou change de réseau (certains réseaux Wi-Fi ou pare-feux bloquent ces domaines). " +
+        "Ouvre aussi la console du navigateur si possible et copie-moi l'erreur exacte — je pourrai cibler le correctif au lieu de deviner."
+      );
     }
   }
 
+  const loadStatusText = document.getElementById("loadStatusText");
+
+  function setLoadStatus(msg) {
+    if (loadStatusText) loadStatusText.textContent = msg;
+  }
+
+  function withTimeout(promise, ms, label) {
+    return Promise.race([
+      promise,
+      new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT:" + label)), ms)),
+    ]);
+  }
+
   mainBtnIcon.textContent = "";
-  mainBtnLabel.innerHTML = 'Chargement du modèle… <span class="spinner" style="display:inline-block;vertical-align:-2px;"></span>';
+  mainBtnLabel.innerHTML = 'Chargement… <span class="spinner" style="display:inline-block;vertical-align:-2px;"></span>';
   mainBtn.disabled = true;
   loadModel();
 
@@ -495,7 +532,18 @@
     overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
   }
 
-  mainBtn.addEventListener("click", startCamera);
+  mainBtn.addEventListener("click", () => {
+    if (modelFailed) {
+      modelFailed = false;
+      clearError();
+      mainBtnIcon.textContent = "";
+      mainBtnLabel.innerHTML = 'Chargement… <span class="spinner" style="display:inline-block;vertical-align:-2px;"></span>';
+      mainBtn.disabled = true;
+      loadModel();
+    } else if (modelReady) {
+      startCamera();
+    }
+  });
   shutterBtn.addEventListener("click", stopCamera);
   camToggle.addEventListener("click", () => {
     currentFacing = currentFacing === "environment" ? "user" : "environment";
