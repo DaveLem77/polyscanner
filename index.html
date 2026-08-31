@@ -7,38 +7,38 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
 <style>
   :root {
-    /* ---- rich, warm editorial palette ---- */
-    --bg: #fbede4;
-    --bg-soft: #f6ded0;
-    --coral-wash: #fbdcd2;
-    --lavender: #e9dcf2;
-    --lavender-2: #d7c0e8;
-    --peach: #f6c9a8;
-    --peach-2: #f0b48c;
+    /* ---- cool, functional teal/slate palette ---- */
+    --bg: #eef4f3;
+    --bg-soft: #dcece9;
+    --coral-wash: #e2f0ee;
+    --lavender: #dde9f2;
+    --lavender-2: #bcd6ec;
+    --peach: #cdeae4;
+    --peach-2: #b3ded6;
     --white: #ffffff;
 
-    --plum: #2a1830;
-    --plum-2: #3b2140;
-    --charcoal: #1a1616;
-    --charcoal-2: #262020;
-    --charcoal-3: #362e2e;
+    --plum: #10232a;
+    --plum-2: #143038;
+    --charcoal: #141a1c;
+    --charcoal-2: #1e2628;
+    --charcoal-3: #2b3638;
 
-    --coral: #ff6f5c;
-    --coral-deep: #e0503d;
-    --salmon: #ff9c86;
+    --coral: #1f9d8a;
+    --coral-deep: #157a6b;
+    --salmon: #5fc4b3;
     --green: #4caf7d;
     --green-deep: #388a63;
     --yellow: #f2b84b;
 
-    --ink: #211621;
-    --ink-dim: rgba(33,22,33,0.66);
-    --ink-faint: rgba(33,22,33,0.44);
-    --line: rgba(33,22,33,0.12);
-    --line-strong: rgba(33,22,33,0.22);
+    --ink: #16191d;
+    --ink-dim: rgba(22,25,29,0.66);
+    --ink-faint: rgba(22,25,29,0.44);
+    --line: rgba(22,25,29,0.12);
+    --line-strong: rgba(22,25,29,0.22);
 
-    --ivory: #fbf3ed;
-    --ivory-dim: rgba(251,243,237,0.7);
-    --ivory-faint: rgba(251,243,237,0.4);
+    --ivory: #f4f7f6;
+    --ivory-dim: rgba(244,247,246,0.7);
+    --ivory-faint: rgba(244,247,246,0.4);
 
     --display: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -54,15 +54,15 @@
     --fs-caption: 0.8125rem;
 
     /* ---- live camera overlay (dark, kept for legibility over video) ---- */
-    --glass: rgba(26,16,26,0.46);
-    --glass-strong: rgba(20,12,20,0.8);
+    --glass: rgba(18,20,22,0.46);
+    --glass-strong: rgba(14,16,18,0.8);
     --hairline: rgba(255,255,255,0.18);
-    --text: #fbf3ed;
-    --text-dim: rgba(251,243,237,0.7);
-    --text-faint: rgba(251,243,237,0.4);
+    --text: #f4f7f6;
+    --text-dim: rgba(244,247,246,0.7);
+    --text-faint: rgba(244,247,246,0.4);
     --good: #4caf7d;
     --warn: #f2b84b;
-    --bad: rgba(251,243,237,0.28);
+    --bad: rgba(244,247,246,0.28);
   }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -116,7 +116,7 @@
   .nav.on-dark { color: var(--ivory); }
   .nav.scrolled {
     padding: calc(env(safe-area-inset-top, 0px) + 10px) var(--gutter);
-    background: rgba(251,237,228,0.9);
+    background: rgba(238,244,243,0.9);
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
     box-shadow: 0 1px 0 var(--line);
   }
@@ -135,10 +135,10 @@
     border: none; border-radius: 100px; padding: 10px 9px 10px 18px;
     text-decoration: none; cursor: pointer; white-space: nowrap;
     transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
-    box-shadow: 0 6px 16px rgba(255,111,92,0.32);
+    box-shadow: 0 6px 16px rgba(31,157,138,0.32);
   }
   .nav-cta .arrow { width: 24px; height: 24px; border-radius: 50%; background: rgba(255,255,255,0.24); display: flex; align-items: center; justify-content: center; transition: transform 0.25s ease; }
-  .nav-cta:hover { background: var(--coral-deep); transform: translateY(-1px); box-shadow: 0 8px 18px rgba(255,111,92,0.4); }
+  .nav-cta:hover { background: var(--coral-deep); transform: translateY(-1px); box-shadow: 0 8px 18px rgba(31,157,138,0.4); }
   .nav-cta:hover .arrow { transform: translateX(3px); }
   .nav-cta:active { transform: translateY(0) scale(0.98); }
   @media (max-width: 420px) {
@@ -194,10 +194,10 @@
     border: none; border-radius: 100px; padding: 15px 12px 15px 24px;
     cursor: pointer; text-decoration: none;
     transition: background 0.22s ease, transform 0.18s ease, box-shadow 0.22s ease;
-    box-shadow: 0 12px 26px -6px rgba(255,111,92,0.55);
+    box-shadow: 0 12px 26px -6px rgba(31,157,138,0.55);
   }
   .btn-primary .arrow { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.24); display: flex; align-items: center; justify-content: center; transition: transform 0.25s ease; flex: none; }
-  .btn-primary:hover { background: var(--coral-deep); transform: translateY(-2px) scale(1.01); box-shadow: 0 16px 30px -6px rgba(255,111,92,0.62); }
+  .btn-primary:hover { background: var(--coral-deep); transform: translateY(-2px) scale(1.01); box-shadow: 0 16px 30px -6px rgba(31,157,138,0.62); }
   .btn-primary:hover .arrow { transform: translateX(3px); }
   .btn-primary:active { transform: translateY(0) scale(0.98); }
   .btn-primary:disabled { opacity: 0.48; cursor: default; box-shadow: none; }
@@ -237,17 +237,17 @@
     display: flex; flex-direction: column; gap: 9px;
     box-shadow: 0 16px 30px -12px rgba(0,0,0,0.5);
   }
-  .speech-kicker { font-family: var(--sans); font-weight: 600; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(251,243,237,0.5); }
+  .speech-kicker { font-family: var(--sans); font-weight: 600; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(244,247,246,0.5); }
   .speech-text { font-family: var(--display); font-weight: 700; font-size: 18px; color: #fff; min-height: 1.3em; }
   .speech-text .caret { display: inline-block; width: 2px; height: 0.85em; background: var(--coral); margin-left: 2px; vertical-align: -2px; animation: caretBlink 1s step-end infinite; }
   @keyframes caretBlink { 50% { opacity: 0; } }
   .speech-audio { display: flex; align-items: center; gap: 10px; }
   .play-mark { width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid var(--coral); flex: none; }
   .mini-bars { display: flex; align-items: flex-end; gap: 3px; height: 14px; }
-  .mini-bars i { width: 2.5px; border-radius: 1px; background: rgba(251,243,237,0.4); height: 25%; transition: background 0.3s ease; }
+  .mini-bars i { width: 2.5px; border-radius: 1px; background: rgba(244,247,246,0.4); height: 25%; transition: background 0.3s ease; }
   .mini-bars.active i { background: var(--coral); animation: waveBounce 0.9s ease-in-out infinite; }
   @keyframes waveBounce { 0%, 100% { height: 22%; } 50% { height: 100%; } }
-  .speech-audio-label { font-family: var(--sans); font-size: 12px; color: rgba(251,243,237,0.62); }
+  .speech-audio-label { font-family: var(--sans); font-size: 12px; color: rgba(244,247,246,0.62); }
 
   .demo-card-tag {
     position: absolute; top: 14px; left: 14px; z-index: 2;
@@ -271,7 +271,7 @@
   .eyebrow-tag {
     display: inline-flex; align-self: center; align-items: center; gap: 8px;
     font-family: var(--sans); font-weight: 600; font-size: var(--fs-caption); letter-spacing: 0.03em;
-    color: var(--coral-deep); background: rgba(255,111,92,0.12); border-radius: 100px; padding: 6px 13px;
+    color: var(--coral-deep); background: rgba(31,157,138,0.12); border-radius: 100px; padding: 6px 13px;
   }
   .bg-plum .eyebrow-tag, .bg-charcoal .eyebrow-tag { background: rgba(255,255,255,0.12); color: var(--ivory); }
   .section-head.left .eyebrow-tag { align-self: flex-start; }
@@ -293,9 +293,9 @@
   .flow-step.tint-c .flow-num { color: var(--coral); }
   .flow-copy h3 { margin: 0 0 8px; font-family: var(--display); font-weight: 800; font-size: var(--fs-h2); letter-spacing: -0.01em; color: inherit; }
   .flow-copy p { margin: 0; font-size: 14.5px; line-height: 1.65; color: var(--ink-dim); max-width: 38ch; }
-  .flow-step.tint-c .flow-copy p { color: rgba(251,243,237,0.7); }
+  .flow-step.tint-c .flow-copy p { color: rgba(244,247,246,0.7); }
   .flow-visual { display: flex; align-items: center; justify-content: center; }
-  .flow-visual-frame { width: 100%; max-width: 280px; aspect-ratio: 1.2 / 1; border-radius: 18px; background: var(--white); display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 40px -18px rgba(33,22,33,0.22); }
+  .flow-visual-frame { width: 100%; max-width: 280px; aspect-ratio: 1.2 / 1; border-radius: 18px; background: var(--white); display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 40px -18px rgba(22,25,29,0.22); }
   .flow-step.tint-c .flow-visual-frame { background: var(--charcoal-2); box-shadow: none; }
   .flow-visual-frame svg { width: 58%; height: auto; }
   .flow-wave { display: flex; align-items: flex-end; gap: 5px; height: 60%; }
@@ -317,7 +317,7 @@
     min-height: 210px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  .case-card:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -18px rgba(33,22,33,0.3); }
+  .case-card:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -18px rgba(22,25,29,0.3); }
   .case-card.a { background: linear-gradient(155deg, var(--white) 0%, var(--lavender) 100%); }
   .case-card.b { background: linear-gradient(155deg, var(--coral-wash), var(--peach-2)); }
   .case-card.c { background: var(--bg-soft); }
@@ -334,7 +334,7 @@
 
   .product-mock { max-width: 700px; margin: 0 auto; background: var(--charcoal-2); border-radius: 26px; padding: 26px; box-shadow: 0 40px 80px -30px rgba(0,0,0,0.6); }
   .product-mock-row { display: flex; align-items: center; justify-content: space-between; padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); gap: 10px; flex-wrap: wrap; }
-  .product-mock-tag { display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 600; font-size: 12px; color: rgba(251,243,237,0.7); }
+  .product-mock-tag { display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 600; font-size: 12px; color: rgba(244,247,246,0.7); }
   .product-mock-tag .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
   .product-feature-row { display: flex; flex-wrap: wrap; gap: 12px; }
   .product-feature {
@@ -342,7 +342,7 @@
     border-radius: 14px; padding: 15px; display: flex; flex-direction: column; gap: 7px;
   }
   .product-feature .k { font-family: var(--sans); font-weight: 600; font-size: 13px; color: #fff; }
-  .product-feature .v { font-size: 12.5px; color: rgba(251,243,237,0.56); line-height: 1.5; }
+  .product-feature .v { font-size: 12.5px; color: rgba(244,247,246,0.56); line-height: 1.5; }
 
   /* ---------- human section ---------- */
 
@@ -357,7 +357,7 @@
 
   .try-card {
     max-width: 600px; margin: 0 auto; background: var(--white); border-radius: 26px;
-    padding: 24px; box-shadow: 0 30px 60px -20px rgba(33,22,33,0.28);
+    padding: 24px; box-shadow: 0 30px 60px -20px rgba(22,25,29,0.28);
   }
   .try-frame {
     position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 4 / 3;
@@ -378,10 +378,10 @@
   .btn-listen {
     align-self: flex-start; display: flex; align-items: center; gap: 9px;
     font-family: var(--sans); font-weight: 600; font-size: 13px; color: var(--coral-deep);
-    background: rgba(255,111,92,0.12); border: none; border-radius: 100px; padding: 9px 16px 9px 12px; cursor: pointer;
+    background: rgba(31,157,138,0.12); border: none; border-radius: 100px; padding: 9px 16px 9px 12px; cursor: pointer;
     transition: background 0.2s ease, transform 0.15s ease;
   }
-  .btn-listen:hover { background: rgba(255,111,92,0.2); transform: translateY(-1px); }
+  .btn-listen:hover { background: rgba(31,157,138,0.2); transform: translateY(-1px); }
   .btn-listen .mini-wave { display: flex; align-items: flex-end; gap: 2px; height: 11px; }
   .btn-listen .mini-wave i { width: 2px; background: currentColor; border-radius: 1px; height: 30%; }
   .btn-listen.speaking .mini-wave i { animation: waveBounce 0.7s ease-in-out infinite; }
@@ -415,13 +415,13 @@
 
   /* ---------- footer ---------- */
 
-  .footer { background: var(--plum); color: rgba(251,243,237,0.7); padding: 40px var(--gutter) calc(env(safe-area-inset-bottom, 0px) + 40px); border-top: 1px solid rgba(255,255,255,0.08); }
+  .footer { background: var(--plum); color: rgba(244,247,246,0.7); padding: 40px var(--gutter) calc(env(safe-area-inset-bottom, 0px) + 40px); border-top: 1px solid rgba(255,255,255,0.08); }
   .footer-top { max-width: 1180px; margin: 0 auto 22px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: center; }
   .footer-top .nav-wordmark { color: #fff; }
   .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
-  .footer-links a, .footer-links span { font-family: var(--sans); font-size: 13px; color: rgba(251,243,237,0.62); text-decoration: none; cursor: pointer; transition: color 0.2s ease; }
+  .footer-links a, .footer-links span { font-family: var(--sans); font-size: 13px; color: rgba(244,247,246,0.62); text-decoration: none; cursor: pointer; transition: color 0.2s ease; }
   .footer-links a:hover, .footer-links span:hover { color: var(--coral); }
-  .footer-tag { max-width: 48ch; margin: 0 auto; font-size: 12px; color: rgba(251,243,237,0.42); line-height: 1.7; }
+  .footer-tag { max-width: 48ch; margin: 0 auto; font-size: 12px; color: rgba(244,247,246,0.42); line-height: 1.7; }
 
   /* ---------- sticky mobile CTA ---------- */
 
@@ -510,7 +510,7 @@
   .controls-bar .iconbtn.ghost { height: 40px; padding: 0 14px; }
   .controls-bar .iconbtn[hidden] { visibility: hidden; }
 
-  .sheet-scrim { position: fixed; inset: 0; background: rgba(20,12,20,0.5); z-index: 9; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+  .sheet-scrim { position: fixed; inset: 0; background: rgba(14,16,18,0.5); z-index: 9; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
   .sheet-scrim.show { opacity: 1; pointer-events: auto; }
   .sheet {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
@@ -529,7 +529,7 @@
   .error-toast {
     position: absolute; left: 16px; right: 16px; bottom: calc(env(safe-area-inset-bottom, 0px) + 100px); z-index: 8;
     background: rgba(28, 18, 18, 0.92); backdrop-filter: blur(10px); border: 1px solid rgba(255,122,89,0.35);
-    color: #ffd7c8; font-size: 13px; line-height: 1.5; border-radius: 14px; padding: 12px 14px; display: none;
+    color: #cdeae4; font-size: 13px; line-height: 1.5; border-radius: 14px; padding: 12px 14px; display: none;
   }
   .error-toast.show { display: block; }
 </style>
@@ -545,7 +545,7 @@
     <nav class="nav on-dark" id="siteNav">
       <a class="nav-logo" href="#top" data-scroll>
         <svg class="nav-mark" viewBox="0 0 100 100" aria-hidden="true">
-          <rect width="100" height="100" rx="28" fill="#ff6f5c"/>
+          <rect width="100" height="100" rx="28" fill="#1f9d8a"/>
           <g transform="translate(50 58)" fill="#ffffff">
             <rect x="-19" y="-4" width="38" height="30" rx="14"/>
             <rect x="-5" y="-40" width="9" height="30" rx="4.5" transform="rotate(-22 0 -10)"/>
@@ -589,14 +589,14 @@
                 <div class="demo-card-tag"><span class="dot"></span>Aperçu</div>
                 <div class="signer-illust">
                   <svg viewBox="0 0 200 200" aria-hidden="true">
-                    <circle cx="100" cy="70" r="34" fill="#211621"/>
-                    <path d="M40 200 C40 148 66 122 100 122 C134 122 160 148 160 200 Z" fill="#211621"/>
+                    <circle cx="100" cy="70" r="34" fill="#16191d"/>
+                    <path d="M40 200 C40 148 66 122 100 122 C134 122 160 148 160 200 Z" fill="#16191d"/>
                     <g transform="translate(148 90) rotate(-18)">
-                      <rect x="-19" y="-4" width="40" height="32" rx="15" fill="#ff6f5c"/>
-                      <rect x="-6" y="-42" width="10" height="32" rx="5" transform="rotate(-24 0 -10)" fill="#ff6f5c"/>
-                      <rect x="6" y="-46" width="9" height="34" rx="4.5" transform="rotate(-7 0 -10)" fill="#ff6f5c"/>
-                      <rect x="18" y="-43" width="9" height="32" rx="4.5" transform="rotate(11 0 -10)" fill="#ff6f5c"/>
-                      <rect x="29" y="-36" width="9" height="28" rx="4.5" transform="rotate(28 0 -10)" fill="#ff6f5c"/>
+                      <rect x="-19" y="-4" width="40" height="32" rx="15" fill="#1f9d8a"/>
+                      <rect x="-6" y="-42" width="10" height="32" rx="5" transform="rotate(-24 0 -10)" fill="#1f9d8a"/>
+                      <rect x="6" y="-46" width="9" height="34" rx="4.5" transform="rotate(-7 0 -10)" fill="#1f9d8a"/>
+                      <rect x="18" y="-43" width="9" height="32" rx="4.5" transform="rotate(11 0 -10)" fill="#1f9d8a"/>
+                      <rect x="29" y="-36" width="9" height="28" rx="4.5" transform="rotate(28 0 -10)" fill="#1f9d8a"/>
                       <circle cx="-24" cy="-30" r="4" fill="#4caf7d"/>
                       <circle cx="-32" cy="-14" r="2.6" fill="#4caf7d"/>
                     </g>
@@ -617,7 +617,7 @@
         </div>
 
         <div class="hero-divider" aria-hidden="true">
-          <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C360,90 1080,-10 1440,40 L1440,80 L0,80 Z" fill="#fbede4"/></svg>
+          <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C360,90 1080,-10 1440,40 L1440,80 L0,80 Z" fill="#eef4f3"/></svg>
         </div>
       </section>
 
@@ -639,11 +639,11 @@
               <div class="flow-visual-frame">
                 <svg viewBox="0 0 100 100" aria-hidden="true">
                   <g transform="translate(50 58)">
-                    <rect x="-20" y="-6" width="40" height="34" rx="16" fill="#ff6f5c"/>
-                    <rect x="-6" y="-46" width="10" height="34" rx="5" transform="rotate(-24 0 -12)" fill="#ff6f5c"/>
-                    <rect x="6" y="-52" width="9" height="38" rx="4.5" transform="rotate(-8 0 -12)" fill="#ff6f5c"/>
-                    <rect x="18" y="-50" width="9" height="36" rx="4.5" transform="rotate(9 0 -12)" fill="#ff6f5c"/>
-                    <rect x="29" y="-42" width="9" height="30" rx="4.5" transform="rotate(25 0 -12)" fill="#ff6f5c"/>
+                    <rect x="-20" y="-6" width="40" height="34" rx="16" fill="#1f9d8a"/>
+                    <rect x="-6" y="-46" width="10" height="34" rx="5" transform="rotate(-24 0 -12)" fill="#1f9d8a"/>
+                    <rect x="6" y="-52" width="9" height="38" rx="4.5" transform="rotate(-8 0 -12)" fill="#1f9d8a"/>
+                    <rect x="18" y="-50" width="9" height="36" rx="4.5" transform="rotate(9 0 -12)" fill="#1f9d8a"/>
+                    <rect x="29" y="-42" width="9" height="30" rx="4.5" transform="rotate(25 0 -12)" fill="#1f9d8a"/>
                   </g>
                 </svg>
               </div>
@@ -659,9 +659,9 @@
             <div class="flow-visual">
               <div class="flow-visual-frame">
                 <svg viewBox="0 0 120 90" aria-hidden="true">
-                  <rect x="6" y="10" width="108" height="70" rx="16" fill="#211621"/>
+                  <rect x="6" y="10" width="108" height="70" rx="16" fill="#16191d"/>
                   <rect x="22" y="32" width="56" height="8" rx="4" fill="#ffffff"/>
-                  <rect x="22" y="48" width="76" height="8" rx="4" fill="#ff6f5c"/>
+                  <rect x="22" y="48" width="76" height="8" rx="4" fill="#1f9d8a"/>
                 </svg>
               </div>
             </div>
@@ -689,22 +689,22 @@
         </div>
         <div class="cases-grid">
           <div class="case-card big a" data-reveal>
-            <div class="case-illust"><svg viewBox="0 0 100 100"><path d="M50 20c-16 0-28 12-28 28 0 20 28 32 28 32s28-12 28-32c0-16-12-28-28-28z" fill="none" stroke="#e0503d" stroke-width="5"/><path d="M32 54l8 8 12-16 8 10 10-14" fill="none" stroke="#e0503d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="case-illust"><svg viewBox="0 0 100 100"><path d="M50 20c-16 0-28 12-28 28 0 20 28 32 28 32s28-12 28-32c0-16-12-28-28-28z" fill="none" stroke="#157a6b" stroke-width="5"/><path d="M32 54l8 8 12-16 8 10 10-14" fill="none" stroke="#157a6b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <span class="case-label">Santé</span>
             <h3>Des échanges plus clairs quand ils comptent le plus.</h3>
           </div>
           <div class="case-card small b" data-reveal>
-            <div class="case-illust"><svg viewBox="0 0 100 100"><rect x="18" y="26" width="64" height="42" rx="14" fill="none" stroke="#e0503d" stroke-width="5"/><path d="M34 68l-6 14 18-14" fill="#e0503d"/><circle cx="38" cy="47" r="4" fill="#e0503d"/><circle cx="50" cy="47" r="4" fill="#e0503d"/><circle cx="62" cy="47" r="4" fill="#e0503d"/></svg></div>
+            <div class="case-illust"><svg viewBox="0 0 100 100"><rect x="18" y="26" width="64" height="42" rx="14" fill="none" stroke="#157a6b" stroke-width="5"/><path d="M34 68l-6 14 18-14" fill="#157a6b"/><circle cx="38" cy="47" r="4" fill="#157a6b"/><circle cx="50" cy="47" r="4" fill="#157a6b"/><circle cx="62" cy="47" r="4" fill="#157a6b"/></svg></div>
             <span class="case-label">Service à la clientèle</span>
             <h3>Se faire comprendre au comptoir, sans détour.</h3>
           </div>
           <div class="case-card small c" data-reveal>
-            <div class="case-illust"><svg viewBox="0 0 100 100"><path d="M50 34c-8-6-20-9-30-8v42c10-1 22 2 30 8" fill="none" stroke="#211621" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 34c8-6 20-9 30-8v42c-10-1-22 2-30 8" fill="none" stroke="#211621" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><line x1="50" y1="34" x2="50" y2="76" stroke="#211621" stroke-width="5" stroke-linecap="round"/></svg></div>
+            <div class="case-illust"><svg viewBox="0 0 100 100"><path d="M50 34c-8-6-20-9-30-8v42c10-1 22 2 30 8" fill="none" stroke="#16191d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 34c8-6 20-9 30-8v42c-10-1-22 2-30 8" fill="none" stroke="#16191d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><line x1="50" y1="34" x2="50" y2="76" stroke="#16191d" stroke-width="5" stroke-linecap="round"/></svg></div>
             <span class="case-label">Éducation</span>
             <h3>Suivre un cours, poser une question, participer.</h3>
           </div>
           <div class="case-card big d" data-reveal>
-            <div class="case-illust"><svg viewBox="0 0 100 100"><rect x="14" y="24" width="46" height="32" rx="12" fill="none" stroke="#ff6f5c" stroke-width="5"/><path d="M24 56l-4 12 16-12"/><rect x="40" y="44" width="46" height="32" rx="12" fill="none" stroke="#ff6f5c" stroke-width="5"/><path d="M76 76l4 12-16-12"/></svg></div>
+            <div class="case-illust"><svg viewBox="0 0 100 100"><rect x="14" y="24" width="46" height="32" rx="12" fill="none" stroke="#1f9d8a" stroke-width="5"/><path d="M24 56l-4 12 16-12"/><rect x="40" y="44" width="46" height="32" rx="12" fill="none" stroke="#1f9d8a" stroke-width="5"/><path d="M76 76l4 12-16-12"/></svg></div>
             <span class="case-label">Conversation quotidienne</span>
             <h3>Dire oui, compter, saluer — sans avoir à parler à voix haute.</h3>
           </div>
@@ -738,10 +738,10 @@
           </div>
           <div class="human-illust" data-reveal>
             <svg viewBox="0 0 320 200" aria-hidden="true">
-              <circle cx="86" cy="66" r="30" fill="#211621"/>
-              <path d="M30 200c0-46 24-70 56-70s56 24 56 70z" fill="#211621"/>
-              <circle cx="234" cy="66" r="30" fill="#ff6f5c"/>
-              <path d="M178 200c0-46 24-70 56-70s56 24 56 70z" fill="#ff6f5c"/>
+              <circle cx="86" cy="66" r="30" fill="#16191d"/>
+              <path d="M30 200c0-46 24-70 56-70s56 24 56 70z" fill="#16191d"/>
+              <circle cx="234" cy="66" r="30" fill="#1f9d8a"/>
+              <path d="M178 200c0-46 24-70 56-70s56 24 56 70z" fill="#1f9d8a"/>
               <circle cx="160" cy="86" r="10" fill="#4caf7d"/>
               <circle cx="142" cy="70" r="5" fill="#4caf7d"/>
               <circle cx="180" cy="68" r="4" fill="#4caf7d"/>
@@ -761,14 +761,14 @@
           <div class="try-frame">
             <div class="signer-illust">
               <svg viewBox="0 0 200 200" aria-hidden="true">
-                <circle cx="100" cy="70" r="34" fill="#211621"/>
-                <path d="M40 200 C40 148 66 122 100 122 C134 122 160 148 160 200 Z" fill="#211621"/>
+                <circle cx="100" cy="70" r="34" fill="#16191d"/>
+                <path d="M40 200 C40 148 66 122 100 122 C134 122 160 148 160 200 Z" fill="#16191d"/>
                 <g transform="translate(148 90) rotate(-18)">
-                  <rect x="-19" y="-4" width="40" height="32" rx="15" fill="#ff6f5c"/>
-                  <rect x="-6" y="-42" width="10" height="32" rx="5" transform="rotate(-24 0 -10)" fill="#ff6f5c"/>
-                  <rect x="6" y="-46" width="9" height="34" rx="4.5" transform="rotate(-7 0 -10)" fill="#ff6f5c"/>
-                  <rect x="18" y="-43" width="9" height="32" rx="4.5" transform="rotate(11 0 -10)" fill="#ff6f5c"/>
-                  <rect x="29" y="-36" width="9" height="28" rx="4.5" transform="rotate(28 0 -10)" fill="#ff6f5c"/>
+                  <rect x="-19" y="-4" width="40" height="32" rx="15" fill="#1f9d8a"/>
+                  <rect x="-6" y="-42" width="10" height="32" rx="5" transform="rotate(-24 0 -10)" fill="#1f9d8a"/>
+                  <rect x="6" y="-46" width="9" height="34" rx="4.5" transform="rotate(-7 0 -10)" fill="#1f9d8a"/>
+                  <rect x="18" y="-43" width="9" height="32" rx="4.5" transform="rotate(11 0 -10)" fill="#1f9d8a"/>
+                  <rect x="29" y="-36" width="9" height="28" rx="4.5" transform="rotate(28 0 -10)" fill="#1f9d8a"/>
                 </g>
               </svg>
             </div>
@@ -1314,6 +1314,13 @@
   let faceLandmarker = null;
   let faceModelReady = false;
   let browBaseline = null;
+  // Throttling/self-protection state for the optional face model — see the
+  // face-context block inside loop() for how these are used.
+  let lastFaceCheckMs = 0;
+  let lastFaceCtx = null;
+  let faceTimingSamples = [];
+  const FACE_CHECK_INTERVAL_MS = 250;
+  const FACE_TIMING_BUDGET_MS = 35;
   let modelReady = false;
   let modelFailed = false;
   let stream = null;
@@ -1503,6 +1510,9 @@
       history.length = 0;
       motion.length = 0;
       browBaseline = null;
+      lastFaceCheckMs = 0;
+      lastFaceCtx = null;
+      faceTimingSamples = [];
       rafId = requestAnimationFrame(loop);
     } catch (err) {
       mainBtn.disabled = false;
@@ -1535,6 +1545,9 @@
     history.length = 0;
     motion.length = 0;
     browBaseline = null;
+    lastFaceCheckMs = 0;
+    lastFaceCtx = null;
+    faceTimingSamples = [];
     overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
   }
 
@@ -1690,24 +1703,53 @@
     const pinchRatio = Math.hypot((lm[4].x - lm[8].x) * vw, (lm[4].y - lm[8].y) * vh) / handSpanPx;
     const nowMs = performance.now();
 
-    // Face context, computed once per frame — feeds both this frame's motion
-    // sample (so a window-averaged check like "pardon" can see it) and, once
-    // a key is settled below, the direct "one" -> je/tu/quoi refinement.
-    // Detection runs whenever a hand is visible (not only while pointing) so
-    // the eyebrow baseline stays warm; everything here is wrapped so a face
-    // model that isn't ready, a face that drifts out of frame, or a runtime
-    // error never touches the hand-only pipeline around it.
+    // Face context — only ever used to refine "one" (into je/tu/quoi) or
+    // "fist" (into pardon), so it only runs at all on those two shapes, and
+    // even then at most every FACE_CHECK_INTERVAL_MS (reusing the last
+    // reading in between) rather than on every animation frame. Hand
+    // tracking is the app's core function; a second CPU model competing for
+    // the same frame budget on every single frame is exactly the kind of
+    // slowdown that made the whole app feel unreliable, so this keeps the
+    // extra cost rare and bounded instead of continuous.
     let faceCtx = null;
-    if (faceModelReady && faceLandmarker) {
-      try {
-        const faceResult = faceLandmarker.detectForVideo(video, now);
-        if (faceResult.faceLandmarks && faceResult.faceLandmarks.length) {
-          const faceLm = faceResult.faceLandmarks[0];
-          faceCtx = classifyFaceContext(faceLm, palmX, palmY, vw, vh, browBaseline);
-          if (browBaseline === null) browBaseline = faceCtx.browRatio;
-          else if (!faceCtx.raised) browBaseline = browBaseline * 0.97 + faceCtx.browRatio * 0.03;
+    if (faceModelReady && faceLandmarker && (key === "one" || key === "fist")) {
+      if (nowMs - lastFaceCheckMs < FACE_CHECK_INTERVAL_MS) {
+        faceCtx = lastFaceCtx;
+      } else {
+        lastFaceCheckMs = nowMs;
+        const t0 = performance.now();
+        try {
+          const faceResult = faceLandmarker.detectForVideo(video, now);
+          faceTimingSamples.push(performance.now() - t0);
+          if (faceTimingSamples.length > 10) faceTimingSamples.shift();
+          if (faceTimingSamples.length >= 6) {
+            const avgMs = faceTimingSamples.reduce((a, b) => a + b, 0) / faceTimingSamples.length;
+            if (avgMs > FACE_TIMING_BUDGET_MS) {
+              // Measurably too slow on this device — turn face tracking off
+              // for the rest of the session rather than let it keep
+              // competing with hand detection every time it runs. Falls
+              // back to plain "one"/"fist" exactly as before it existed.
+              faceModelReady = false;
+              faceLandmarker = null;
+            }
+          }
+          if (faceResult.faceLandmarks && faceResult.faceLandmarks.length) {
+            const faceLm = faceResult.faceLandmarks[0];
+            faceCtx = classifyFaceContext(faceLm, palmX, palmY, vw, vh, browBaseline);
+            if (browBaseline === null) browBaseline = faceCtx.browRatio;
+            else if (!faceCtx.raised) browBaseline = browBaseline * 0.97 + faceCtx.browRatio * 0.03;
+          } else {
+            faceCtx = null;
+          }
+          lastFaceCtx = faceCtx;
+        } catch (e) {
+          // Best-effort: any runtime error permanently disables face
+          // tracking rather than risk it happening on every frame from now on.
+          faceModelReady = false;
+          faceLandmarker = null;
+          faceCtx = null;
         }
-      } catch (e) { /* face tracking is best-effort; never let it break hand tracking */ }
+      }
     }
 
     motion.push({
