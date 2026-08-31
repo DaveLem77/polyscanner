@@ -1168,6 +1168,26 @@
     return { reversals, range: max - min };
   }
 
+  // Decides whether a newly-stable reading should be spoken and logged as a
+  // new transcript entry. Two different rules for two different situations:
+  // holding the SAME sign needs a long pause (1500ms) before it repeats, so
+  // continuing to hold a pose doesn't spam the transcript every time the
+  // rolling history re-confirms it. But a genuinely DIFFERENT sign still
+  // needs a short minimum gap (650ms) of its own — without one, a hand's
+  // natural, unintentional pause on a transitional shape on the way to the
+  // intended one (an open "Cinq" passed through on the way to a fist, say)
+  // could earn its own full commit moments before the real target sign
+  // does, producing several words firing back-to-back in a burst — while
+  // 650ms stays well under the time real, deliberate signing takes between
+  // two distinct signs, so it never makes genuine recognition feel slower.
+  const COMMIT_GAP_SAME_MS = 1500;
+  const COMMIT_GAP_DIFFERENT_MS = 650;
+  function shouldCommitGesture(vote, lastCommitted, elapsedMs) {
+    if (lastCommitted === null) return true;
+    const gap = vote === lastCommitted ? COMMIT_GAP_SAME_MS : COMMIT_GAP_DIFFERENT_MS;
+    return elapsedMs > gap;
+  }
+
   // Very small, deliberately simple motion classifier. It looks at the last
   // ~0.9s of samples (palm position + apparent size + hand shape, all in
   // pixels) and asks: did an open hand swing side to side (wave)? did a
@@ -1371,7 +1391,15 @@
   let faceContextStreakCount = 0;
   let lastDebouncedContextKey = null;
   const FACE_CHECK_INTERVAL_MS = 250;
-  const FACE_TIMING_BUDGET_MS = 35;
+  // Raised from 35ms/6 samples: that budget judged the face model on barely
+  // 1.5s of real use, and a secondary ML model sharing frame time with hand
+  // tracking can easily land in the 35-55ms range on an ordinary laptop/
+  // phone even when it's working fine — it was very plausibly disabling
+  // itself almost immediately on ordinary hardware, which would explain
+  // every face-based sign (je/tu/quoi/pardon) failing at once. Now it needs
+  // a longer, more representative sample (~3s of real checks) before making
+  // that permanent, session-wide call, and allows a bit more per-call time.
+  const FACE_TIMING_BUDGET_MS = 55;
   let modelReady = false;
   let modelFailed = false;
   let stream = null;
@@ -1780,8 +1808,8 @@
         try {
           const faceResult = faceLandmarker.detectForVideo(video, now);
           faceTimingSamples.push(performance.now() - t0);
-          if (faceTimingSamples.length > 10) faceTimingSamples.shift();
-          if (faceTimingSamples.length >= 6) {
+          if (faceTimingSamples.length > 14) faceTimingSamples.shift();
+          if (faceTimingSamples.length >= 12) {
             const avgMs = faceTimingSamples.reduce((a, b) => a + b, 0) / faceTimingSamples.length;
             if (avgMs > FACE_TIMING_BUDGET_MS) {
               // Measurably too slow on this device — turn face tracking off
@@ -1867,7 +1895,7 @@
       captionLabel.textContent = g.label;
       statusLine.textContent = "";
       const t = performance.now();
-      if (vote !== lastCommitted || t - lastCommitTime > 1500) {
+      if (shouldCommitGesture(vote, lastCommitted, t - lastCommitTime)) {
         transcriptWords.push(g.code);
         if (transcriptWords.length > 60) transcriptWords.shift();
         lastCommitted = vote;
