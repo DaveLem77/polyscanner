@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<title>SignoScope</title>
+<title>Sensa</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
 <style>
   :root {
@@ -64,6 +64,31 @@
     --good: #4caf7d;
     --warn: #f2b84b;
     --bad: rgba(247,249,255,0.26);
+
+    /* ---- Sensa landing palette (fully decoupled from the HUD vars above:
+       none of these are read anywhere in the LIVE CAMERA HUD block) ---- */
+    --s-bg: #FAF9F7;
+    --s-bg-alt: #F5F2FC;
+    --s-surface: #FFFFFF;
+    --s-ink: #111426;
+    --s-ink-dim: rgba(17,20,38,0.66);
+    --s-ink-faint: rgba(17,20,38,0.44);
+    --s-violet: #665CF6;
+    --s-violet-deep: #4F42E8;
+    --s-violet-wash: rgba(102,92,246,0.10);
+    --s-purple: #A76DF5;
+    --s-pink: #F39BC8;
+    --s-pink-wash: rgba(243,155,200,0.14);
+    --s-line: rgba(20,20,35,0.08);
+    --s-line-strong: rgba(20,20,35,0.16);
+    --s-grad-btn: linear-gradient(135deg, #6f65f8 0%, var(--s-violet) 55%, var(--s-violet-deep) 100%);
+    --s-grad-text: linear-gradient(100deg, var(--s-violet) 15%, var(--s-purple) 60%, var(--s-pink) 100%);
+    --s-shadow-sm: 0 1px 2px rgba(20,20,40,0.05);
+    --s-shadow-md: 0 16px 36px -16px rgba(60,40,140,0.22);
+    --s-shadow-lg: 0 30px 70px -20px rgba(40,25,90,0.28);
+    --r-lg: 22px;
+    --r-md: 16px;
+    --r-sm: 11px;
   }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -91,340 +116,362 @@
   .scrim-bottom { bottom: 0; height: 46%; background: linear-gradient(to top, rgba(0,0,0,0.66), transparent); }
 
   /* =======================================================================
-     LANDING — rich, colorful product-launch design system
+     SENSA — landing / marketing design system
+     Off-white, violet/pink, "2026 startup" aesthetic. Fully decoupled from
+     the live-camera HUD variables below: nothing in this block, or in the
+     rules that follow, reads --coral / --charcoal / --glass / --text* /
+     --good / --warn / --bad — those stay pinned to the HUD's current look.
      ======================================================================= */
 
-  .landing { position: absolute; inset: 0; z-index: 5; background: var(--bg); color: var(--ink); display: flex; flex-direction: column; }
-  .landing-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+  .landing {
+    position: absolute; inset: 0; z-index: 5;
+    background: var(--s-bg); color: var(--s-ink);
+    display: flex; flex-direction: column;
+    font-family: var(--sans);
+  }
+  .landing-scroll { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
   @media (prefers-reduced-motion: reduce) { .landing-scroll { scroll-behavior: auto; } }
 
-  [data-reveal] { opacity: 0; transform: translateY(20px); transition: opacity 0.7s cubic-bezier(.16,.8,.2,1), transform 0.7s cubic-bezier(.16,.8,.2,1); }
+  [data-reveal] { opacity: 0; transform: translateY(16px); transition: opacity 0.6s cubic-bezier(.16,.8,.2,1), transform 0.6s cubic-bezier(.16,.8,.2,1); }
   [data-reveal].is-visible { opacity: 1; transform: none; }
   @media (prefers-reduced-motion: reduce) { [data-reveal] { opacity: 1; transform: none; transition: none; } }
 
-  .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.06; mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  }
+  .landing h1, .landing h2, .landing h3 { font-family: var(--display); letter-spacing: -0.02em; }
 
   /* ---------- nav ---------- */
 
   .nav {
-    position: absolute; top: 0; left: 0; right: 0; z-index: 20;
+    position: absolute; top: 0; left: 0; right: 0; z-index: 30;
     display: flex; align-items: center; justify-content: space-between;
-    padding: calc(env(safe-area-inset-top, 0px) + 18px) var(--gutter);
-    transition: padding 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
+    padding: calc(env(safe-area-inset-top, 0px) + 16px) var(--gutter);
+    transition: padding 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border-bottom: 1px solid transparent;
   }
-  .nav.on-dark { color: var(--ivory); }
   .nav.scrolled {
-    padding: calc(env(safe-area-inset-top, 0px) + 10px) var(--gutter);
-    background: rgba(6,8,14,0.72);
+    padding: calc(env(safe-area-inset-top, 0px) + 11px) var(--gutter);
+    background: rgba(250,249,247,0.78);
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    box-shadow: 0 1px 0 var(--line);
+    border-bottom: 1px solid var(--s-line);
   }
   .nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
-  .nav-mark { width: 25px; height: 25px; flex: none; }
-  .nav-wordmark { font-family: var(--display); font-weight: 800; font-size: 16.5px; letter-spacing: -0.01em; }
-  .nav-links { display: none; gap: 28px; position: absolute; left: 50%; transform: translateX(-50%); }
-  .nav-links a { font-family: var(--sans); font-weight: 500; font-size: 14px; color: inherit; opacity: 0.7; text-decoration: none; transition: opacity 0.2s ease; }
-  .nav-links a:hover { opacity: 1; }
-  @media (min-width: 860px) { .nav-links { display: flex; } }
+  .nav-mark { width: 26px; height: 26px; flex: none; }
+  .nav-wordmark { font-family: var(--display); font-weight: 800; font-size: 17px; letter-spacing: -0.01em; color: var(--s-ink); }
+  .nav-links { display: none; gap: 30px; position: absolute; left: 50%; transform: translateX(-50%); }
+  .nav-links a { font-family: var(--sans); font-weight: 500; font-size: 14px; color: var(--s-ink-dim); text-decoration: none; transition: color 0.2s ease; }
+  .nav-links a:hover { color: var(--s-ink); }
+  @media (min-width: 900px) { .nav-links { display: flex; } }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
   .nav-cta {
     display: inline-flex; align-items: center; gap: 7px;
     font-family: var(--sans); font-weight: 600; font-size: 13.5px;
-    color: #fff; background: linear-gradient(135deg, #5c85ff 0%, var(--coral) 100%);
-    border: none; border-radius: 100px; padding: 10px 9px 10px 18px;
+    color: #fff; background: var(--s-grad-btn);
+    border: none; border-radius: 100px; padding: 10px 16px;
     text-decoration: none; cursor: pointer; white-space: nowrap;
-    transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
-    box-shadow: 0 6px 16px rgba(63,107,255,0.4);
+    transition: transform 0.2s ease, box-shadow 0.25s ease;
+    box-shadow: 0 6px 18px -4px rgba(102,92,246,0.45);
   }
-  .nav-cta .arrow { width: 24px; height: 24px; border-radius: 50%; background: rgba(255,255,255,0.24); display: flex; align-items: center; justify-content: center; transition: transform 0.25s ease; }
-  .nav-cta:hover { background: var(--coral-deep); transform: translateY(-1px); box-shadow: 0 8px 18px rgba(63,107,255,0.4); }
-  .nav-cta:hover .arrow { transform: translateX(3px); }
+  .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 10px 22px -4px rgba(102,92,246,0.5); }
   .nav-cta:active { transform: translateY(0) scale(0.98); }
-  @media (max-width: 420px) {
-    .nav-wordmark { font-size: 15px; }
-    .nav-cta { font-size: 12px; padding: 8px 7px 8px 13px; gap: 6px; }
-    .nav-cta .arrow { width: 20px; height: 20px; }
+  @media (max-width: 899px) { .nav-cta { display: none; } }
+
+  .nav-burger {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--s-line); background: var(--s-surface);
+    cursor: pointer; padding: 0;
   }
+  .nav-burger span { display: block; width: 17px; height: 1.6px; border-radius: 2px; background: var(--s-ink); transition: transform 0.25s ease, opacity 0.2s ease; }
+  .nav-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+  .nav-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .nav-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+  @media (min-width: 900px) { .nav-burger { display: none; } }
+
+  .mobile-menu {
+    position: absolute; top: 100%; left: 0; right: 0; z-index: 29;
+    background: var(--s-surface); border-bottom: 1px solid var(--s-line);
+    box-shadow: 0 20px 40px -20px rgba(30,20,60,0.18);
+    padding: 8px var(--gutter) calc(env(safe-area-inset-bottom, 0px) + 20px);
+    display: flex; flex-direction: column; gap: 2px;
+    transform: translateY(-8px); opacity: 0; pointer-events: none;
+    transition: transform 0.22s ease, opacity 0.22s ease;
+  }
+  .mobile-menu.show { transform: none; opacity: 1; pointer-events: auto; }
+  .mobile-menu a { font-family: var(--sans); font-weight: 500; font-size: 16px; color: var(--s-ink); text-decoration: none; padding: 13px 4px; border-bottom: 1px solid var(--s-line); }
+  .mobile-menu a:last-child { border-bottom: none; margin-top: 10px; }
+  @media (min-width: 900px) { .mobile-menu { display: none; } }
 
   /* ---------- hero ---------- */
 
   .hero {
     position: relative; overflow: hidden;
-    background: var(--plum); color: var(--ivory);
-    padding: calc(env(safe-area-inset-top, 0px) + 96px) var(--gutter) 84px;
+    padding: calc(env(safe-area-inset-top, 0px) + 92px) var(--gutter) 56px;
   }
-  .hero-blob {
-    position: absolute; border-radius: 42% 58% 65% 35% / 45% 40% 60% 55%;
-    z-index: 0; filter: blur(70px);
+  .hero-atmosphere {
+    position: absolute; inset: -10% -10% auto -10%; height: 620px; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(46% 60% at 78% 8%, rgba(167,109,245,0.16), transparent 70%),
+      radial-gradient(40% 55% at 8% 28%, rgba(243,155,200,0.14), transparent 70%),
+      radial-gradient(60% 60% at 50% -10%, rgba(102,92,246,0.10), transparent 70%);
+    filter: blur(6px);
   }
-  .hero-blob.b1 { width: 620px; height: 620px; top: -220px; right: -240px; background: var(--coral); opacity: 0.4; }
-  .hero-blob.b2 { width: 380px; height: 380px; bottom: -14%; left: -140px; background: var(--lime); opacity: 0.2; border-radius: 60% 40% 35% 65% / 55% 60% 40% 45%; }
-  .hero-blob.b3 { width: 260px; height: 260px; top: 18%; right: 4%; background: var(--salmon); opacity: 0.22; border-radius: 55% 45% 60% 40% / 40% 55% 45% 60%; }
 
-  .hero-divider { position: absolute; left: 0; right: 0; bottom: -1px; z-index: 2; line-height: 0; }
-  .hero-divider svg { width: 100%; height: auto; display: block; }
+  .hero-grid { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 40px; max-width: 1180px; margin: 0 auto; }
+  @media (min-width: 980px) { .hero-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 56px; } }
 
-  .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr; gap: 44px; max-width: 1180px; margin: 0 auto; }
-  @media (min-width: 980px) { .hero-grid { grid-template-columns: 1.05fr 1fr; align-items: center; gap: 40px; } }
+  .hero-copy { order: 1; }
+  .hero-visual { order: 2; }
 
-  .hero-eyebrow {
+  .eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
-    font-family: var(--sans); font-weight: 600; font-size: 12px; color: var(--ivory);
-    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.14);
-    border-radius: 100px; padding: 7px 14px 7px 10px;
-    margin-bottom: 20px;
+    font-family: var(--sans); font-weight: 600; font-size: 12.5px; color: var(--s-violet-deep);
+    background: var(--s-violet-wash); border: 1px solid rgba(102,92,246,0.16);
+    border-radius: 100px; padding: 7px 14px 7px 11px;
+    margin-bottom: 22px;
   }
-  .hero-eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--coral); }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--s-violet); flex: none; }
 
   .hero h1 {
-    margin: 0 0 18px; font-family: var(--display); font-weight: 800; letter-spacing: -0.02em;
-    line-height: 1.1; font-size: var(--fs-display); color: var(--ivory);
+    margin: 0 0 18px; font-weight: 800; line-height: 1.08;
+    font-size: var(--fs-display); color: var(--s-ink);
   }
   .hero h1 .hl {
-    background: linear-gradient(100deg, var(--coral) 15%, var(--lime) 85%);
+    background: var(--s-grad-text);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
 
-  .hero-sub { margin: 0 0 28px; max-width: 42ch; font-size: var(--fs-body); line-height: 1.65; color: var(--ivory-dim); }
+  .hero-sub { margin: 0 0 30px; max-width: 46ch; font-size: var(--fs-body); line-height: 1.65; color: var(--s-ink-dim); }
 
-  .hero-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .hero-actions { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
 
   .btn-primary {
-    display: inline-flex; align-items: center; gap: 10px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
     font-family: var(--sans); font-weight: 700; font-size: 15px;
-    color: #fff; background: linear-gradient(135deg, #5c85ff 0%, var(--coral) 45%, var(--coral-deep) 100%);
-    border: none; border-radius: 100px; padding: 15px 12px 15px 24px;
+    color: #fff; background: var(--s-grad-btn);
+    border: none; border-radius: 100px; padding: 16px 26px;
     cursor: pointer; text-decoration: none;
-    transition: background 0.22s ease, transform 0.18s ease, box-shadow 0.22s ease;
-    box-shadow: 0 12px 30px -6px rgba(63,107,255,0.65);
+    transition: transform 0.18s ease, box-shadow 0.22s ease, opacity 0.2s ease;
+    box-shadow: 0 14px 30px -10px rgba(102,92,246,0.55);
   }
-  .btn-primary .arrow { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.24); display: flex; align-items: center; justify-content: center; transition: transform 0.25s ease; flex: none; }
-  .btn-primary:hover { background: linear-gradient(135deg, #6d90ff 0%, var(--coral) 40%, var(--coral-deep) 100%); transform: translateY(-2px) scale(1.01); box-shadow: 0 18px 36px -6px rgba(63,107,255,0.75); }
-  .btn-primary:hover .arrow { transform: translateX(3px); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 34px -10px rgba(102,92,246,0.6); }
   .btn-primary:active { transform: translateY(0) scale(0.98); }
-  .btn-primary:disabled { opacity: 0.48; cursor: default; box-shadow: none; }
-  .btn-primary:disabled:hover { background: linear-gradient(135deg, #5c85ff 0%, var(--coral) 45%, var(--coral-deep) 100%); transform: none; }
-  .btn-primary:disabled:hover .arrow { transform: none; }
-  .btn-primary.block { width: 100%; justify-content: center; }
+  .btn-primary:disabled { opacity: 0.45; cursor: default; box-shadow: none; transform: none; }
+  .btn-primary.block { width: 100%; }
+
+  .btn-secondary {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font-family: var(--sans); font-weight: 600; font-size: 15px; color: var(--s-ink);
+    background: var(--s-surface); border: 1px solid var(--s-line-strong); border-radius: 100px;
+    padding: 15px 24px; text-decoration: none; cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.18s ease;
+  }
+  .btn-secondary:hover { border-color: var(--s-violet); transform: translateY(-1px); }
 
   .link-quiet {
-    font-family: var(--sans); font-weight: 600; font-size: 14px;
+    font-family: var(--sans); font-weight: 600; font-size: 15px;
     text-decoration: none; display: inline-flex; align-items: center; gap: 7px;
-    color: var(--ivory);
-    border-bottom: 1.5px solid rgba(255,255,255,0.35); padding-bottom: 3px;
+    color: var(--s-ink);
+    border-bottom: 1.5px solid var(--s-line-strong); padding-bottom: 3px;
     transition: border-color 0.2s ease, opacity 0.2s ease;
   }
-  .link-quiet:hover { border-color: var(--ivory); opacity: 0.85; }
-  .link-quiet.on-light { color: var(--ink); border-color: var(--line-strong); }
-  .link-quiet.on-light:hover { border-color: var(--ink); }
+  .link-quiet:hover { border-color: var(--s-violet); }
 
-  /* ---- hero product card ---- */
+  /* ---- hero camera mockup ---- */
 
-  .demo-card {
-    position: relative; background: var(--white); border-radius: 26px;
-    padding: 18px; box-shadow: 0 30px 70px -18px rgba(0,0,0,0.6), 0 0 0 1px rgba(63,107,255,0.16), 0 0 70px -14px rgba(63,107,255,0.35);
-    max-width: 440px; margin: 0 auto; width: 100%;
+  .cam-mock { position: relative; max-width: 440px; margin: 0 auto; width: 100%; }
+  .cam-mock-frame {
+    position: relative; border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 4 / 5;
+    background: linear-gradient(160deg, #1c1b33 0%, #14132a 60%, #100f22 100%);
+    box-shadow: var(--s-shadow-lg), 0 0 0 1px rgba(20,20,35,0.06);
+    display: flex; align-items: center; justify-content: center;
   }
-  .demo-card-inner {
-    position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 1 / 1.02;
-    background: linear-gradient(155deg, var(--lavender) 0%, var(--lavender-2) 100%);
-    display: flex; align-items: flex-end;
-  }
-  .signer-illust { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-  .signer-illust svg { width: 60%; height: auto; }
-
-  .speech-bubble {
-    position: relative; z-index: 2; margin: 0 14px 14px; width: calc(100% - 28px);
-    background: var(--charcoal); border-radius: 16px; padding: 15px 17px;
-    display: flex; flex-direction: column; gap: 9px;
-    box-shadow: 0 16px 30px -12px rgba(0,0,0,0.5);
-  }
-  .speech-kicker { font-family: var(--sans); font-weight: 600; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(247,249,255,0.5); }
-  .speech-text { font-family: var(--display); font-weight: 700; font-size: 18px; color: #fff; min-height: 1.3em; }
-  .speech-text .caret { display: inline-block; width: 2px; height: 0.85em; background: var(--coral); margin-left: 2px; vertical-align: -2px; animation: caretBlink 1s step-end infinite; }
-  @keyframes caretBlink { 50% { opacity: 0; } }
-  .speech-audio { display: flex; align-items: center; gap: 10px; }
-  .play-mark { width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid var(--coral); flex: none; }
-  .mini-bars { display: flex; align-items: flex-end; gap: 3px; height: 14px; }
-  .mini-bars i { width: 2.5px; border-radius: 1px; background: rgba(247,249,255,0.4); height: 25%; transition: background 0.3s ease; }
-  .mini-bars.active i { background: var(--coral); animation: waveBounce 0.9s ease-in-out infinite; }
-  @keyframes waveBounce { 0%, 100% { height: 22%; } 50% { height: 100%; } }
-  .speech-audio-label { font-family: var(--sans); font-size: 12px; color: rgba(247,249,255,0.62); }
-
-  .demo-card-tag {
-    position: absolute; top: 14px; left: 14px; z-index: 2;
+  .cam-mock-illust { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .cam-mock-illust svg { width: 62%; height: auto; }
+  .track-dot { fill: var(--s-purple); opacity: 0.85; }
+  .track-line { stroke: var(--s-purple); stroke-width: 1; opacity: 0.35; }
+  .cam-mock-badge {
+    position: absolute; top: 16px; left: 16px; z-index: 2;
     display: flex; align-items: center; gap: 7px;
-    background: rgba(255,255,255,0.86); backdrop-filter: blur(6px);
-    border-radius: 100px; padding: 7px 12px; font-family: var(--sans); font-weight: 600; font-size: 11px; color: var(--ink);
+    background: rgba(255,255,255,0.12); backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 100px; padding: 7px 13px; font-family: var(--sans); font-weight: 600; font-size: 11px; color: #fff;
   }
-  .demo-card-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+  .cam-mock-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--s-pink); animation: camPulse 2.2s ease-in-out infinite; }
+  @keyframes camPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+  @media (prefers-reduced-motion: reduce) { .cam-mock-badge .dot { animation: none; } }
+
+  .translation-card {
+    position: relative; margin-top: -34px; z-index: 3; margin-left: 14px; margin-right: 14px;
+    background: var(--s-surface); border-radius: var(--r-md); padding: 16px 18px;
+    box-shadow: var(--s-shadow-md), 0 0 0 1px var(--s-line);
+  }
+  .translation-kicker { font-family: var(--sans); font-weight: 700; font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--s-violet-deep); }
+  .translation-text { margin: 7px 0 0; font-family: var(--display); font-weight: 700; font-size: 16.5px; line-height: 1.4; color: var(--s-ink); }
 
   /* ---------- generic section shell ---------- */
 
-  .section { padding: 76px var(--gutter); position: relative; }
-  .section.bg-plum { background: var(--plum); color: var(--ivory); }
-  .section.bg-charcoal { background: var(--charcoal); color: var(--ivory); }
-  .section.bg-lavender { background: var(--lavender); }
-  .section.bg-peach { background: linear-gradient(180deg, var(--coral-wash) 0%, var(--peach) 100%); }
-  .section.bg-coral-wash { background: var(--coral-wash); }
+  .section { padding: 64px var(--gutter); position: relative; }
+  .section.bg-alt { background: var(--s-bg-alt); }
 
-  .section-head { display: flex; flex-direction: column; gap: 12px; max-width: 620px; margin: 0 auto 48px; text-align: center; }
-  .section-head.left { text-align: left; margin-left: 0; }
+  .section-head { display: flex; flex-direction: column; gap: 12px; max-width: 640px; margin: 0 auto 40px; text-align: center; }
   .eyebrow-tag {
     display: inline-flex; align-self: center; align-items: center; gap: 8px;
-    font-family: var(--sans); font-weight: 600; font-size: var(--fs-caption); letter-spacing: 0.03em;
-    color: var(--coral); background: rgba(63,107,255,0.12); border-radius: 100px; padding: 6px 13px;
+    font-family: var(--sans); font-weight: 600; font-size: var(--fs-caption); letter-spacing: 0.02em;
+    color: var(--s-violet-deep); background: var(--s-violet-wash); border-radius: 100px; padding: 6px 13px;
   }
-  .bg-plum .eyebrow-tag, .bg-charcoal .eyebrow-tag { background: rgba(255,255,255,0.12); color: var(--ivory); }
-  .section-head.left .eyebrow-tag { align-self: flex-start; }
-  .section-head h2 { margin: 0; font-family: var(--display); font-weight: 800; letter-spacing: -0.015em; line-height: 1.16; font-size: var(--fs-h1); }
-  .bg-plum .section-head h2, .bg-charcoal .section-head h2 { color: var(--ivory); }
-  .section-head p { margin: 0 auto; color: var(--ink-dim); font-size: var(--fs-body); line-height: 1.65; max-width: 50ch; }
-  .bg-plum .section-head p, .bg-charcoal .section-head p { color: var(--ivory-dim); }
-  .section-head.left p { margin: 0; }
+  .section-head h2 { margin: 0; font-weight: 800; line-height: 1.18; font-size: var(--fs-h1); color: var(--s-ink); }
+  .section-head p { margin: 0 auto; color: var(--s-ink-dim); font-size: var(--fs-body); line-height: 1.65; max-width: 52ch; }
 
-  /* ---------- how it works ---------- */
+  /* ---------- product demo (3 simple steps) ---------- */
 
-  .flow { max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
-  .flow-step { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; padding: 32px 22px; border-radius: 22px; }
-  @media (min-width: 900px) { .flow-step { grid-template-columns: 0.9fr 1.1fr; gap: 52px; padding: 48px 40px; } .flow-step.reverse { grid-template-columns: 1.1fr 0.9fr; } .flow-step.reverse .flow-copy { order: 2; } }
-  .flow-step.tint-a { background: var(--lavender); }
-  .flow-step.tint-b { background: linear-gradient(155deg, var(--coral-wash), var(--peach)); }
-  .flow-step.tint-c { background: var(--charcoal); color: var(--ivory); }
-  .flow-num { font-family: var(--sans); font-weight: 700; font-size: var(--fs-caption); letter-spacing: 0.06em; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--coral); }
-  .flow-step.tint-c .flow-num { color: var(--coral); }
-  .flow-copy h3 { margin: 0 0 8px; font-family: var(--display); font-weight: 800; font-size: var(--fs-h2); letter-spacing: -0.01em; color: inherit; }
-  .flow-copy p { margin: 0; font-size: 14.5px; line-height: 1.65; color: var(--ink-dim); max-width: 38ch; }
-  .flow-step.tint-c .flow-copy p { color: rgba(247,249,255,0.7); }
-  .flow-visual { display: flex; align-items: center; justify-content: center; }
-  .flow-visual-frame { width: 100%; max-width: 280px; aspect-ratio: 1.2 / 1; border-radius: 18px; background: var(--white); display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 40px -18px rgba(0,0,0,0.5); }
-  .flow-step.tint-c .flow-visual-frame { background: var(--charcoal-2); box-shadow: none; }
-  .flow-visual-frame svg { width: 58%; height: auto; }
-  .flow-wave { display: flex; align-items: flex-end; gap: 5px; height: 60%; }
-  .flow-wave i { width: 6px; border-radius: 3px; background: var(--coral); height: 20%; animation: flowWave 1.1s ease-in-out infinite; animation-play-state: paused; }
-  .flow-step.is-active .flow-wave i { animation-play-state: running; }
-  @keyframes flowWave { 0%, 100% { height: 18%; } 50% { height: 85%; } }
-
-  /* ---------- use cases ---------- */
-
-  .cases-grid { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 18px; }
-  @media (min-width: 860px) {
-    .cases-grid { grid-template-columns: repeat(6, 1fr); grid-auto-rows: 230px; }
-    .case-card.big { grid-column: span 4; grid-row: span 2; }
-    .case-card.small { grid-column: span 2; grid-row: span 1; }
+  .demo-steps { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 860px) { .demo-steps { grid-template-columns: repeat(3, 1fr); gap: 22px; } }
+  .demo-step {
+    background: var(--s-surface); border: 1px solid var(--s-line); border-radius: var(--r-lg);
+    padding: 28px 24px; display: flex; flex-direction: column; gap: 16px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
+  .demo-step:hover { transform: translateY(-3px); box-shadow: var(--s-shadow-md); }
+  .demo-step-visual {
+    height: 96px; border-radius: var(--r-sm); background: var(--s-bg-alt);
+    display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
+  }
+  .demo-step-visual svg { width: 52px; height: 52px; }
+  .demo-step-num { font-family: var(--sans); font-weight: 700; font-size: 12px; letter-spacing: 0.05em; color: var(--s-violet); }
+  .demo-step h3 { margin: 0; font-weight: 700; font-size: 17px; line-height: 1.35; color: var(--s-ink); letter-spacing: -0.005em; }
+  .demo-step p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--s-ink-dim); }
+  .demo-scan-line { position: absolute; left: 6%; right: 6%; height: 2px; border-radius: 2px; background: var(--s-grad-btn); top: 20%; animation: demoScan 2.6s ease-in-out infinite; }
+  @keyframes demoScan { 0%, 100% { top: 18%; opacity: 0.9; } 50% { top: 74%; opacity: 0.5; } }
+  @media (prefers-reduced-motion: reduce) { .demo-scan-line { animation: none; top: 46%; } }
+  .demo-step-visual .pulse-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--s-violet); position: relative; }
+  .demo-step-visual .pulse-dot::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; border: 1.5px solid var(--s-violet); opacity: 0; animation: pulseRing 2.2s ease-out infinite; }
+  @keyframes pulseRing { 0% { opacity: 0.6; transform: scale(0.6); } 100% { opacity: 0; transform: scale(1.8); } }
+  @media (prefers-reduced-motion: reduce) { .demo-step-visual .pulse-dot::after { animation: none; opacity: 0; } }
+
+  /* ---------- how it works (3 premium cards) ---------- */
+
+  .how-grid { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 18px; }
+  @media (min-width: 860px) { .how-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
+  .how-card {
+    background: var(--s-surface); border: 1px solid var(--s-line); border-radius: var(--r-lg);
+    padding: 30px 26px; display: flex; flex-direction: column; gap: 18px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .how-card:hover { transform: translateY(-3px); box-shadow: var(--s-shadow-md); }
+  .how-icon { width: 52px; height: 52px; border-radius: 15px; background: var(--s-violet-wash); display: flex; align-items: center; justify-content: center; }
+  .how-icon svg { width: 26px; height: 26px; }
+  .how-num { font-family: var(--sans); font-weight: 700; font-size: 12.5px; letter-spacing: 0.03em; color: var(--s-ink-faint); }
+  .how-card h3 { margin: 0; font-weight: 700; font-size: 18px; color: var(--s-ink); letter-spacing: -0.01em; }
+  .how-card p { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--s-ink-dim); }
+
+  /* ---------- use cases (scrollable on mobile) ---------- */
+
+  .cases-scroller {
+    display: flex; gap: 14px; overflow-x: auto; padding: 4px var(--gutter) 20px; margin: 0 calc(var(--gutter) * -1);
+    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .cases-scroller::-webkit-scrollbar { display: none; }
   .case-card {
-    position: relative; border-radius: 22px; overflow: hidden; padding: 26px;
-    display: flex; flex-direction: column; justify-content: flex-end; gap: 8px;
-    min-height: 210px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    scroll-snap-align: start; flex: 0 0 auto; width: 240px;
+    background: var(--s-surface); border: 1px solid var(--s-line); border-radius: var(--r-lg);
+    padding: 24px; display: flex; flex-direction: column; gap: 14px; min-height: 190px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
-  .case-card:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -18px rgba(0,0,0,0.55); }
-  .case-card.a { background: linear-gradient(155deg, var(--white) 0%, var(--lavender) 100%); }
-  .case-card.b { background: linear-gradient(155deg, var(--coral-wash), var(--peach-2)); }
-  .case-card.c { background: var(--bg-soft); }
-  .case-card.d { background: linear-gradient(155deg, var(--charcoal) 0%, var(--charcoal-3) 100%); color: var(--ivory); }
-  .case-illust { position: absolute; top: 20px; right: 20px; width: 78px; height: 78px; opacity: 0.92; }
-  .case-illust svg { width: 100%; height: 100%; }
-  .case-label { font-family: var(--sans); font-weight: 600; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--coral); }
-  .case-card.d .case-label { color: var(--coral); }
-  .case-card h3 { margin: 0; font-family: var(--display); font-weight: 800; font-size: var(--fs-h2); letter-spacing: -0.01em; line-height: 1.28; max-width: 22ch; }
-
-  /* ---------- product (charcoal) section ---------- */
-
-  .product-section { background: var(--charcoal); color: var(--ivory); overflow: hidden; position: relative; }
-
-  .product-mock { max-width: 700px; margin: 0 auto; background: var(--charcoal-2); border-radius: 26px; padding: 26px; box-shadow: 0 40px 80px -30px rgba(0,0,0,0.6); }
-  .product-mock-row { display: flex; align-items: center; justify-content: space-between; padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); gap: 10px; flex-wrap: wrap; }
-  .product-mock-tag { display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 600; font-size: 12px; color: rgba(247,249,255,0.7); }
-  .product-mock-tag .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
-  .product-feature-row { display: flex; flex-wrap: wrap; gap: 12px; }
-  .product-feature {
-    flex: 1; min-width: 140px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 14px; padding: 15px; display: flex; flex-direction: column; gap: 7px;
+  .case-card:hover { transform: translateY(-3px); box-shadow: var(--s-shadow-md); }
+  .case-icon { width: 44px; height: 44px; border-radius: 13px; display: flex; align-items: center; justify-content: center; }
+  .case-icon svg { width: 22px; height: 22px; }
+  .case-icon.v1 { background: var(--s-violet-wash); }
+  .case-icon.v2 { background: var(--s-pink-wash); }
+  .case-card h3 { margin: auto 0 0; font-weight: 700; font-size: 15.5px; line-height: 1.4; color: var(--s-ink); letter-spacing: -0.005em; }
+  @media (min-width: 860px) {
+    .cases-scroller { overflow: visible; flex-wrap: wrap; margin: 0; padding: 4px 0 0; scroll-snap-type: none; }
+    .case-card { width: calc(20% - 12px); min-width: 200px; }
   }
-  .product-feature .k { font-family: var(--sans); font-weight: 600; font-size: 13px; color: #fff; }
-  .product-feature .v { font-size: 12.5px; color: rgba(247,249,255,0.56); line-height: 1.5; }
+  .cases-note { max-width: 640px; margin: 18px auto 0; text-align: center; font-size: 13px; color: var(--s-ink-faint); line-height: 1.6; }
 
-  /* ---------- human section ---------- */
+  /* ---------- vision ---------- */
 
-  .human-grid { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 36px; align-items: center; }
-  @media (min-width: 900px) { .human-grid { grid-template-columns: 1fr 1fr; gap: 60px; } }
-  .human-copy h2 { margin: 0 0 16px; font-family: var(--display); font-weight: 800; letter-spacing: -0.015em; line-height: 1.18; font-size: var(--fs-h1); color: var(--ink); }
-  .human-copy p { margin: 0; font-size: var(--fs-body); line-height: 1.7; color: var(--ink-dim); max-width: 44ch; }
-  .human-illust { display: flex; align-items: center; justify-content: center; }
-  .human-illust svg { width: 100%; max-width: 360px; height: auto; }
-
-  /* ---------- try it live (real, functional) ---------- */
-
-  .try-card {
-    max-width: 600px; margin: 0 auto; background: var(--white); border-radius: 26px;
-    padding: 24px; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.55), 0 0 0 1px rgba(63,107,255,0.14), 0 0 60px -16px rgba(63,107,255,0.3);
+  .vision-section { position: relative; overflow: hidden; text-align: center; }
+  .vision-atmosphere {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(60% 70% at 50% 40%, rgba(167,109,245,0.10), transparent 70%),
+                radial-gradient(40% 50% at 80% 70%, rgba(243,155,200,0.10), transparent 70%);
   }
-  .try-frame {
-    position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 4 / 3;
-    background: linear-gradient(155deg, var(--lavender) 0%, var(--lavender-2) 100%);
-    display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
-  }
-  .try-frame .signer-illust svg { width: 46%; }
-  .try-meta-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
-  .try-meta { display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 600; font-size: 13px; color: var(--ink); }
-  .try-meta .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-faint); }
-  .try-meta.ready .dot { background: var(--green); }
-  .try-mode { font-family: var(--sans); font-weight: 500; font-size: 12.5px; color: var(--ink-dim); background: var(--lavender); border-radius: 100px; padding: 6px 13px; }
+  .vision-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+  .vision-inner h2 { margin: 0 0 18px; font-weight: 800; line-height: 1.18; font-size: var(--fs-h1); color: var(--s-ink); }
+  .vision-inner p { margin: 0; font-size: var(--fs-body); line-height: 1.7; color: var(--s-ink-dim); }
 
-  .try-example { display: flex; flex-direction: column; gap: 12px; padding: 16px 0 18px; border-top: 1px dashed var(--line-strong); margin-top: 2px; }
-  .try-example-row { display: flex; align-items: baseline; gap: 12px; }
-  .try-example-row .k { font-family: var(--sans); font-weight: 600; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); min-width: 54px; }
-  .try-example-row .v { font-family: var(--display); font-weight: 700; font-size: 17px; color: var(--ink); }
-  .btn-listen {
-    align-self: flex-start; display: flex; align-items: center; gap: 9px;
-    font-family: var(--sans); font-weight: 600; font-size: 13px; color: var(--coral);
-    background: rgba(63,107,255,0.12); border: none; border-radius: 100px; padding: 9px 16px 9px 12px; cursor: pointer;
-    transition: background 0.2s ease, transform 0.15s ease;
-  }
-  .btn-listen:hover { background: rgba(63,107,255,0.2); transform: translateY(-1px); }
-  .btn-listen .mini-wave { display: flex; align-items: flex-end; gap: 2px; height: 11px; }
-  .btn-listen .mini-wave i { width: 2px; background: currentColor; border-radius: 1px; height: 30%; }
-  .btn-listen.speaking .mini-wave i { animation: waveBounce 0.7s ease-in-out infinite; }
+  /* ---------- try it — real camera pre-permission screen ---------- */
 
+  .cam-try { max-width: 1080px; margin: 0 auto; display: flex; justify-content: center; }
+  .cam-pre {
+    position: relative; width: 100%; max-width: 460px; overflow: hidden;
+    border-radius: var(--r-lg); padding: 44px 28px 34px;
+    background: linear-gradient(165deg, #19182f 0%, #121228 55%, #0e0d1f 100%);
+    box-shadow: var(--s-shadow-lg), 0 0 0 1px rgba(20,20,35,0.06);
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;
+  }
+  .cam-pre-glow {
+    position: absolute; inset: -20% -20% auto -20%; height: 60%; z-index: 0; pointer-events: none;
+    background: radial-gradient(50% 60% at 50% 0%, rgba(102,92,246,0.28), transparent 70%);
+  }
+  .cam-pre > * { position: relative; z-index: 1; }
+  .cam-pre-icon { width: 56px; height: 56px; border-radius: 16px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+  .cam-pre-icon svg { width: 28px; height: 28px; }
+  .cam-pre h2 { margin: 0 0 8px; font-weight: 800; font-size: 22px; color: #fff; }
+  .cam-pre-sub { margin: 0 0 26px; font-size: 14.5px; line-height: 1.6; color: rgba(255,255,255,0.62); max-width: 32ch; }
+  .cam-pre .btn-primary { max-width: 340px; }
   #loadStatus { display: flex; margin-top: 14px; }
-  #loadStatusText { font-family: var(--sans); font-size: 12.5px; color: var(--ink-faint); }
-  .spinner { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.35); border-top-color: #fff; animation: spin 0.8s linear infinite; }
+  #loadStatusText { font-family: var(--sans); font-size: 12.5px; color: rgba(255,255,255,0.42); }
+  .spinner { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; animation: spin 0.8s linear infinite; display: inline-block; vertical-align: -2px; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .demo-note-small { margin-top: 16px; font-size: 12px; color: var(--ink-faint); line-height: 1.6; max-width: 50ch; }
+  .cam-pre-note { margin: 22px 0 0; font-size: 12px; line-height: 1.7; color: rgba(255,255,255,0.4); max-width: 38ch; }
+  .cam-pre-note .cam-vocab-link { color: rgba(255,255,255,0.72); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; background: none; border: none; font: inherit; padding: 0; }
+  @media (min-width: 640px) { .cam-pre { padding: 56px 44px 44px; } }
 
-  /* ---------- about (compact, honest) ---------- */
+  /* ---------- development status ---------- */
 
-  .about-lead { max-width: 60ch; margin: 0 auto 40px; text-align: center; font-size: var(--fs-body); line-height: 1.7; color: var(--ink-dim); }
-  .about-lead b { color: var(--ink); }
-  .rd-cols { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
-  @media (min-width: 780px) { .rd-cols { flex-direction: row; gap: 44px; } .rd-col { flex: 1; } }
-  .rd-col { background: var(--white); border-radius: 20px; padding: 22px; }
-  .rd-col.roadmap { background: var(--bg-soft); }
-  .rd-col h4 { margin: 0 0 12px; font-family: var(--sans); font-weight: 700; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--coral); }
-  .rd-col.roadmap h4 { color: var(--ink-faint); }
-  .rd-item { padding: 11px 0; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-dim); line-height: 1.6; }
-  .rd-item:first-child { border-top: none; }
-  .rd-item b { color: var(--ink); font-weight: 700; display: block; margin-bottom: 2px; }
-  .rd-col.roadmap .rd-item { color: var(--ink-faint); }
-  .rd-col.roadmap .rd-item b { color: var(--ink-dim); }
+  .status-lead { max-width: 62ch; margin: 0 auto 36px; text-align: center; font-size: var(--fs-body); line-height: 1.7; color: var(--s-ink-dim); }
+  .status-lead b { color: var(--s-ink); font-weight: 700; }
+  .roadmap-card {
+    max-width: 640px; margin: 0 auto; background: var(--s-surface); border: 1px solid var(--s-line);
+    border-radius: var(--r-lg); padding: 30px 30px 26px;
+  }
+  .roadmap-card h4 { margin: 0 0 4px; font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--s-violet-deep); }
+  .roadmap-list { display: flex; flex-direction: column; }
+  .roadmap-item { display: flex; align-items: flex-start; gap: 12px; padding: 13px 0; border-top: 1px solid var(--s-line); font-size: 14.5px; color: var(--s-ink); line-height: 1.5; }
+  .roadmap-item:first-of-type { border-top: none; padding-top: 16px; }
+  .roadmap-bullet { flex: none; width: 9px; height: 9px; border-radius: 50%; margin-top: 5px; }
+  .roadmap-item.done .roadmap-bullet { background: var(--s-violet); }
+  .roadmap-item.future .roadmap-bullet { background: transparent; border: 1.5px solid var(--s-ink-faint); }
+  .roadmap-item.future { color: var(--s-ink-dim); }
+  .roadmap-divider { height: 1px; background: var(--s-line); margin: 6px 0 2px; }
 
   /* ---------- final CTA band ---------- */
 
-  .cta-band { background: var(--plum); color: var(--ivory); text-align: center; padding: 68px var(--gutter); }
-  .cta-band h2 { margin: 0 0 26px; font-family: var(--display); font-weight: 800; letter-spacing: -0.015em; line-height: 1.18; font-size: var(--fs-h1); max-width: 18ch; margin-left: auto; margin-right: auto; }
+  .cta-band { padding: 20px var(--gutter) 76px; }
+  .cta-card {
+    max-width: 900px; margin: 0 auto; text-align: center; padding: 56px 28px;
+    border-radius: var(--r-lg); position: relative; overflow: hidden;
+    background: linear-gradient(155deg, #18172e 0%, #14132a 60%, #100f22 100%);
+    box-shadow: var(--s-shadow-lg);
+  }
+  .cta-card-glow { position: absolute; inset: -30% -20% auto -20%; height: 70%; background: radial-gradient(50% 60% at 50% 0%, rgba(167,109,245,0.3), transparent 70%); pointer-events: none; }
+  .cta-card > * { position: relative; z-index: 1; }
+  .cta-card h2 { margin: 0 0 14px; font-weight: 800; line-height: 1.18; font-size: var(--fs-h1); color: #fff; max-width: 18ch; margin-left: auto; margin-right: auto; }
+  .cta-card p { margin: 0 0 30px; font-size: 15px; line-height: 1.6; color: rgba(255,255,255,0.62); max-width: 42ch; margin-left: auto; margin-right: auto; }
+  .cta-actions { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .cta-card .btn-secondary { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.18); color: #fff; }
+  .cta-card .btn-secondary:hover { border-color: rgba(255,255,255,0.4); }
+  @media (min-width: 640px) { .cta-card { padding: 72px 40px; } }
 
   /* ---------- footer ---------- */
 
-  .footer { background: var(--plum); color: rgba(247,249,255,0.7); padding: 40px var(--gutter) calc(env(safe-area-inset-bottom, 0px) + 40px); border-top: 1px solid rgba(255,255,255,0.08); }
-  .footer-top { max-width: 1180px; margin: 0 auto 22px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: center; }
-  .footer-top .nav-wordmark { color: #fff; }
-  .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
-  .footer-links a, .footer-links span { font-family: var(--sans); font-size: 13px; color: rgba(247,249,255,0.62); text-decoration: none; cursor: pointer; transition: color 0.2s ease; }
-  .footer-links a:hover, .footer-links span:hover { color: var(--coral); }
-  .footer-tag { max-width: 48ch; margin: 0 auto; font-size: 12px; color: rgba(247,249,255,0.42); line-height: 1.7; }
+  .footer { padding: 40px var(--gutter) calc(env(safe-area-inset-bottom, 0px) + 40px); border-top: 1px solid var(--s-line); }
+  .footer-top { max-width: 1180px; margin: 0 auto 20px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: center; }
+  .footer-links { display: flex; gap: 22px; flex-wrap: wrap; }
+  .footer-links a, .footer-links span { font-family: var(--sans); font-size: 13.5px; color: var(--s-ink-dim); text-decoration: none; cursor: pointer; transition: color 0.2s ease; }
+  .footer-links a:hover, .footer-links span:hover { color: var(--s-violet-deep); }
+  .footer-tag { max-width: 50ch; margin: 0 auto; text-align: center; font-size: 12.5px; color: var(--s-ink-faint); line-height: 1.7; }
 
   /* ---------- sticky mobile CTA ---------- */
 
@@ -435,25 +482,26 @@
     transition: opacity 0.3s ease, transform 0.3s ease;
   }
   .mobile-cta.show { opacity: 1; transform: none; pointer-events: auto; }
-  .mobile-cta .btn-primary { width: 100%; justify-content: center; padding: 15px 20px; box-shadow: 0 14px 30px -8px rgba(0,0,0,0.4); }
-  @media (max-width: 760px) { .mobile-cta { display: block; } }
+  body.menu-open .mobile-cta { opacity: 0; pointer-events: none; }
+  .mobile-cta .btn-primary { box-shadow: 0 14px 30px -8px rgba(30,20,60,0.35); }
+  @media (max-width: 767px) { .mobile-cta { display: block; } }
 
   /* ---------- responsive polish ---------- */
 
   @media (min-width: 480px) { :root { --gutter: 24px; } }
   @media (min-width: 900px) { :root { --gutter: 32px; } }
 
-  @media (max-width: 760px) {
-    .section { padding: 56px var(--gutter); }
-    .section-head { margin-bottom: 36px; gap: 10px; }
-    .hero { padding-bottom: 64px; }
+  @media (max-width: 767px) {
+    .section { padding: 48px var(--gutter); }
+    .section-head { margin-bottom: 32px; gap: 10px; }
+    .hero { padding-bottom: 44px; }
     .hero-actions { gap: 14px; }
-    .flow { gap: 12px; }
-    .flow-step { padding: 26px 18px; border-radius: 20px; }
-    .cases-grid { gap: 14px; }
-    .case-card { padding: 22px; min-height: 190px; }
-    .demo-card, .try-card { border-radius: 22px; padding: 14px; }
-    .product-mock { padding: 20px; border-radius: 22px; }
+    .hero-actions .btn-primary, .hero-actions .link-quiet { width: 100%; }
+    .hero-actions .btn-primary { justify-content: center; }
+    .hero-actions .link-quiet { justify-content: center; border-bottom: none; }
+    .how-card, .demo-step { padding: 24px 20px; border-radius: 18px; }
+    .roadmap-card { padding: 24px 22px 20px; border-radius: 18px; }
+    .cta-card { border-radius: 20px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -545,305 +593,298 @@
   <div class="scrim-bottom"></div>
 
   <div class="landing" id="emptyState">
-    <nav class="nav on-dark" id="siteNav">
+    <nav class="nav" id="siteNav">
       <a class="nav-logo" href="#top" data-scroll>
         <svg class="nav-mark" viewBox="0 0 100 100" aria-hidden="true">
-          <rect width="100" height="100" rx="28" fill="#3f6bff"/>
-          <g transform="translate(50 58)" fill="#ffffff">
-            <rect x="-19" y="-4" width="38" height="30" rx="14"/>
-            <rect x="-5" y="-40" width="9" height="30" rx="4.5" transform="rotate(-22 0 -10)"/>
-            <rect x="6" y="-44" width="8" height="32" rx="4" transform="rotate(-6 0 -10)"/>
-            <rect x="16" y="-40" width="8" height="30" rx="4" transform="rotate(12 0 -10)"/>
-          </g>
-          <circle cx="80" cy="22" r="9" fill="#4caf7d"/>
+          <defs>
+            <linearGradient id="navGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6f65f8"/>
+              <stop offset="100%" stop-color="#a76df5"/>
+            </linearGradient>
+          </defs>
+          <rect width="100" height="100" rx="28" fill="url(#navGrad)"/>
+          <path d="M32 58c0-14 10-24 22-24" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+          <path d="M46 40c8 4 14 12 14 22 0 4-1 7-2 10" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.7"/>
+          <circle cx="60" cy="30" r="5" fill="#fff"/>
         </svg>
-        <span class="nav-wordmark">SignoScope</span>
+        <span class="nav-wordmark">Sensa</span>
       </a>
       <div class="nav-links">
-        <a href="#technology" data-scroll>Technologie</a>
-        <a href="#how" data-scroll>Fonctionnement</a>
-        <a href="#cases" data-scroll>Cas d'usage</a>
-        <a href="#about" data-scroll>À propos</a>
+        <a href="#produit" data-scroll>Produit</a>
+        <a href="#fonctionnement" data-scroll>Fonctionnement</a>
+        <a href="#cas-usage" data-scroll>Cas d'usage</a>
+        <a href="#vision" data-scroll>Vision</a>
+        <a href="#a-propos" data-scroll>À propos</a>
       </div>
-      <a class="nav-cta js-live-cta" href="#try" data-scroll>Essayer en direct<span class="arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      <div class="nav-right">
+        <a class="nav-cta js-live-cta" href="#essayer" data-scroll>Essayer le prototype</a>
+        <button class="nav-burger" id="navBurger" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="#produit" data-scroll>Produit</a>
+        <a href="#fonctionnement" data-scroll>Fonctionnement</a>
+        <a href="#cas-usage" data-scroll>Cas d'usage</a>
+        <a href="#vision" data-scroll>Vision</a>
+        <a href="#a-propos" data-scroll>À propos</a>
+        <a class="btn-primary block js-live-cta" href="#essayer" data-scroll>Essayer le prototype</a>
+      </div>
     </nav>
 
     <div class="landing-scroll" id="landingScroll">
 
       <section class="hero" id="top">
-        <div class="hero-blob b1"></div>
-        <div class="hero-blob b2"></div>
-        <div class="hero-blob b3"></div>
-        <div class="grain"></div>
+        <div class="hero-atmosphere" aria-hidden="true"></div>
         <div class="hero-grid">
           <div class="hero-copy" data-reveal>
-            <div class="hero-eyebrow"><span class="dot"></span>Traduction gestuelle en temps réel</div>
-            <h1>Signe naturellement.<br>Sois <span class="hl">entendu</span> à l'instant.</h1>
-            <p class="hero-sub">Une technologie en temps réel qui transforme un geste de la main en conversation parlée — affichée à l'écran, puis prononcée à voix haute.</p>
+            <span class="eyebrow"><span class="dot"></span>Prototype LSQ · En développement</span>
+            <h1>La <span class="hl">LSQ</span>, comprise en temps réel.</h1>
+            <p class="hero-sub">Une nouvelle façon de faciliter les échanges entre personnes signantes et non-signantes grâce à la reconnaissance visuelle.</p>
             <div class="hero-actions">
-              <a class="btn-primary js-live-cta" href="#try" data-scroll>Essayer en direct<span class="arrow"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-              <a class="link-quiet" href="#how" data-scroll>Voir comment ça marche</a>
+              <a class="btn-primary js-live-cta" href="#essayer" data-scroll>Essayer le prototype<span class="arrow"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+              <a class="link-quiet" href="#produit" data-scroll>Découvrir le projet</a>
             </div>
           </div>
 
           <div class="hero-visual" data-reveal>
-            <div class="demo-card">
-              <div class="demo-card-inner">
-                <div class="demo-card-tag"><span class="dot"></span>Aperçu</div>
-                <div class="signer-illust">
-                  <svg viewBox="0 0 200 200" aria-hidden="true">
-                    <circle cx="100" cy="70" r="34" fill="#aab4d6"/>
-                    <path d="M40 200 C40 148 66 122 100 122 C134 122 160 148 160 200 Z" fill="#aab4d6"/>
-                    <g transform="translate(148 90) rotate(-18)">
-                      <rect x="-19" y="-4" width="40" height="32" rx="15" fill="#3f6bff"/>
-                      <rect x="-6" y="-42" width="10" height="32" rx="5" transform="rotate(-24 0 -10)" fill="#3f6bff"/>
-                      <rect x="6" y="-46" width="9" height="34" rx="4.5" transform="rotate(-7 0 -10)" fill="#3f6bff"/>
-                      <rect x="18" y="-43" width="9" height="32" rx="4.5" transform="rotate(11 0 -10)" fill="#3f6bff"/>
-                      <rect x="29" y="-36" width="9" height="28" rx="4.5" transform="rotate(28 0 -10)" fill="#3f6bff"/>
-                      <circle cx="-24" cy="-30" r="4" fill="#4caf7d"/>
-                      <circle cx="-32" cy="-14" r="2.6" fill="#4caf7d"/>
+            <div class="cam-mock">
+              <div class="cam-mock-frame">
+                <div class="cam-mock-badge"><span class="dot"></span>Suivi en direct</div>
+                <div class="cam-mock-illust">
+                  <svg viewBox="0 0 200 220" aria-hidden="true">
+                    <circle cx="96" cy="62" r="32" fill="#3a3860"/>
+                    <path d="M40 220c0-48 24-74 56-74s56 26 56 74z" fill="#3a3860"/>
+                    <g transform="translate(140 86) rotate(-16)">
+                      <rect x="-18" y="-4" width="38" height="30" rx="14" fill="#a76df5"/>
+                      <rect x="-5" y="-40" width="9" height="30" rx="4.5" transform="rotate(-22 0 -10)" fill="#a76df5"/>
+                      <rect x="6" y="-44" width="8" height="32" rx="4" transform="rotate(-6 0 -10)" fill="#a76df5"/>
+                      <rect x="16" y="-40" width="8" height="30" rx="4" transform="rotate(12 0 -10)" fill="#a76df5"/>
+                    </g>
+                    <g opacity="0.9">
+                      <line class="track-line" x1="120" y1="70" x2="150" y2="52"/>
+                      <line class="track-line" x1="150" y1="52" x2="168" y2="40"/>
+                      <line class="track-line" x1="150" y1="52" x2="160" y2="70"/>
+                      <circle class="track-dot" cx="120" cy="70" r="3"/>
+                      <circle class="track-dot" cx="150" cy="52" r="3.5"/>
+                      <circle class="track-dot" cx="168" cy="40" r="2.6"/>
+                      <circle class="track-dot" cx="160" cy="70" r="2.6"/>
                     </g>
                   </svg>
                 </div>
-                <div class="speech-bubble">
-                  <div class="speech-kicker">Traduit</div>
-                  <div class="speech-text" id="heroSpeechText"><span id="heroSpeechWord"></span><span class="caret"></span></div>
-                  <div class="speech-audio">
-                    <span class="play-mark"></span>
-                    <span class="mini-bars" id="heroBars"></span>
-                    <span class="speech-audio-label">Traduction parlée</span>
-                  </div>
-                </div>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="hero-divider" aria-hidden="true">
-          <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C360,90 1080,-10 1440,40 L1440,80 L0,80 Z" fill="#060810"/></svg>
-        </div>
-      </section>
-
-      <section class="section" id="technology">
-        <div class="section-head" data-reveal>
-          <span class="eyebrow-tag">Fonctionnement</span>
-          <h2>Du geste à la voix, en un instant</h2>
-          <p>Trois étapes, exécutées entièrement sur ton appareil.</p>
-        </div>
-
-        <div class="flow" id="how">
-          <div class="flow-step tint-a" data-reveal data-stage="sign">
-            <div class="flow-copy">
-              <div class="flow-num">01 · SIGNE</div>
-              <h3>La caméra observe une main.</h3>
-              <p>Un modèle de vision repère la forme d'une main à chaque image — entièrement sur l'appareil, sans jamais rien envoyer ailleurs.</p>
-            </div>
-            <div class="flow-visual">
-              <div class="flow-visual-frame">
-                <svg viewBox="0 0 100 100" aria-hidden="true">
-                  <g transform="translate(50 58)">
-                    <rect x="-20" y="-6" width="40" height="34" rx="16" fill="#3f6bff"/>
-                    <rect x="-6" y="-46" width="10" height="34" rx="5" transform="rotate(-24 0 -12)" fill="#3f6bff"/>
-                    <rect x="6" y="-52" width="9" height="38" rx="4.5" transform="rotate(-8 0 -12)" fill="#3f6bff"/>
-                    <rect x="18" y="-50" width="9" height="36" rx="4.5" transform="rotate(9 0 -12)" fill="#3f6bff"/>
-                    <rect x="29" y="-42" width="9" height="30" rx="4.5" transform="rotate(25 0 -12)" fill="#3f6bff"/>
-                  </g>
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <div class="flow-step tint-b reverse" data-reveal data-stage="translate">
-            <div class="flow-copy">
-              <div class="flow-num">02 · TRADUIT</div>
-              <h3>Le mot apparaît à l'écran.</h3>
-              <p>La forme observée est comparée à un vocabulaire connu jusqu'à ce qu'une correspondance se stabilise avec confiance.</p>
-            </div>
-            <div class="flow-visual">
-              <div class="flow-visual-frame">
-                <svg viewBox="0 0 120 90" aria-hidden="true">
-                  <rect x="6" y="10" width="108" height="70" rx="16" fill="#f7f9ff"/>
-                  <rect x="22" y="32" width="56" height="8" rx="4" fill="#c7ccdb"/>
-                  <rect x="22" y="48" width="76" height="8" rx="4" fill="#3f6bff"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <div class="flow-step tint-c" data-reveal data-stage="speak">
-            <div class="flow-copy">
-              <div class="flow-num">03 · PARLE</div>
-              <h3>La voix prend le relais.</h3>
-              <p>Dès qu'un geste est confirmé, sa traduction se prononce à voix haute, en français, immédiatement.</p>
-            </div>
-            <div class="flow-visual">
-              <div class="flow-visual-frame">
-                <div class="flow-wave" id="flowWave"></div>
+              <div class="translation-card">
+                <span class="translation-kicker">Aperçu du prototype</span>
+                <p class="translation-text">Bonjour, j'aimerais prendre rendez-vous pour demain.</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="section bg-coral-wash" id="cases">
+      <section class="section" id="produit">
         <div class="section-head" data-reveal>
-          <span class="eyebrow-tag">Cas d'usage</span>
-          <h2>Là où un geste peut ouvrir une conversation</h2>
+          <span class="eyebrow-tag">Démonstration</span>
+          <h2>Voyez comment ça pourrait fonctionner.</h2>
         </div>
-        <div class="cases-grid">
-          <div class="case-card big a" data-reveal>
-            <div class="case-illust"><svg viewBox="0 0 100 100"><path d="M50 20c-16 0-28 12-28 28 0 20 28 32 28 32s28-12 28-32c0-16-12-28-28-28z" fill="none" stroke="#3f6bff" stroke-width="5"/><path d="M32 54l8 8 12-16 8 10 10-14" fill="none" stroke="#3f6bff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <span class="case-label">Santé</span>
-            <h3>Des échanges plus clairs quand ils comptent le plus.</h3>
+        <div class="demo-steps">
+          <div class="demo-step" data-reveal>
+            <div class="demo-step-visual">
+              <svg viewBox="0 0 52 52" aria-hidden="true">
+                <rect x="6" y="14" width="40" height="28" rx="7" fill="none" stroke="#665CF6" stroke-width="2.5"/>
+                <circle cx="26" cy="28" r="8" fill="none" stroke="#665CF6" stroke-width="2.5"/>
+                <rect x="18" y="8" width="10" height="7" rx="2" fill="#665CF6"/>
+              </svg>
+              <div class="demo-scan-line"></div>
+            </div>
+            <div class="demo-step-num">01</div>
+            <h3>La caméra détecte les signes.</h3>
+            <p>Le mouvement des mains est observé en direct, image par image.</p>
           </div>
-          <div class="case-card small b" data-reveal>
-            <div class="case-illust"><svg viewBox="0 0 100 100"><rect x="18" y="26" width="64" height="42" rx="14" fill="none" stroke="#3f6bff" stroke-width="5"/><path d="M34 68l-6 14 18-14" fill="#3f6bff"/><circle cx="38" cy="47" r="4" fill="#3f6bff"/><circle cx="50" cy="47" r="4" fill="#3f6bff"/><circle cx="62" cy="47" r="4" fill="#3f6bff"/></svg></div>
-            <span class="case-label">Service à la clientèle</span>
-            <h3>Se faire comprendre au comptoir, sans détour.</h3>
+          <div class="demo-step" data-reveal>
+            <div class="demo-step-visual">
+              <span class="pulse-dot"></span>
+            </div>
+            <div class="demo-step-num">02</div>
+            <h3>Le modèle de reconnaissance identifie les signes.</h3>
+            <p>Chaque forme observée est comparée à un vocabulaire en développement.</p>
           </div>
-          <div class="case-card small c" data-reveal>
-            <div class="case-illust"><svg viewBox="0 0 100 100"><path d="M50 34c-8-6-20-9-30-8v42c10-1 22 2 30 8" fill="none" stroke="#aab4d6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 34c8-6 20-9 30-8v42c-10-1-22 2-30 8" fill="none" stroke="#aab4d6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><line x1="50" y1="34" x2="50" y2="76" stroke="#aab4d6" stroke-width="5" stroke-linecap="round"/></svg></div>
-            <span class="case-label">Éducation</span>
-            <h3>Suivre un cours, poser une question, participer.</h3>
-          </div>
-          <div class="case-card big d" data-reveal>
-            <div class="case-illust"><svg viewBox="0 0 100 100"><rect x="14" y="24" width="46" height="32" rx="12" fill="none" stroke="#3f6bff" stroke-width="5"/><path d="M24 56l-4 12 16-12"/><rect x="40" y="44" width="46" height="32" rx="12" fill="none" stroke="#3f6bff" stroke-width="5"/><path d="M76 76l4 12-16-12"/></svg></div>
-            <span class="case-label">Conversation quotidienne</span>
-            <h3>Dire oui, compter, saluer — sans avoir à parler à voix haute.</h3>
-          </div>
-        </div>
-      </section>
-
-      <section class="section product-section">
-        <div class="section-head" data-reveal>
-          <span class="eyebrow-tag">Le produit</span>
-          <h2>Conçu pour de vraies conversations</h2>
-        </div>
-        <div class="product-mock" data-reveal>
-          <div class="product-mock-row">
-            <div class="product-mock-tag"><span class="dot"></span>SignoScope</div>
-            <div class="product-mock-tag">Traitement 100% local</div>
-          </div>
-          <div class="product-feature-row">
-            <div class="product-feature"><span class="k">Caméra en direct</span><span class="v">Suivi de main à chaque image, sur ton appareil.</span></div>
-            <div class="product-feature"><span class="k">Traduction en temps réel</span><span class="v">Un geste stable devient un mot affiché aussitôt.</span></div>
-            <div class="product-feature"><span class="k">Voix naturelle</span><span class="v">Prononcée à voix haute via la synthèse vocale du navigateur.</span></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section bg-lavender">
-        <div class="human-grid">
-          <div class="human-copy" data-reveal>
-            <span class="eyebrow-tag">Pourquoi</span>
-            <h2 style="margin-top:14px;">Différentes façons de s'exprimer.<br>Une seule conversation.</h2>
-            <p>SignoScope existe pour un moment précis : celui où un geste, enfin compris, ouvre un échange qui autrement n'aurait pas eu lieu.</p>
-          </div>
-          <div class="human-illust" data-reveal>
-            <svg viewBox="0 0 320 200" aria-hidden="true">
-              <circle cx="86" cy="66" r="30" fill="#3f6bff"/>
-              <path d="M30 200c0-46 24-70 56-70s56 24 56 70z" fill="#3f6bff"/>
-              <circle cx="234" cy="66" r="30" fill="#c6ff5e"/>
-              <path d="M178 200c0-46 24-70 56-70s56 24 56 70z" fill="#c6ff5e"/>
-              <circle cx="160" cy="86" r="10" fill="#f7f9ff"/>
-              <circle cx="142" cy="70" r="5" fill="#f7f9ff"/>
-              <circle cx="180" cy="68" r="4" fill="#f7f9ff"/>
-            </svg>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="try">
-        <div class="section-head" data-reveal>
-          <span class="eyebrow-tag">Essaie, maintenant</span>
-          <h2>Vois-le fonctionner, en direct</h2>
-          <p>Active ta caméra pour voir le système reconnaître un geste sur ton propre appareil. Rien n'est envoyé sur internet.</p>
-        </div>
-
-        <div class="try-card" data-reveal>
-          <div class="try-frame">
-            <div class="signer-illust">
-              <svg viewBox="0 0 200 200" aria-hidden="true">
-                <circle cx="100" cy="70" r="34" fill="#aab4d6"/>
-                <path d="M40 200 C40 148 66 122 100 122 C134 122 160 148 160 200 Z" fill="#aab4d6"/>
-                <g transform="translate(148 90) rotate(-18)">
-                  <rect x="-19" y="-4" width="40" height="32" rx="15" fill="#3f6bff"/>
-                  <rect x="-6" y="-42" width="10" height="32" rx="5" transform="rotate(-24 0 -10)" fill="#3f6bff"/>
-                  <rect x="6" y="-46" width="9" height="34" rx="4.5" transform="rotate(-7 0 -10)" fill="#3f6bff"/>
-                  <rect x="18" y="-43" width="9" height="32" rx="4.5" transform="rotate(11 0 -10)" fill="#3f6bff"/>
-                  <rect x="29" y="-36" width="9" height="28" rx="4.5" transform="rotate(28 0 -10)" fill="#3f6bff"/>
-                </g>
+          <div class="demo-step" data-reveal>
+            <div class="demo-step-visual">
+              <svg viewBox="0 0 52 52" aria-hidden="true">
+                <rect x="6" y="16" width="40" height="24" rx="8" fill="none" stroke="#A76DF5" stroke-width="2.5"/>
+                <line x1="15" y1="26" x2="31" y2="26" stroke="#A76DF5" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="15" y1="32" x2="25" y2="32" stroke="#A76DF5" stroke-width="2.5" stroke-linecap="round"/>
               </svg>
             </div>
+            <div class="demo-step-num">03</div>
+            <h3>Les concepts reconnus deviennent du français lisible.</h3>
+            <p>Le résultat est présenté sous forme de texte, en temps réel.</p>
           </div>
-
-          <div class="try-meta-row">
-            <div class="try-meta" id="tryMeta"><span class="dot"></span>Caméra</div>
-            <div class="try-mode">Mode : gestes courants</div>
-          </div>
-
-          <div class="try-example">
-            <div class="try-example-row"><span class="k">Signé</span><span class="v">« Je t'aime »</span></div>
-            <div class="try-example-row"><span class="k">Parlé</span><span class="v">« Je t'aime »</span></div>
-            <button class="btn-listen" id="listenBtn" type="button"><span class="mini-wave"><i></i><i></i><i></i></span>Écouter l'exemple</button>
-          </div>
-
-          <button class="btn-primary block" id="mainBtn" disabled><span id="mainBtnLabel">Chargement… <span class="spinner" style="display:inline-block;vertical-align:-2px;"></span></span></button>
-          <div id="loadStatus"><span id="loadStatusText">Suivi de main en direct</span></div>
-          <div class="demo-note-small">42 gestes reconnus aujourd'hui, dont les mots de conversation Oui, Non, Merci, Manger et Pardon, les pronoms Je et Tu et la question Quoi (reconnus grâce au visage) ; les chiffres un à huit ; pouce levé, baissé ou sur le côté ; petit doigt levé, un peu, griffe, pincé, attention, doigts croisés, appelle-moi, cornes, je t'aime, d'accord, pistolet, salut vulcain ; et les gestes en mouvement saluer, dire au revoir, pousser la paume, agiter un pouce levé, faire signe d'approcher, calmer d'un geste, frotter les doigts, trembler de peur, et avancer le poing.</div>
         </div>
       </section>
 
-      <section class="section" id="about">
+      <section class="section bg-alt" id="fonctionnement">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow-tag">Fonctionnement</span>
+          <h2>Comment ça fonctionne</h2>
+        </div>
+        <div class="how-grid">
+          <div class="how-card" data-reveal>
+            <div class="how-icon">
+              <svg viewBox="0 0 26 26" aria-hidden="true">
+                <path d="M6 10c0-2.8 2-5 5-5s5 2.2 5 5" fill="none" stroke="#665CF6" stroke-width="2" stroke-linecap="round"/>
+                <rect x="4" y="10" width="18" height="12" rx="3" fill="none" stroke="#665CF6" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="how-num">01 — La personne signe</div>
+            <h3>La caméra observe les mouvements nécessaires à la reconnaissance.</h3>
+          </div>
+          <div class="how-card" data-reveal>
+            <div class="how-icon">
+              <svg viewBox="0 0 26 26" aria-hidden="true">
+                <circle cx="13" cy="13" r="3" fill="#A76DF5"/>
+                <circle cx="5" cy="6" r="2" fill="none" stroke="#A76DF5" stroke-width="1.6"/>
+                <circle cx="21" cy="6" r="2" fill="none" stroke="#A76DF5" stroke-width="1.6"/>
+                <circle cx="5" cy="21" r="2" fill="none" stroke="#A76DF5" stroke-width="1.6"/>
+                <circle cx="21" cy="21" r="2" fill="none" stroke="#A76DF5" stroke-width="1.6"/>
+                <line x1="6.4" y1="7.4" x2="11" y2="11.5" stroke="#A76DF5" stroke-width="1.4"/>
+                <line x1="19.6" y1="7.4" x2="15" y2="11.5" stroke="#A76DF5" stroke-width="1.4"/>
+                <line x1="6.4" y1="19.6" x2="11" y2="14.8" stroke="#A76DF5" stroke-width="1.4"/>
+                <line x1="19.6" y1="19.6" x2="15" y2="14.8" stroke="#A76DF5" stroke-width="1.4"/>
+              </svg>
+            </div>
+            <div class="how-num">02 — Le modèle analyse</div>
+            <h3>Le système tente d'identifier le signe ou la séquence.</h3>
+          </div>
+          <div class="how-card" data-reveal>
+            <div class="how-icon">
+              <svg viewBox="0 0 26 26" aria-hidden="true">
+                <rect x="3" y="6" width="20" height="13" rx="4" fill="none" stroke="#F39BC8" stroke-width="2"/>
+                <path d="M9 19l-2 4 5-4" fill="none" stroke="#F39BC8" stroke-width="2" stroke-linejoin="round"/>
+                <line x1="8" y1="11" x2="18" y2="11" stroke="#F39BC8" stroke-width="1.8" stroke-linecap="round"/>
+                <line x1="8" y1="15" x2="14" y2="15" stroke="#F39BC8" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="how-num">03 — Le message apparaît</div>
+            <h3>Le résultat peut ensuite être présenté sous forme de texte compréhensible.</h3>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="cas-usage">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow-tag">Cas d'usage</span>
+          <h2>Pensé pour les interactions du quotidien.</h2>
+          <p>Des situations où cette technologie pourrait, un jour, faciliter un échange.</p>
+        </div>
+        <div class="cases-scroller" data-reveal>
+          <div class="case-card">
+            <div class="case-icon v1"><svg viewBox="0 0 24 24" fill="none"><path d="M12 20s-7-4.4-9.4-9C1.2 8 2 4.8 5 4c2-.5 3.8.4 5 2 1.2-1.6 3-2.5 5-2 3 .8 3.8 4 2.4 7-2.4 4.6-9.4 9-9.4 9z" fill="#665CF6"/></svg></div>
+            <h3>Santé</h3>
+          </div>
+          <div class="case-card">
+            <div class="case-icon v2"><svg viewBox="0 0 24 24" fill="none"><path d="M4 8h16l-1.4 11.2a2 2 0 01-2 1.8H7.4a2 2 0 01-2-1.8L4 8z" fill="none" stroke="#A76DF5" stroke-width="1.8"/><path d="M8 8V6a4 4 0 018 0v2" fill="none" stroke="#A76DF5" stroke-width="1.8"/></svg></div>
+            <h3>Commerce</h3>
+          </div>
+          <div class="case-card">
+            <div class="case-icon v1"><svg viewBox="0 0 24 24" fill="none"><path d="M3 21h18M5 21V9l7-5 7 5v12M10 21v-6h4v6" fill="none" stroke="#665CF6" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+            <h3>Services publics</h3>
+          </div>
+          <div class="case-card">
+            <div class="case-icon v2"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4L2 8l10 4 10-4-10-4z" fill="none" stroke="#A76DF5" stroke-width="1.8" stroke-linejoin="round"/><path d="M6 10v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" fill="none" stroke="#A76DF5" stroke-width="1.8"/></svg></div>
+            <h3>Éducation</h3>
+          </div>
+          <div class="case-card">
+            <div class="case-icon v1"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 0116 0v4a2 2 0 01-2 2h-1v-6h3M4 16v-4h3v6H6a2 2 0 01-2-2z" fill="none" stroke="#665CF6" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+            <h3>Service à la clientèle</h3>
+          </div>
+        </div>
+        <p class="cases-note" data-reveal>Des applications potentielles à explorer — pas des déploiements actuels.</p>
+      </section>
+
+      <section class="section vision-section" id="vision">
+        <div class="vision-atmosphere" aria-hidden="true"></div>
+        <div class="vision-inner" data-reveal>
+          <h2>Une conversation ne devrait pas dépendre d'une langue partagée.</h2>
+          <p>La vision par ordinateur ouvre une piste concrète pour réduire certaines des barrières de communication liées à la LSQ — en observant un geste, et en le rendant lisible à celles et ceux qui ne la connaissent pas.</p>
+        </div>
+      </section>
+
+      <section class="section" id="essayer">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow-tag">Essayer</span>
+          <h2>Le prototype, en direct sur ton appareil</h2>
+          <p>Le traitement reste entièrement local — rien n'est envoyé sur internet.</p>
+        </div>
+        <div class="cam-try" data-reveal>
+          <div class="cam-pre">
+            <div class="cam-pre-glow" aria-hidden="true"></div>
+            <div class="cam-pre-icon">
+              <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                <path d="M9 15V7.5a1.7 1.7 0 013.4 0V13" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/>
+                <path d="M12.4 13V6a1.7 1.7 0 013.4 0v7" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/>
+                <path d="M15.8 13V7.2a1.7 1.7 0 013.4 0V15" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/>
+                <path d="M9 14.5v3a6 6 0 006 6h1a6 6 0 006-6v-4.7" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h2>Prêt à essayer&nbsp;?</h2>
+            <p class="cam-pre-sub">Autorise la caméra pour commencer.</p>
+            <button class="btn-primary block" id="mainBtn" disabled><span id="mainBtnLabel">Chargement… <span class="spinner"></span></span></button>
+            <div id="loadStatus"><span id="loadStatusText">Suivi de main en direct</span></div>
+            <p class="cam-pre-note">Reconnaissance de gestes isolés — vocabulaire en cours d'expansion. <button type="button" class="cam-vocab-link js-open-info">Voir le détail</button></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section bg-alt" id="a-propos">
         <div class="section-head" data-reveal>
           <span class="eyebrow-tag">À propos</span>
-          <h2>Un prototype de recherche, en toute transparence</h2>
+          <h2>État du prototype</h2>
         </div>
-        <p class="about-lead" data-reveal><b>SignoScope est un prototype de recherche indépendant</b>, construit pour explorer une question simple : et si une caméra suffisait à donner une voix à un geste ? Pas un dispositif médical, ni un service d'interprétation certifié.</p>
-
-        <div class="rd-cols">
-          <div class="rd-col" data-reveal>
-            <h4>Aujourd'hui</h4>
-            <div class="rd-item"><b>Reconnaissance visuelle en temps réel</b>modèle de suivi de main (MediaPipe, 21 points), exécuté à chaque image de la caméra.</div>
-            <div class="rd-item"><b>Traitement entièrement local</b>aucune image ni vidéo n'est transmise à un serveur.</div>
-            <div class="rd-item"><b>Vocabulaire de conversation</b>Oui, Non, Merci, Manger et Pardon — des mots pensés spécifiquement pour suivre un échange, pas seulement une démonstration.</div>
-            <div class="rd-item"><b>Formes de main</b>vingt-cinq gestes reconnus à partir de la position des doigts, image par image.</div>
-            <div class="rd-item"><b>Gestes en mouvement</b>quatorze gestes reconnus à leur mouvement plutôt qu'à une forme figée, dont Oui, Non, Merci, Manger, Au revoir et Peur.</div>
-            <div class="rd-item"><b>Contexte du visage (expérimental)</b>Je, Tu, Quoi et Pardon — un index pointé ou un poing fermé, tous les deux distingués grâce à leur position par rapport au visage, ou à des sourcils haussés. Premier réglage non vérifié avec une vraie caméra ; à ajuster si besoin.</div>
-            <div class="rd-item"><b>Synthèse vocale automatique</b>chaque geste confirmé est prononcé via la voix native du navigateur.</div>
-          </div>
-          <div class="rd-col roadmap" data-reveal>
-            <h4>En exploration — non implémenté</h4>
-            <div class="rd-item"><b>Mouvements composés</b>enchaîner plusieurs mouvements pour former un signe plus riche, au-delà des onze gestes simples déjà reconnus.</div>
-            <div class="rd-item"><b>Contexte de la phrase</b>tenir compte de ce qui a été signé juste avant.</div>
-            <div class="rd-item"><b>Vocabulaire normalisé</b>élargir vers le vocabulaire d'une langue des signes officielle.</div>
-            <div class="rd-item"><b>Conversation complète</b>verbes courants et vocabulaire plus large, au-delà des mots, pronoms et question déjà reconnus.</div>
+        <p class="status-lead" data-reveal><b>Sensa est un prototype de recherche indépendant</b>, construit pour explorer une question simple : et si une caméra suffisait à rendre un signe compréhensible ? Pas un dispositif médical, ni un service d'interprétation certifié — un projet en développement actif.</p>
+        <div class="roadmap-card" data-reveal>
+          <h4>Prototype</h4>
+          <div class="roadmap-list">
+            <div class="roadmap-item done"><span class="roadmap-bullet"></span>Interface caméra</div>
+            <div class="roadmap-item done"><span class="roadmap-bullet"></span>Reconnaissance de signes isolés</div>
+            <div class="roadmap-divider"></div>
+            <div class="roadmap-item future"><span class="roadmap-bullet"></span>Vocabulaire élargi</div>
+            <div class="roadmap-item future"><span class="roadmap-bullet"></span>Séquences LSQ</div>
+            <div class="roadmap-item future"><span class="roadmap-bullet"></span>Traduction contextuelle</div>
           </div>
         </div>
       </section>
 
       <section class="cta-band">
-        <h2 data-reveal>Prêt à être entendu ?</h2>
-        <a class="btn-primary js-live-cta" href="#try" data-scroll data-reveal>Essayer en direct<span class="arrow"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+        <div class="cta-card" data-reveal>
+          <div class="cta-card-glow" aria-hidden="true"></div>
+          <h2>Voyez le prototype prendre vie.</h2>
+          <p>Testez l'interface caméra et suivez l'évolution du projet.</p>
+          <div class="cta-actions">
+            <a class="btn-primary js-live-cta" href="#essayer" data-scroll>Essayer le prototype<span class="arrow"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+            <a class="btn-secondary" href="#a-propos" data-scroll>En savoir plus</a>
+          </div>
+        </div>
       </section>
 
       <footer class="footer">
         <div class="footer-top" data-reveal>
-          <span class="nav-wordmark">SignoScope</span>
+          <span class="nav-wordmark">Sensa</span>
           <div class="footer-links">
-            <a href="#technology" data-scroll>Technologie</a>
-            <a href="#about" data-scroll>À propos</a>
-            <span id="footerPrivacy">Confidentialité</span>
+            <a href="#produit" data-scroll>Projet</a>
+            <a href="#a-propos" data-scroll>À propos</a>
+            <span class="js-open-info" id="footerPrivacy">Confidentialité</span>
             <span>Contact</span>
           </div>
         </div>
-        <p class="footer-tag" data-reveal>Construire un monde où chaque conversation peut être comprise.<br>Prototype de recherche indépendant — traitement 100% local.</p>
+        <p class="footer-tag" data-reveal>Projet développé au Québec.</p>
       </footer>
 
     </div>
 
     <div class="mobile-cta" id="mobileCta">
-      <a class="btn-primary js-live-cta" href="#try" data-scroll>Essayer en direct<span class="arrow"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      <a class="btn-primary block js-live-cta" href="#essayer" data-scroll>Essayer le prototype<span class="arrow"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
     </div>
   </div>
 
@@ -886,9 +927,7 @@
     <button class="close" id="closeSheet">Compris</button>
   </div>
 </div>
-
-<script type="module">
-  import { HandLandmarker, FaceLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
+<script type="module">  import { HandLandmarker, FaceLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
 
   const stage = document.getElementById("stage");
   const video = document.getElementById("video");
@@ -1061,7 +1100,13 @@
     else if (pinchMiddle && i && !m && r && p) key = "eight";
     // Fingers held tightly together rather than spread — checked before the
     // generic "five" below, the same way vulcan's split is checked before it.
-    else if (i && m && r && p && avgGap < handSpan * 0.28) key = "attention";
+    // Tightened from 0.28 to 0.20: an open hand naturally rests somewhere in
+    // between "spread" and "pressed together", and the looser cutoff let a
+    // hand that was mid-wave (all four fingers extended either way) read as
+    // "Attention" during a normal, only-slightly-closed moment — flickering
+    // against "Salut" instead of committing to one. Requiring a clearly
+    // deliberate squeeze keeps the two apart.
+    else if (i && m && r && p && avgGap < handSpan * 0.20) key = "attention";
     else if (fingersCrossed && !r && !p) key = "crossedFingers";
     else if (t && i && !m && !r && !p) key = "fingerGun";
     else if (t && !i && !m && !r && !p && thumbUp) key = "thumbsUp";
@@ -1098,7 +1143,7 @@
       fist: !t && !i && !m && !r && !p,
       thumbsUpShape: t && !i && !m && !r && !p,
       curlBase: !m && !r && !p,
-      attentionShape: i && m && r && p && avgGap < handSpan * 0.28,
+      attentionShape: i && m && r && p && avgGap < handSpan * 0.20,
       pinceShape,
       clawShape: !t && !i && !m && !r && !p && clawBand,
     };
@@ -1838,55 +1883,7 @@
       statusLine.textContent = "Stabilise ta main pour confirmer…";
     }
   }
-</script>
-<script>
-
-(function heroSpeech() {
-  const wordEl = document.getElementById("heroSpeechWord");
-  const barsEl = document.getElementById("heroBars");
-  if (!wordEl || !barsEl) return;
-
-  for (let i = 0; i < 6; i++) barsEl.appendChild(document.createElement("i"));
-
-  const EXAMPLES = ["Cinq", "Pouce levé", "D'accord", "Je t'aime"];
-  const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  if (reduced) {
-    wordEl.textContent = EXAMPLES[0];
-    barsEl.classList.add("active");
-    return;
-  }
-
-  const TYPE_MS = 60;
-  const HOLD_MS = 1500;
-  const GAP_MS = 500;
-  let idx = 0;
-
-  function typeWord(text, cb) {
-    let i = 0;
-    wordEl.textContent = "";
-    const timer = setInterval(() => {
-      i++;
-      wordEl.textContent = text.slice(0, i);
-      if (i >= text.length) { clearInterval(timer); cb && cb(); }
-    }, TYPE_MS);
-  }
-
-  function cycle() {
-    const text = EXAMPLES[idx % EXAMPLES.length];
-    idx++;
-    barsEl.classList.remove("active");
-    typeWord(text, () => {
-      barsEl.classList.add("active");
-      setTimeout(() => {
-        barsEl.classList.remove("active");
-        setTimeout(() => { wordEl.textContent = ""; setTimeout(cycle, GAP_MS); }, 200);
-      }, HOLD_MS);
-    });
-  }
-  cycle();
-})();
-
+</script><script>
 (function landingUX() {
   const scrollEl = document.getElementById("landingScroll");
   const nav = document.getElementById("siteNav");
@@ -1896,6 +1893,24 @@
     scrollEl.addEventListener("scroll", () => {
       nav.classList.toggle("scrolled", scrollEl.scrollTop > 8);
     }, { passive: true });
+  }
+
+  // Mobile hamburger menu
+  const burger = document.getElementById("navBurger");
+  const mobileMenu = document.getElementById("mobileMenu");
+  if (burger && mobileMenu) {
+    const closeMenu = () => {
+      burger.setAttribute("aria-expanded", "false");
+      mobileMenu.classList.remove("show");
+      document.body.classList.remove("menu-open");
+    };
+    burger.addEventListener("click", () => {
+      const open = burger.getAttribute("aria-expanded") === "true";
+      burger.setAttribute("aria-expanded", open ? "false" : "true");
+      mobileMenu.classList.toggle("show", !open);
+      document.body.classList.toggle("menu-open", !open);
+    });
+    mobileMenu.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMenu));
   }
 
   document.querySelectorAll("[data-scroll]:not(.js-live-cta)").forEach((el) => {
@@ -1909,20 +1924,16 @@
     });
   });
 
-  // Every primary "Essayer en direct" CTA (nav, hero, CTA band, mobile bar)
-  // goes straight to the real camera experience — no intermediate screen.
-  // If the real button is ready, this clicks it directly (triggering the
-  // actual startCamera()/loadModel() flow); if the model is still loading
-  // or failed, it brings the visitor to the real status instead of faking one.
+  // Every "Essayer le prototype" CTA scrolls to the real camera screen —
+  // it never skips straight into requesting camera permission on its own.
+  // The visitor always sees the "Prêt à essayer ?" state first and taps the
+  // real button (#mainBtn) themselves to grant permission.
   document.querySelectorAll(".js-live-cta").forEach((el) => {
     el.addEventListener("click", (e) => {
+      const href = el.getAttribute("href");
+      if (href === "#essayer") return; // plain anchor scroll handled above
       e.preventDefault();
-      const btn = document.getElementById("mainBtn");
-      if (btn && !btn.disabled) {
-        btn.click();
-        return;
-      }
-      const target = document.getElementById("try");
+      const target = document.getElementById("essayer");
       if (target) target.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
     });
   });
@@ -1937,53 +1948,26 @@
       });
     }, { root: scrollEl, threshold: 0.16 });
     document.querySelectorAll("[data-reveal]").forEach((el) => revealObserver.observe(el));
-
-    const stageObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => entry.target.classList.toggle("is-active", entry.isIntersecting));
-    }, { root: scrollEl, threshold: 0.4 });
-    document.querySelectorAll(".flow-step").forEach((el) => stageObserver.observe(el));
   }
 
-  const flowWave = document.getElementById("flowWave");
-  if (flowWave) for (let i = 0; i < 9; i++) flowWave.appendChild(document.createElement("i"));
-
-  const footerPrivacy = document.getElementById("footerPrivacy");
-  if (footerPrivacy) {
-    footerPrivacy.addEventListener("click", () => {
+  // Opens the existing, unmodified info sheet (the live-camera HUD's own
+  // detail panel) from links on the marketing page — footer + the small
+  // "Voir le détail" note on the pre-permission screen.
+  document.querySelectorAll(".js-open-info").forEach((el) => {
+    el.addEventListener("click", () => {
       const sheet = document.getElementById("infoSheet");
       const scrim = document.getElementById("sheetScrim");
       if (sheet) sheet.classList.add("show");
       if (scrim) scrim.classList.add("show");
     });
-  }
-
-  // "Écouter l'exemple" — a real, functioning use of the same speech engine
-  // the live camera uses, speaking a genuine example from the recognized
-  // vocabulary. No fabricated data, just the real API.
-  const listenBtn = document.getElementById("listenBtn");
-  if (listenBtn && "speechSynthesis" in window) {
-    listenBtn.addEventListener("click", () => {
-      speechSynthesis.cancel();
-      const utter = new SpeechSynthesisUtterance("Je t'aime");
-      const voices = speechSynthesis.getVoices();
-      const fr = voices.find((v) => /fr-CA/i.test(v.lang)) || voices.find((v) => /^fr/i.test(v.lang));
-      utter.lang = fr ? fr.lang : "fr-FR";
-      if (fr) utter.voice = fr;
-      utter.rate = 1;
-      utter.onstart = () => listenBtn.classList.add("speaking");
-      utter.onend = () => listenBtn.classList.remove("speaking");
-      speechSynthesis.speak(utter);
-    });
-  } else if (listenBtn) {
-    listenBtn.disabled = true;
-    listenBtn.style.opacity = "0.4";
-  }
+  });
 
   // Sticky mobile CTA — appears once the visitor has scrolled past the
-  // hero, hides again near the footer so it never covers final content.
+  // hero, hides again near the footer and while the camera screen itself
+  // is on screen so it never covers the real button.
   const mobileCta = document.getElementById("mobileCta");
   const heroEl = document.getElementById("top");
-  const tryEl = document.getElementById("try");
+  const essayerEl = document.getElementById("essayer");
   if (mobileCta && heroEl && scrollEl) {
     const footerEl = document.querySelector(".footer");
     const sync = () => {
@@ -1992,33 +1976,55 @@
       const viewBottom = scrollEl.scrollTop + scrollEl.clientHeight;
       let nearFooter = false;
       if (footerEl) nearFooter = viewBottom > footerEl.offsetTop + 40;
-      // The real "Essayer en direct" button already lives in #try — don't
-      // float a duplicate CTA over it once that section is on screen.
-      let overTry = false;
-      if (tryEl) overTry = scrollEl.scrollTop + 80 > tryEl.offsetTop && scrollEl.scrollTop < tryEl.offsetTop + tryEl.offsetHeight;
-      mobileCta.classList.toggle("show", pastHero && !nearFooter && !overTry);
+      let overEssayer = false;
+      if (essayerEl) overEssayer = scrollEl.scrollTop + 80 > essayerEl.offsetTop && scrollEl.scrollTop < essayerEl.offsetTop + essayerEl.offsetHeight;
+      mobileCta.classList.toggle("show", pastHero && !nearFooter && !overEssayer);
     };
     scrollEl.addEventListener("scroll", sync, { passive: true });
     sync();
   }
 
-  // Keep the "Try it" status dot honestly in sync with the real camera
-  // state — it only turns "ready" once the model has actually loaded.
-  const tryMeta = document.getElementById("tryMeta");
-  const mainBtnLabel = document.getElementById("mainBtnLabel");
-  const stageEl = document.getElementById("stage");
-  if (tryMeta && mainBtnLabel && stageEl) {
-    const sync = () => {
-      const label = mainBtnLabel.textContent || "";
-      const ready = stageEl.classList.contains("live") || label.indexOf("Activer") === 0 || label.indexOf("Réessayer") === 0;
-      tryMeta.classList.toggle("ready", ready);
-    };
-    new MutationObserver(sync).observe(mainBtnLabel, { childList: true, characterData: true, subtree: true });
-    new MutationObserver(sync).observe(stageEl, { attributes: true, attributeFilter: ["class"] });
-    sync();
+  // Hero floating translation card: a short typing/cycling animation over
+  // a couple of realistic example sentences — purely decorative, doesn't
+  // touch the real camera pipeline.
+  const heroText = document.querySelector(".hero-visual .translation-text");
+  if (heroText) {
+    const original = heroText.textContent;
+    if (reduced) {
+      // leave the static sentence as-is
+    } else {
+      const EXAMPLES = [original, "Merci, à bientôt."];
+      const TYPE_MS = 34;
+      const HOLD_MS = 2600;
+      const ERASE_MS = 16;
+      let idx = 0;
+
+      function typeText(text, cb) {
+        let i = 0;
+        heroText.textContent = "";
+        const timer = setInterval(() => {
+          i++;
+          heroText.textContent = text.slice(0, i);
+          if (i >= text.length) { clearInterval(timer); cb && cb(); }
+        }, TYPE_MS);
+      }
+      function eraseText(cb) {
+        let text = heroText.textContent;
+        const timer = setInterval(() => {
+          text = text.slice(0, -1);
+          heroText.textContent = text;
+          if (text.length === 0) { clearInterval(timer); cb && cb(); }
+        }, ERASE_MS);
+      }
+      function cycle() {
+        const text = EXAMPLES[idx % EXAMPLES.length];
+        idx++;
+        setTimeout(() => {
+          eraseText(() => typeText(text, cycle));
+        }, HOLD_MS);
+      }
+      cycle();
+    }
   }
 })();
-
-</script>
-</body>
-</html>
+</script></body></html>
