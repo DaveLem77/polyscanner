@@ -787,7 +787,7 @@
 
           <button class="btn-primary block" id="mainBtn" disabled><span id="mainBtnLabel">Chargement… <span class="spinner" style="display:inline-block;vertical-align:-2px;"></span></span></button>
           <div id="loadStatus"><span id="loadStatusText">Suivi de main en direct</span></div>
-          <div class="demo-note-small">14 formes reconnues aujourd'hui : poing fermé, un à cinq, pouce levé et baissé, appelle-moi, cornes, je t'aime, d'accord, pistolet, salut vulcain.</div>
+          <div class="demo-note-small">42 gestes reconnus aujourd'hui, dont les mots de conversation Oui, Non, Merci, Manger et Pardon, les pronoms Je et Tu et la question Quoi (reconnus grâce au visage) ; les chiffres un à huit ; pouce levé, baissé ou sur le côté ; petit doigt levé, un peu, griffe, pincé, attention, doigts croisés, appelle-moi, cornes, je t'aime, d'accord, pistolet, salut vulcain ; et les gestes en mouvement saluer, dire au revoir, pousser la paume, agiter un pouce levé, faire signe d'approcher, calmer d'un geste, frotter les doigts, trembler de peur, et avancer le poing.</div>
         </div>
       </section>
 
@@ -803,14 +803,18 @@
             <h4>Aujourd'hui</h4>
             <div class="rd-item"><b>Reconnaissance visuelle en temps réel</b>modèle de suivi de main (MediaPipe, 21 points), exécuté à chaque image de la caméra.</div>
             <div class="rd-item"><b>Traitement entièrement local</b>aucune image ni vidéo n'est transmise à un serveur.</div>
-            <div class="rd-item"><b>Gestes isolés</b>reconnaissance de formes de main statiques — pas de mouvement continu.</div>
+            <div class="rd-item"><b>Vocabulaire de conversation</b>Oui, Non, Merci, Manger et Pardon — des mots pensés spécifiquement pour suivre un échange, pas seulement une démonstration.</div>
+            <div class="rd-item"><b>Formes de main</b>vingt-cinq gestes reconnus à partir de la position des doigts, image par image.</div>
+            <div class="rd-item"><b>Gestes en mouvement</b>quatorze gestes reconnus à leur mouvement plutôt qu'à une forme figée, dont Oui, Non, Merci, Manger, Au revoir et Peur.</div>
+            <div class="rd-item"><b>Contexte du visage (expérimental)</b>Je, Tu, Quoi et Pardon — un index pointé ou un poing fermé, tous les deux distingués grâce à leur position par rapport au visage, ou à des sourcils haussés. Premier réglage non vérifié avec une vraie caméra ; à ajuster si besoin.</div>
             <div class="rd-item"><b>Synthèse vocale automatique</b>chaque geste confirmé est prononcé via la voix native du navigateur.</div>
           </div>
           <div class="rd-col roadmap" data-reveal>
             <h4>En exploration — non implémenté</h4>
-            <div class="rd-item"><b>Mouvement et séquences</b>reconnaître un geste qui se déroule dans le temps, pas seulement une forme figée.</div>
+            <div class="rd-item"><b>Mouvements composés</b>enchaîner plusieurs mouvements pour former un signe plus riche, au-delà des onze gestes simples déjà reconnus.</div>
             <div class="rd-item"><b>Contexte de la phrase</b>tenir compte de ce qui a été signé juste avant.</div>
             <div class="rd-item"><b>Vocabulaire normalisé</b>élargir vers le vocabulaire d'une langue des signes officielle.</div>
+            <div class="rd-item"><b>Conversation complète</b>verbes courants et vocabulaire plus large, au-delà des mots, pronoms et question déjà reconnus.</div>
           </div>
         </div>
       </section>
@@ -874,13 +878,14 @@
     <h2>Portée volontairement limitée</h2>
     <p>Ce prototype reconnaît des <b>gestes de la main courants et largement reconnus</b> (compter jusqu'à cinq, pouce levé, victoire, OK, etc.) — pas une langue des signes spécifique. Le vocabulaire d'une vraie langue des signes (LSQ, LSF, ASL…) demande des formes de main précises que je ne peux pas garantir exactes sans référence vérifiée, donc je ne l'affiche pas comme tel ici.</p>
     <p>Le suivi de main utilise un modèle de vision par ordinateur pré-entraîné (MediaPipe, par Google) chargé une seule fois au démarrage — ensuite, tout le traitement vidéo reste local, sur ton appareil. Chaque geste confirmé est aussi lu à voix haute (bouton « Son » en haut à droite pour couper le son).</p>
+    <p><b>Je, Tu, Quoi et Pardon</b> utilisent en plus un suivi léger du visage : un index pointé distingué selon sa distance au visage ou selon des sourcils haussés, et un poing fermé lu comme « Pardon » quand il reste immobile tout près du visage. C'est le premier réglage de l'app que je n'ai pas pu vérifier avec une vraie caméra dans mon environnement de développement — les seuils sont des estimations raisonnables, pas des mesures confirmées. Si ça se déclenche mal chez toi, dis-le-moi : c'est exactement ce genre de retour qui permet de les ajuster.</p>
     <p><b>Cette page a besoin d'accès internet</b> au premier chargement (pour télécharger le modèle), puis d'un accès caméra en HTTPS pour fonctionner.</p>
     <button class="close" id="closeSheet">Compris</button>
   </div>
 </div>
 
 <script type="module">
-  import { HandLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
+  import { HandLandmarker, FaceLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
 
   const stage = document.getElementById("stage");
   const video = document.getElementById("video");
@@ -920,6 +925,13 @@
     three:      { code: "Trois",         label: "trois doigts" },
     four:       { code: "Quatre",        label: "quatre doigts" },
     five:       { code: "Cinq",          label: "main ouverte" },
+    six:        { code: "Six",           label: "pouce et auriculaire joints" },
+    seven:      { code: "Sept",          label: "pouce et annulaire joints" },
+    eight:      { code: "Huit",          label: "pouce et majeur joints" },
+    threeAlt:   { code: "Trois",         label: "pouce, index et majeur (compte à la française)" },
+    pinkyUp:    { code: "Petit doigt levé", label: "auriculaire seul, doigts repliés" },
+    tiny:       { code: "Un peu",        label: "pouce et index pincés, doigts repliés" },
+    hitchhike:  { code: "Pouce de côté", label: "pouce tendu sur le côté" },
     thumbsUp:   { code: "Pouce levé",    label: "approbation" },
     thumbsDown: { code: "Pouce baissé",  label: "désapprobation" },
     shaka:      { code: "Appelle-moi",   label: "pouce et auriculaire tendus" },
@@ -928,6 +940,42 @@
     ok:         { code: "D'accord",      label: "pouce et index en cercle" },
     fingerGun:  { code: "Pistolet",      label: "pouce et index tendus" },
     vulcan:     { code: "Salut vulcain", label: "doigts séparés en deux paires" },
+    // Movement-based gestures — classified from how the hand moves across a
+    // short window of frames, not just its shape in one frame (see
+    // detectDynamicGesture below).
+    wave:       { code: "Salut",         label: "main ouverte qui s'agite" },
+    stop:       { code: "Stop",          label: "paume qui s'approche de la caméra" },
+    bravo:      { code: "Bravo",         label: "pouce levé qui s'agite" },
+    beckon:     { code: "Viens",         label: "index qui s'approche et s'éloigne" },
+    // A fist nodding up and down, like a nodding head — the standard way
+    // "yes" is signed, prioritized here over a merely decorative "knocking"
+    // reading of the exact same motion.
+    oui:        { code: "Oui",           label: "poing qui hoche comme un signe de tête" },
+    non:        { code: "Non",           label: "index qui fait non de gauche à droite" },
+    merci:      { code: "Merci",         label: "main à plat qui s'éloigne d'un geste" },
+    manger:     { code: "Manger",        label: "doigts pincés qui montent vers la bouche" },
+    calm:       { code: "Du calme",      label: "main ouverte qui s'abaisse plusieurs fois" },
+    argent:     { code: "Argent",        label: "pouce et doigts qui se frottent" },
+    vasY:       { code: "Vas-y",         label: "poing qui s'avance vers la caméra" },
+    // Shapes that need a bit more than the plain finger-extension flags
+    // above: a partial curl, a cluster of fingertips, a tight vs. spread
+    // hand, or two fingers swapping sides.
+    griffe:         { code: "Griffe",         label: "doigts recourbés, pouce replié" },
+    pince:          { code: "Pincé",          label: "tous les doigts réunis en pointe" },
+    attention:      { code: "Attention",      label: "main à plat, doigts serrés" },
+    crossedFingers: { code: "Doigts croisés", label: "index et majeur croisés" },
+    // Same index-pointing shape as "one", disambiguated using the face: how
+    // close the hand sits to the face, and whether the eyebrows are raised.
+    // These are the first gestures in the app that read anything beyond the
+    // hand — see the info sheet for the honest limits of that approach.
+    je:   { code: "Je",    label: "index pointé vers soi" },
+    tu:   { code: "Tu",    label: "index pointé au loin, bras tendu" },
+    quoi: { code: "Quoi ?", label: "index levé, sourcils haussés" },
+    // More conversational vocabulary — one hand-only pantomime pair (goodbye,
+    // scared) and one more gesture that, like je/tu/quoi, needs the face.
+    auRevoir: { code: "Au revoir", label: "main ouverte qui s'éloigne" },
+    peur:     { code: "Peur",      label: "main en griffe qui tremble" },
+    pardon:   { code: "Pardon",    label: "poing tenu près du visage, immobile" },
   };
 
   function classifyGesture(lm, vw, vh) {
@@ -937,39 +985,287 @@
     }
     const wrist = 0;
     const fingerDefs = [{ tip: 8, pip: 6 }, { tip: 12, pip: 10 }, { tip: 16, pip: 14 }, { tip: 20, pip: 18 }];
-    const [i, m, r, p] = fingerDefs.map((f) => d(f.tip, wrist) > d(f.pip, wrist) * 1.05);
+    // Continuous version of the same "how extended is this finger" test —
+    // 1.05 is exactly the boolean's own cutoff, so every existing yes/no
+    // reading still comes out the same; the extra precision is only used by
+    // the "in between" shapes below (a half-curled claw, mainly).
+    const extRatios = fingerDefs.map((f) => d(f.tip, wrist) / (d(f.pip, wrist) || 1));
+    const [i, m, r, p] = extRatios.map((ratio) => ratio > 1.05);
     const handSpan = d(0, 9) || 1;
     const t = d(4, 5) > handSpan * 0.55;
     const pinch = d(4, 8) < handSpan * 0.4;
+    // A tighter pinch than "ok" needs — a resting fist can have the thumb
+    // fall fairly close to the curled index by accident, so "tiny" (which,
+    // unlike "ok", has no extended fingers to tell it apart) requires a
+    // clearly deliberate, tight pinch to avoid being confused with a fist.
+    const pinchTight = d(4, 8) < handSpan * 0.25;
     const thumbUp = (lm[0].y - lm[4].y) * vh > handSpan * 0.35;
     const thumbDown = (lm[4].y - lm[0].y) * vh > handSpan * 0.35;
+
+    // Number shapes 6/7/8: thumb tip touching another fingertip while the
+    // remaining three fingers stay up — same idea as the "ok" pinch above,
+    // just against a different finger.
+    const pinchPinky = d(4, 20) < handSpan * 0.4;
+    const pinchRing = d(4, 16) < handSpan * 0.4;
+    const pinchMiddle = d(4, 12) < handSpan * 0.4;
 
     // Vulcan salute: all five fingers extended, but split into two pairs
     // (index+middle vs ring+pinky) with a visibly wider gap between the
     // middle and ring fingertips than between the other neighboring tips.
     const gapIM = d(8, 12), gapMR = d(12, 16), gapRP = d(16, 20);
     const vulcanSplit = gapMR > ((gapIM + gapRP) / 2) * 1.6;
+    const avgGap = (gapIM + gapMR + gapRP) / 3;
+
+    // Griffe (claw): all four fingers bent to a mid-point — not curled into
+    // a fist, not extended straight — with the thumb tucked away. A real
+    // fist reads well under this band and a straight finger crosses the
+    // 1.05 "extended" cutoff above it, so this fills a middle ground the
+    // boolean flags never claim, without ever flipping one of them to true.
+    const clawBand = extRatios.every((ratio) => ratio > 0.88 && ratio < 1.03);
+
+    // Pincé: every fingertip (thumb included) gathered into one small
+    // cluster, held up away from the wrist — unlike a fist, where the tips
+    // are just as close together but pulled in toward the palm instead, and
+    // unlike "ok", where only the thumb and index touch while the other
+    // three stay spread in their normal extended positions. Using the worst
+    // (largest) of the four neighboring gaps — not their average — is what
+    // tells those two apart: "ok"'s three untouched fingers keep at least
+    // one of those gaps wide even though the thumb-index gap is tiny.
+    const tipGapMax = Math.max(d(4, 8), d(8, 12), d(12, 16), d(16, 20));
+    const avgTipToWrist = (d(4, wrist) + d(8, wrist) + d(12, wrist) + d(16, wrist) + d(20, wrist)) / 5;
+    const pinceShape = tipGapMax < handSpan * 0.35 && avgTipToWrist > handSpan * 0.85;
+
+    // Doigts croisés: index and middle swap left-right order between their
+    // knuckles and their tips — true regardless of which hand or rotation,
+    // since it only compares each finger's own two joints to each other.
+    const mcpOrder = Math.sign(lm[5].x - lm[9].x);
+    const tipOrder = Math.sign(lm[8].x - lm[12].x);
+    const fingersCrossed = mcpOrder !== 0 && tipOrder !== 0 && mcpOrder !== tipOrder;
 
     let key;
     if (t && i && m && r && p && vulcanSplit) key = "vulcan";
+    // Every fingertip clustered together (pince) is checked before "ok",
+    // which is really just the thumb and index touching while the other
+    // three fingers stay put — a real "ok" pose fails pince's stricter
+    // "every neighboring gap is small" test, so this order never misreads it.
+    else if (pinceShape) key = "pince";
     else if (pinch && m && r && p) key = "ok";
+    // Thumb and index pinched together while the other three fingers stay
+    // curled (rather than up, as in "ok") — the common "a little bit" pinch.
+    else if (pinchTight && !m && !r && !p) key = "tiny";
+    else if (pinchPinky && i && m && r && !p) key = "six";
+    else if (pinchRing && i && m && !r && p) key = "seven";
+    else if (pinchMiddle && i && !m && r && p) key = "eight";
+    // Fingers held tightly together rather than spread — checked before the
+    // generic "five" below, the same way vulcan's split is checked before it.
+    else if (i && m && r && p && avgGap < handSpan * 0.28) key = "attention";
+    else if (fingersCrossed && !r && !p) key = "crossedFingers";
     else if (t && i && !m && !r && !p) key = "fingerGun";
     else if (t && !i && !m && !r && !p && thumbUp) key = "thumbsUp";
     else if (t && !i && !m && !r && !p && thumbDown) key = "thumbsDown";
+    // Same base shape (thumb out, everything else curled) but neither
+    // clearly up nor down — a sideways thumb, as in hitchhiking.
+    else if (t && !i && !m && !r && !p) key = "hitchhike";
     else if (t && !i && !m && !r && p) key = "shaka";
     else if (t && i && !m && !r && p) key = "ily";
     else if (!t && i && !m && !r && p) key = "rock";
+    // Thumb tucked away, only the little finger up — "pinky up".
+    else if (!t && !i && !m && !r && p) key = "pinkyUp";
+    // Same base flags as a fist (nothing crosses the extended threshold),
+    // but the fingers are bent to a claw rather than curled all the way in.
+    else if (!t && !i && !m && !r && !p && clawBand) key = "griffe";
     else if (!t && !i && !m && !r && !p) key = "fist";
     else if (!t && i && !m && !r && !p) key = "one";
     else if (!t && i && m && !r && !p) key = "two";
+    // Thumb, index and middle up, ring and pinky curled — the French
+    // counting convention for "trois" (thumb counts as one), alongside the
+    // American-style index+middle+ring already covered by "three" below.
+    else if (t && i && m && !r && !p) key = "threeAlt";
     else if (!t && i && m && r && !p) key = "three";
     else if (!t && i && m && r && p) key = "four";
     else if (t && i && m && r && p) key = "five";
     else key = t ? "thumbsUp" : "fist"; // fallback for ambiguous combos
 
     const flags = [t, i, m, r, p];
-    return { key, flags };
+    // Named shapes, computed once here and reused both for the per-frame key
+    // above and by the motion tracker below — so a moving gesture can gate
+    // on "hand looks like X" without recomputing X's geometry from scratch.
+    const shapes = {
+      open: i && m && r && p,
+      fist: !t && !i && !m && !r && !p,
+      thumbsUpShape: t && !i && !m && !r && !p,
+      curlBase: !m && !r && !p,
+      attentionShape: i && m && r && p && avgGap < handSpan * 0.28,
+      pinceShape,
+      clawShape: !t && !i && !m && !r && !p && clawBand,
+    };
+    return { key, flags, shapes };
   }
+
+  // Counts direction reversals in a series of numbers, ignoring jitter
+  // smaller than `minDelta`. Shared by every "the hand went back and forth"
+  // check below (a wave, a shaking thumb, a curling finger) — only the
+  // series being watched changes.
+  function countReversals(values, minDelta) {
+    let reversals = 0, lastDir = 0, min = values[0], max = values[0];
+    for (let k = 1; k < values.length; k++) {
+      const dv = values[k] - values[k - 1];
+      min = Math.min(min, values[k]);
+      max = Math.max(max, values[k]);
+      if (Math.abs(dv) < minDelta) continue;
+      const dir = dv > 0 ? 1 : -1;
+      if (lastDir !== 0 && dir !== lastDir) reversals++;
+      lastDir = dir;
+    }
+    return { reversals, range: max - min };
+  }
+
+  // Very small, deliberately simple motion classifier. It looks at the last
+  // ~0.9s of samples (palm position + apparent size + hand shape, all in
+  // pixels) and asks: did an open hand swing side to side (wave)? did a
+  // thumbs-up shake side to side (bravo)? did an otherwise-curled hand's
+  // index finger flick in and out repeatedly (viens/beckon)? did an open
+  // hand grow steadily bigger, meaning it moved toward the camera (stop)?
+  // Holding still, moving slowly, or an unmatched shape all return null so
+  // the caller falls back to the plain per-frame hand-shape reading — this
+  // never invents a gesture, it only recognizes motions that are genuinely
+  // there.
+  function detectDynamicGesture(motion) {
+    if (motion.length < 6) return null;
+    const avgSpan = motion.reduce((s, m) => s + m.span, 0) / motion.length;
+    if (!avgSpan) return null;
+
+    const shapeShare = (field) => motion.reduce((n, s) => n + (s[field] ? 1 : 0), 0) / motion.length;
+    const xs = motion.map((s) => s.x);
+    const ys = motion.map((s) => s.y);
+
+    // How much a hand traveled in a single, mostly-one-way direction rather
+    // than wobbling back and forth: the straight-line distance from the
+    // first sample to the last, divided by the total distance actually
+    // covered along the way. Near 1 means a clean sweep; a lot less means
+    // the path doubled back on itself.
+    function sweepStraightness() {
+      let pathLength = 0;
+      for (let k = 1; k < motion.length; k++) {
+        pathLength += Math.hypot(motion[k].x - motion[k - 1].x, motion[k].y - motion[k - 1].y);
+      }
+      const net = Math.hypot(motion[motion.length - 1].x - motion[0].x, motion[motion.length - 1].y - motion[0].y);
+      return { net, straightness: pathLength ? net / pathLength : 0 };
+    }
+
+    // Wave: open hand, swinging side to side.
+    if (shapeShare("open") >= 0.7) {
+      const { reversals, range } = countReversals(xs, avgSpan * 0.04);
+      if (reversals >= 3 && range > avgSpan * 0.7) return "wave";
+    }
+
+    // Bravo: thumbs-up shape, shaking side to side.
+    if (shapeShare("thumbsUpShape") >= 0.7) {
+      const { reversals, range } = countReversals(xs, avgSpan * 0.04);
+      if (reversals >= 3 && range > avgSpan * 0.5) return "bravo";
+    }
+
+    // Viens (beckon): middle/ring/pinky stay curled while the index finger
+    // repeatedly extends and retracts (a "come here" flick), tracked via a
+    // continuous extension ratio rather than the on/off per-frame flag.
+    // Argent (money): same curled base, but it's the thumb-to-index pinch
+    // distance that opens and closes repeatedly, as in rubbing fingers
+    // together. Non: same base shape again, but this time it's the whole
+    // hand swinging side to side — a wagging index finger saying "no".
+    if (shapeShare("curlBase") >= 0.7) {
+      const curls = motion.map((s) => s.curl);
+      const { reversals: curlReversals } = countReversals(curls, 0.12);
+      if (curlReversals >= 3) return "beckon";
+      const pinches = motion.map((s) => s.pinchRatio);
+      const { reversals: pinchReversals } = countReversals(pinches, 0.1);
+      if (pinchReversals >= 3) return "argent";
+      const { reversals: xReversals, range: xRange } = countReversals(xs, avgSpan * 0.04);
+      if (xReversals >= 3 && xRange > avgSpan * 0.5) return "non";
+    }
+
+    // Toc toc / Oui: a closed fist moving up and down repeatedly — read as
+    // "yes" (a nodding fist), the far more useful reading of that motion.
+    // Vas-y: the same closed fist instead growing steadily larger, as it's
+    // thrust toward the camera.
+    if (shapeShare("fistShape") >= 0.7) {
+      const { reversals, range } = countReversals(ys, avgSpan * 0.04);
+      if (reversals >= 3 && range > avgSpan * 0.5) return "oui";
+      const thirdLen = Math.max(1, Math.ceil(motion.length / 3));
+      const avgFirst = motion.slice(0, thirdLen).reduce((s, m) => s + m.span, 0) / thirdLen;
+      const avgLast = motion.slice(-thirdLen).reduce((s, m) => s + m.span, 0) / thirdLen;
+      const rangeX = Math.max(...xs) - Math.min(...xs);
+      if (avgFirst && avgLast / avgFirst > 1.35 && rangeX < avgSpan * 0.5) return "vasY";
+      // Pardon: a fist held close to the face and mostly still — not nodding
+      // (oui, ruled out by the range check above) and not thrust forward
+      // (vasY, ruled out just above) — a common apologetic "excuse me"
+      // pantomime. Needs the optional face model; without it "faceNear" is
+      // always false, this simply never matches, and a plain held fist is
+      // reported as "fist" instead, exactly as before face tracking existed.
+      if (shapeShare("faceNear") >= 0.7 && range < avgSpan * 0.35 && rangeX < avgSpan * 0.35) return "pardon";
+    }
+
+    // Manger (eat): fingertips pinched together, moving up and down
+    // repeatedly — bringing food to the mouth.
+    if (shapeShare("pinceShape") >= 0.7) {
+      const { reversals, range } = countReversals(ys, avgSpan * 0.04);
+      if (reversals >= 3 && range > avgSpan * 0.5) return "manger";
+    }
+
+    // Merci: a flat hand, fingers held together, sweeping away in one clean
+    // motion rather than wobbling back and forth — unlike "attention", which
+    // is the same shape held still.
+    if (shapeShare("attentionShape") >= 0.7) {
+      const { net, straightness } = sweepStraightness();
+      if (straightness > 0.75 && net > avgSpan * 0.9) return "merci";
+    }
+
+    // Du calme: open hand patting up and down repeatedly (checked after
+    // wave/stop so a genuine side-to-side or push motion isn't mistaken for
+    // this one — a real pat has far more vertical than horizontal travel).
+    if (shapeShare("open") >= 0.7) {
+      const { reversals: reversalsY, range: rangeY } = countReversals(ys, avgSpan * 0.04);
+      const rangeX = Math.max(...xs) - Math.min(...xs);
+      if (reversalsY >= 3 && rangeY > avgSpan * 0.5 && rangeX < avgSpan * 0.5) return "calm";
+    }
+
+    // Stop/push: an open hand's apparent size grows steadily larger (it
+    // moved toward the camera) while staying roughly in the same spot
+    // horizontally.
+    if (shapeShare("open") >= 0.7) {
+      const thirdLen = Math.max(1, Math.ceil(motion.length / 3));
+      const firstThird = motion.slice(0, thirdLen);
+      const lastThird = motion.slice(-thirdLen);
+      const avgFirst = firstThird.reduce((s, m) => s + m.span, 0) / firstThird.length;
+      const avgLast = lastThird.reduce((s, m) => s + m.span, 0) / lastThird.length;
+      const rangeX = Math.max(...xs) - Math.min(...xs);
+      if (avgFirst && avgLast / avgFirst > 1.35 && rangeX < avgSpan * 0.5) return "stop";
+    }
+
+    // Au revoir: the mirror image of "stop" — an open hand's apparent size
+    // shrinking steadily (it moved away from the camera) while staying
+    // roughly in the same spot horizontally.
+    if (shapeShare("open") >= 0.7) {
+      const thirdLen = Math.max(1, Math.ceil(motion.length / 3));
+      const firstThird = motion.slice(0, thirdLen);
+      const lastThird = motion.slice(-thirdLen);
+      const avgFirst = firstThird.reduce((s, m) => s + m.span, 0) / firstThird.length;
+      const avgLast = lastThird.reduce((s, m) => s + m.span, 0) / lastThird.length;
+      const rangeX = Math.max(...xs) - Math.min(...xs);
+      if (avgFirst && avgLast / avgFirst < 0.74 && rangeX < avgSpan * 0.5) return "auRevoir";
+    }
+
+    // Peur: a claw-shaped hand trembling side to side — the common "spooky
+    // fingers" pantomime for fear. A slightly higher reversal count than
+    // wave/bravo asks for a quicker, smaller trembling motion rather than a
+    // broad wave.
+    if (shapeShare("clawShape") >= 0.7) {
+      const { reversals, range } = countReversals(xs, avgSpan * 0.04);
+      if (reversals >= 4 && range > avgSpan * 0.3) return "peur";
+    }
+
+    return null;
+  }
+
   const CONNECTIONS = [
     [0,1],[1,2],[2,3],[3,4],
     [0,5],[5,6],[6,7],[7,8],
@@ -979,7 +1275,45 @@
     [5,9],[9,13],[13,17]
   ];
 
+  // Face-based context, layered on top of the plain hand-shape reading.
+  // Standard MediaPipe Face Mesh landmark indices: 1 = nose tip, 33/263 =
+  // outer eye corners (used only as a scale reference, via the distance
+  // between them), 105/334 = eyebrow points, 159/386 = the eyelid points
+  // just below them (their gap widens when an eyebrow is raised). These
+  // index choices follow the documented Face Mesh convention but — unlike
+  // every hand-shape check above — could not be verified against a real
+  // face in this sandboxed, no-camera environment; see the info sheet.
+  const FACE_NEAR_MULT = 2.2; // hand within ~2.2x the eye-to-eye distance of the nose reads as "close to the face"
+  const FACE_FAR_MULT = 3.8;  // hand beyond ~3.8x that distance reads as "far, arm extended"
+  const BROW_RAISE_MULT = 1.12; // eyebrow-to-eyelid gap 12% above its own rolling baseline reads as "raised"
+
+  function classifyFaceContext(faceLm, handX, handY, vw, vh, browBaseline) {
+    function fd(a, b) {
+      const dx = (faceLm[a].x - faceLm[b].x) * vw, dy = (faceLm[a].y - faceLm[b].y) * vh;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+    const faceScale = fd(33, 263) || 1;
+    const noseX = faceLm[1].x * vw, noseY = faceLm[1].y * vh;
+    const handFaceDist = Math.hypot(handX - noseX, handY - noseY);
+    const browRatio = (fd(105, 159) + fd(334, 386)) / 2 / faceScale;
+    const raised = browBaseline !== null && browRatio > browBaseline * BROW_RAISE_MULT;
+    // Plain proximity, independent of the raised-eyebrow priority below — a
+    // held-still fist near the face ("pardon") cares about distance alone,
+    // not whether contextKey ended up "quoi" instead of "je" that frame.
+    const near = handFaceDist < faceScale * FACE_NEAR_MULT;
+
+    let contextKey = null;
+    if (raised) contextKey = "quoi";
+    else if (near) contextKey = "je";
+    else if (handFaceDist > faceScale * FACE_FAR_MULT) contextKey = "tu";
+
+    return { contextKey, browRatio, faceScale, handFaceDist, raised, near };
+  }
+
   let handLandmarker = null;
+  let faceLandmarker = null;
+  let faceModelReady = false;
+  let browBaseline = null;
   let modelReady = false;
   let modelFailed = false;
   let stream = null;
@@ -988,6 +1322,8 @@
   let lastVideoTime = -1;
   const history = [];
   const HISTORY_LEN = 8;
+  const motion = [];
+  const MOTION_WINDOW_MS = 900;
   let transcriptWords = [];
   let lastCommitted = null;
   let lastCommitTime = 0;
@@ -1047,6 +1383,12 @@
         "runtime"
       );
 
+      // Face tracking is an optional enhancement on top of the core hand
+      // pipeline — it loads in the background, on its own schedule, and is
+      // never awaited here: if it's slow, fails, or the model can't be
+      // reached, hand tracking still comes up exactly as it always has.
+      loadFaceModel(vision);
+
       const modelAssetPath = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task";
       let secs = 0;
       setLoadStatus("Étape 2/2 — téléchargement du modèle de main… (0s)");
@@ -1087,6 +1429,25 @@
         "vérifie ta connexion, essaie de désactiver un VPN/bloqueur de pub, ou change de réseau (certains réseaux Wi-Fi ou pare-feux bloquent ces domaines). " +
         "Ouvre aussi la console du navigateur si possible et copie-moi l'erreur exacte — je pourrai cibler le correctif au lieu de deviner."
       );
+    }
+  }
+
+  // Best-effort only: no timeout, no error UI, no effect on modelReady or
+  // modelFailed. If this never resolves or throws, faceModelReady simply
+  // stays false and the app behaves exactly as it does with hands alone —
+  // "je"/"tu"/"quoi" just don't get distinguished from a plain "one".
+  async function loadFaceModel(vision) {
+    try {
+      const faceModelAssetPath = "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task";
+      faceLandmarker = await FaceLandmarker.createFromOptions(vision, {
+        baseOptions: { modelAssetPath: faceModelAssetPath, delegate: "CPU" },
+        runningMode: "VIDEO",
+        numFaces: 1,
+      });
+      faceModelReady = true;
+    } catch (err) {
+      faceLandmarker = null;
+      faceModelReady = false;
     }
   }
 
@@ -1140,6 +1501,8 @@
 
       resizeOverlay();
       history.length = 0;
+      motion.length = 0;
+      browBaseline = null;
       rafId = requestAnimationFrame(loop);
     } catch (err) {
       mainBtn.disabled = false;
@@ -1170,6 +1533,8 @@
     mainBtnLabel.textContent = "Activer la caméra";
     mainBtn.disabled = false;
     history.length = 0;
+    motion.length = 0;
+    browBaseline = null;
     overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
   }
 
@@ -1297,6 +1662,7 @@
 
     if (!result.landmarks || result.landmarks.length === 0) {
       history.length = 0;
+      motion.length = 0;
       captionWord.classList.remove("confident");
       captionLabel.classList.remove("confident");
       captionWord.textContent = "–";
@@ -1312,11 +1678,54 @@
     const lm = result.landmarks[0];
     const vw = video.videoWidth, vh = video.videoHeight;
 
-    const { key, flags } = classifyGesture(lm, vw, vh);
+    const { key, flags, shapes } = classifyGesture(lm, vw, vh);
+
+    // Track palm position/size/shape over time (in pixels) so a wave, a
+    // shaking thumbs-up, a beckoning finger, or a push toward the camera can
+    // be recognized on top of the per-frame shape.
+    const palmX = ((lm[0].x + lm[5].x + lm[9].x + lm[13].x + lm[17].x) / 5) * vw;
+    const palmY = ((lm[0].y + lm[5].y + lm[9].y + lm[13].y + lm[17].y) / 5) * vh;
+    const handSpanPx = Math.hypot((lm[0].x - lm[9].x) * vw, (lm[0].y - lm[9].y) * vh) || 1;
+    const indexCurl = Math.hypot((lm[8].x - lm[0].x) * vw, (lm[8].y - lm[0].y) * vh) / handSpanPx;
+    const pinchRatio = Math.hypot((lm[4].x - lm[8].x) * vw, (lm[4].y - lm[8].y) * vh) / handSpanPx;
+    const nowMs = performance.now();
+
+    // Face context, computed once per frame — feeds both this frame's motion
+    // sample (so a window-averaged check like "pardon" can see it) and, once
+    // a key is settled below, the direct "one" -> je/tu/quoi refinement.
+    // Detection runs whenever a hand is visible (not only while pointing) so
+    // the eyebrow baseline stays warm; everything here is wrapped so a face
+    // model that isn't ready, a face that drifts out of frame, or a runtime
+    // error never touches the hand-only pipeline around it.
+    let faceCtx = null;
+    if (faceModelReady && faceLandmarker) {
+      try {
+        const faceResult = faceLandmarker.detectForVideo(video, now);
+        if (faceResult.faceLandmarks && faceResult.faceLandmarks.length) {
+          const faceLm = faceResult.faceLandmarks[0];
+          faceCtx = classifyFaceContext(faceLm, palmX, palmY, vw, vh, browBaseline);
+          if (browBaseline === null) browBaseline = faceCtx.browRatio;
+          else if (!faceCtx.raised) browBaseline = browBaseline * 0.97 + faceCtx.browRatio * 0.03;
+        }
+      } catch (e) { /* face tracking is best-effort; never let it break hand tracking */ }
+    }
+
+    motion.push({
+      t: nowMs, x: palmX, y: palmY, span: handSpanPx,
+      open: shapes.open, thumbsUpShape: shapes.thumbsUpShape, curlBase: shapes.curlBase, curl: indexCurl,
+      fistShape: shapes.fist, pinchRatio: pinchRatio,
+      attentionShape: shapes.attentionShape, pinceShape: shapes.pinceShape,
+      clawShape: shapes.clawShape, faceNear: faceCtx ? faceCtx.near : false,
+    });
+    while (motion.length && nowMs - motion[0].t > MOTION_WINDOW_MS) motion.shift();
+    let effectiveKey = detectDynamicGesture(motion) || key;
+
+    // Face context refines a plain pointing "one" into "je"/"tu"/"quoi".
+    if (effectiveKey === "one" && faceCtx && faceCtx.contextKey) effectiveKey = faceCtx.contextKey;
 
     if (debugOn) drawSkeleton(lm, flags);
 
-    history.push(key);
+    history.push(effectiveKey);
     if (history.length > HISTORY_LEN) history.shift();
     const tally = {};
     history.forEach((k) => { tally[k] = (tally[k] || 0) + 1; });
