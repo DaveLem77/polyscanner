@@ -7,38 +7,39 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
 <style>
   :root {
-    /* ---- cool, functional teal/slate palette ---- */
-    --bg: #eef4f3;
-    --bg-soft: #dcece9;
-    --coral-wash: #e2f0ee;
-    --lavender: #dde9f2;
-    --lavender-2: #bcd6ec;
-    --peach: #cdeae4;
-    --peach-2: #b3ded6;
-    --white: #ffffff;
+    /* ---- dark, electric, modern palette ---- */
+    --bg: #060810;
+    --bg-soft: #0c0f1c;
+    --coral-wash: #0a0f1a;
+    --lavender: #131a30;
+    --lavender-2: #1f2a52;
+    --peach: #0e1f16;
+    --peach-2: #163826;
+    --white: #10152a;
 
-    --plum: #10232a;
-    --plum-2: #143038;
-    --charcoal: #141a1c;
-    --charcoal-2: #1e2628;
-    --charcoal-3: #2b3638;
+    --plum: #05060d;
+    --plum-2: #0d1330;
+    --charcoal: #0a0d16;
+    --charcoal-2: #131828;
+    --charcoal-3: #1b2136;
 
-    --coral: #1f9d8a;
-    --coral-deep: #157a6b;
-    --salmon: #5fc4b3;
+    --coral: #3f6bff;
+    --coral-deep: #2748d6;
+    --salmon: #8fa6ff;
+    --lime: #c6ff5e;
     --green: #4caf7d;
     --green-deep: #388a63;
     --yellow: #f2b84b;
 
-    --ink: #16191d;
-    --ink-dim: rgba(22,25,29,0.66);
-    --ink-faint: rgba(22,25,29,0.44);
-    --line: rgba(22,25,29,0.12);
-    --line-strong: rgba(22,25,29,0.22);
+    --ink: #eef1fa;
+    --ink-dim: rgba(238,241,250,0.68);
+    --ink-faint: rgba(238,241,250,0.46);
+    --line: rgba(255,255,255,0.10);
+    --line-strong: rgba(255,255,255,0.18);
 
-    --ivory: #f4f7f6;
-    --ivory-dim: rgba(244,247,246,0.7);
-    --ivory-faint: rgba(244,247,246,0.4);
+    --ivory: #f7f9ff;
+    --ivory-dim: rgba(247,249,255,0.72);
+    --ivory-faint: rgba(247,249,255,0.42);
 
     --display: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -54,15 +55,15 @@
     --fs-caption: 0.8125rem;
 
     /* ---- live camera overlay (dark, kept for legibility over video) ---- */
-    --glass: rgba(18,20,22,0.46);
-    --glass-strong: rgba(14,16,18,0.8);
-    --hairline: rgba(255,255,255,0.18);
-    --text: #f4f7f6;
-    --text-dim: rgba(244,247,246,0.7);
-    --text-faint: rgba(244,247,246,0.4);
+    --glass: rgba(6,8,14,0.5);
+    --glass-strong: rgba(4,6,10,0.82);
+    --hairline: rgba(255,255,255,0.16);
+    --text: #f7f9ff;
+    --text-dim: rgba(247,249,255,0.72);
+    --text-faint: rgba(247,249,255,0.42);
     --good: #4caf7d;
     --warn: #f2b84b;
-    --bad: rgba(244,247,246,0.28);
+    --bad: rgba(247,249,255,0.26);
   }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -116,11 +117,10 @@
   .nav.on-dark { color: var(--ivory); }
   .nav.scrolled {
     padding: calc(env(safe-area-inset-top, 0px) + 10px) var(--gutter);
-    background: rgba(238,244,243,0.9);
+    background: rgba(6,8,14,0.72);
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
     box-shadow: 0 1px 0 var(--line);
   }
-  .nav.scrolled.on-dark { color: var(--ink); }
   .nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
   .nav-mark { width: 25px; height: 25px; flex: none; }
   .nav-wordmark { font-family: var(--display); font-weight: 800; font-size: 16.5px; letter-spacing: -0.01em; }
@@ -131,14 +131,14 @@
   .nav-cta {
     display: inline-flex; align-items: center; gap: 7px;
     font-family: var(--sans); font-weight: 600; font-size: 13.5px;
-    color: #fff; background: var(--coral);
+    color: #fff; background: linear-gradient(135deg, #5c85ff 0%, var(--coral) 100%);
     border: none; border-radius: 100px; padding: 10px 9px 10px 18px;
     text-decoration: none; cursor: pointer; white-space: nowrap;
     transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
-    box-shadow: 0 6px 16px rgba(31,157,138,0.32);
+    box-shadow: 0 6px 16px rgba(63,107,255,0.4);
   }
   .nav-cta .arrow { width: 24px; height: 24px; border-radius: 50%; background: rgba(255,255,255,0.24); display: flex; align-items: center; justify-content: center; transition: transform 0.25s ease; }
-  .nav-cta:hover { background: var(--coral-deep); transform: translateY(-1px); box-shadow: 0 8px 18px rgba(31,157,138,0.4); }
+  .nav-cta:hover { background: var(--coral-deep); transform: translateY(-1px); box-shadow: 0 8px 18px rgba(63,107,255,0.4); }
   .nav-cta:hover .arrow { transform: translateX(3px); }
   .nav-cta:active { transform: translateY(0) scale(0.98); }
   @media (max-width: 420px) {
@@ -156,11 +156,11 @@
   }
   .hero-blob {
     position: absolute; border-radius: 42% 58% 65% 35% / 45% 40% 60% 55%;
-    z-index: 0; filter: blur(0.5px);
+    z-index: 0; filter: blur(70px);
   }
-  .hero-blob.b1 { width: 620px; height: 620px; top: -220px; right: -240px; background: var(--plum-2); opacity: 0.75; }
-  .hero-blob.b2 { width: 260px; height: 260px; bottom: -8%; left: -110px; background: var(--peach); opacity: 0.22; border-radius: 60% 40% 35% 65% / 55% 60% 40% 45%; }
-  .hero-blob.b3 { width: 160px; height: 160px; top: 22%; right: 6%; background: var(--lavender-2); opacity: 0.16; border-radius: 55% 45% 60% 40% / 40% 55% 45% 60%; }
+  .hero-blob.b1 { width: 620px; height: 620px; top: -220px; right: -240px; background: var(--coral); opacity: 0.4; }
+  .hero-blob.b2 { width: 380px; height: 380px; bottom: -14%; left: -140px; background: var(--lime); opacity: 0.2; border-radius: 60% 40% 35% 65% / 55% 60% 40% 45%; }
+  .hero-blob.b3 { width: 260px; height: 260px; top: 18%; right: 4%; background: var(--salmon); opacity: 0.22; border-radius: 55% 45% 60% 40% / 40% 55% 45% 60%; }
 
   .hero-divider { position: absolute; left: 0; right: 0; bottom: -1px; z-index: 2; line-height: 0; }
   .hero-divider svg { width: 100%; height: auto; display: block; }
@@ -181,7 +181,10 @@
     margin: 0 0 18px; font-family: var(--display); font-weight: 800; letter-spacing: -0.02em;
     line-height: 1.1; font-size: var(--fs-display); color: var(--ivory);
   }
-  .hero h1 .hl { color: var(--coral); }
+  .hero h1 .hl {
+    background: linear-gradient(100deg, var(--coral) 15%, var(--lime) 85%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
 
   .hero-sub { margin: 0 0 28px; max-width: 42ch; font-size: var(--fs-body); line-height: 1.65; color: var(--ivory-dim); }
 
@@ -190,18 +193,18 @@
   .btn-primary {
     display: inline-flex; align-items: center; gap: 10px;
     font-family: var(--sans); font-weight: 700; font-size: 15px;
-    color: #fff; background: var(--coral);
+    color: #fff; background: linear-gradient(135deg, #5c85ff 0%, var(--coral) 45%, var(--coral-deep) 100%);
     border: none; border-radius: 100px; padding: 15px 12px 15px 24px;
     cursor: pointer; text-decoration: none;
     transition: background 0.22s ease, transform 0.18s ease, box-shadow 0.22s ease;
-    box-shadow: 0 12px 26px -6px rgba(31,157,138,0.55);
+    box-shadow: 0 12px 30px -6px rgba(63,107,255,0.65);
   }
   .btn-primary .arrow { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.24); display: flex; align-items: center; justify-content: center; transition: transform 0.25s ease; flex: none; }
-  .btn-primary:hover { background: var(--coral-deep); transform: translateY(-2px) scale(1.01); box-shadow: 0 16px 30px -6px rgba(31,157,138,0.62); }
+  .btn-primary:hover { background: linear-gradient(135deg, #6d90ff 0%, var(--coral) 40%, var(--coral-deep) 100%); transform: translateY(-2px) scale(1.01); box-shadow: 0 18px 36px -6px rgba(63,107,255,0.75); }
   .btn-primary:hover .arrow { transform: translateX(3px); }
   .btn-primary:active { transform: translateY(0) scale(0.98); }
   .btn-primary:disabled { opacity: 0.48; cursor: default; box-shadow: none; }
-  .btn-primary:disabled:hover { background: var(--coral); transform: none; }
+  .btn-primary:disabled:hover { background: linear-gradient(135deg, #5c85ff 0%, var(--coral) 45%, var(--coral-deep) 100%); transform: none; }
   .btn-primary:disabled:hover .arrow { transform: none; }
   .btn-primary.block { width: 100%; justify-content: center; }
 
@@ -220,7 +223,7 @@
 
   .demo-card {
     position: relative; background: var(--white); border-radius: 26px;
-    padding: 18px; box-shadow: 0 30px 70px -18px rgba(0,0,0,0.5);
+    padding: 18px; box-shadow: 0 30px 70px -18px rgba(0,0,0,0.6), 0 0 0 1px rgba(63,107,255,0.16), 0 0 70px -14px rgba(63,107,255,0.35);
     max-width: 440px; margin: 0 auto; width: 100%;
   }
   .demo-card-inner {
@@ -237,17 +240,17 @@
     display: flex; flex-direction: column; gap: 9px;
     box-shadow: 0 16px 30px -12px rgba(0,0,0,0.5);
   }
-  .speech-kicker { font-family: var(--sans); font-weight: 600; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(244,247,246,0.5); }
+  .speech-kicker { font-family: var(--sans); font-weight: 600; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(247,249,255,0.5); }
   .speech-text { font-family: var(--display); font-weight: 700; font-size: 18px; color: #fff; min-height: 1.3em; }
   .speech-text .caret { display: inline-block; width: 2px; height: 0.85em; background: var(--coral); margin-left: 2px; vertical-align: -2px; animation: caretBlink 1s step-end infinite; }
   @keyframes caretBlink { 50% { opacity: 0; } }
   .speech-audio { display: flex; align-items: center; gap: 10px; }
   .play-mark { width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid var(--coral); flex: none; }
   .mini-bars { display: flex; align-items: flex-end; gap: 3px; height: 14px; }
-  .mini-bars i { width: 2.5px; border-radius: 1px; background: rgba(244,247,246,0.4); height: 25%; transition: background 0.3s ease; }
+  .mini-bars i { width: 2.5px; border-radius: 1px; background: rgba(247,249,255,0.4); height: 25%; transition: background 0.3s ease; }
   .mini-bars.active i { background: var(--coral); animation: waveBounce 0.9s ease-in-out infinite; }
   @keyframes waveBounce { 0%, 100% { height: 22%; } 50% { height: 100%; } }
-  .speech-audio-label { font-family: var(--sans); font-size: 12px; color: rgba(244,247,246,0.62); }
+  .speech-audio-label { font-family: var(--sans); font-size: 12px; color: rgba(247,249,255,0.62); }
 
   .demo-card-tag {
     position: absolute; top: 14px; left: 14px; z-index: 2;
@@ -271,7 +274,7 @@
   .eyebrow-tag {
     display: inline-flex; align-self: center; align-items: center; gap: 8px;
     font-family: var(--sans); font-weight: 600; font-size: var(--fs-caption); letter-spacing: 0.03em;
-    color: var(--coral-deep); background: rgba(31,157,138,0.12); border-radius: 100px; padding: 6px 13px;
+    color: var(--coral); background: rgba(63,107,255,0.12); border-radius: 100px; padding: 6px 13px;
   }
   .bg-plum .eyebrow-tag, .bg-charcoal .eyebrow-tag { background: rgba(255,255,255,0.12); color: var(--ivory); }
   .section-head.left .eyebrow-tag { align-self: flex-start; }
@@ -289,13 +292,13 @@
   .flow-step.tint-a { background: var(--lavender); }
   .flow-step.tint-b { background: linear-gradient(155deg, var(--coral-wash), var(--peach)); }
   .flow-step.tint-c { background: var(--charcoal); color: var(--ivory); }
-  .flow-num { font-family: var(--sans); font-weight: 700; font-size: var(--fs-caption); letter-spacing: 0.06em; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--coral-deep); }
+  .flow-num { font-family: var(--sans); font-weight: 700; font-size: var(--fs-caption); letter-spacing: 0.06em; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--coral); }
   .flow-step.tint-c .flow-num { color: var(--coral); }
   .flow-copy h3 { margin: 0 0 8px; font-family: var(--display); font-weight: 800; font-size: var(--fs-h2); letter-spacing: -0.01em; color: inherit; }
   .flow-copy p { margin: 0; font-size: 14.5px; line-height: 1.65; color: var(--ink-dim); max-width: 38ch; }
-  .flow-step.tint-c .flow-copy p { color: rgba(244,247,246,0.7); }
+  .flow-step.tint-c .flow-copy p { color: rgba(247,249,255,0.7); }
   .flow-visual { display: flex; align-items: center; justify-content: center; }
-  .flow-visual-frame { width: 100%; max-width: 280px; aspect-ratio: 1.2 / 1; border-radius: 18px; background: var(--white); display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 40px -18px rgba(22,25,29,0.22); }
+  .flow-visual-frame { width: 100%; max-width: 280px; aspect-ratio: 1.2 / 1; border-radius: 18px; background: var(--white); display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 40px -18px rgba(0,0,0,0.5); }
   .flow-step.tint-c .flow-visual-frame { background: var(--charcoal-2); box-shadow: none; }
   .flow-visual-frame svg { width: 58%; height: auto; }
   .flow-wave { display: flex; align-items: flex-end; gap: 5px; height: 60%; }
@@ -317,14 +320,14 @@
     min-height: 210px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  .case-card:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -18px rgba(22,25,29,0.3); }
+  .case-card:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -18px rgba(0,0,0,0.55); }
   .case-card.a { background: linear-gradient(155deg, var(--white) 0%, var(--lavender) 100%); }
   .case-card.b { background: linear-gradient(155deg, var(--coral-wash), var(--peach-2)); }
   .case-card.c { background: var(--bg-soft); }
   .case-card.d { background: linear-gradient(155deg, var(--charcoal) 0%, var(--charcoal-3) 100%); color: var(--ivory); }
   .case-illust { position: absolute; top: 20px; right: 20px; width: 78px; height: 78px; opacity: 0.92; }
   .case-illust svg { width: 100%; height: 100%; }
-  .case-label { font-family: var(--sans); font-weight: 600; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--coral-deep); }
+  .case-label { font-family: var(--sans); font-weight: 600; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--coral); }
   .case-card.d .case-label { color: var(--coral); }
   .case-card h3 { margin: 0; font-family: var(--display); font-weight: 800; font-size: var(--fs-h2); letter-spacing: -0.01em; line-height: 1.28; max-width: 22ch; }
 
@@ -334,7 +337,7 @@
 
   .product-mock { max-width: 700px; margin: 0 auto; background: var(--charcoal-2); border-radius: 26px; padding: 26px; box-shadow: 0 40px 80px -30px rgba(0,0,0,0.6); }
   .product-mock-row { display: flex; align-items: center; justify-content: space-between; padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); gap: 10px; flex-wrap: wrap; }
-  .product-mock-tag { display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 600; font-size: 12px; color: rgba(244,247,246,0.7); }
+  .product-mock-tag { display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 600; font-size: 12px; color: rgba(247,249,255,0.7); }
   .product-mock-tag .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
   .product-feature-row { display: flex; flex-wrap: wrap; gap: 12px; }
   .product-feature {
@@ -342,7 +345,7 @@
     border-radius: 14px; padding: 15px; display: flex; flex-direction: column; gap: 7px;
   }
   .product-feature .k { font-family: var(--sans); font-weight: 600; font-size: 13px; color: #fff; }
-  .product-feature .v { font-size: 12.5px; color: rgba(244,247,246,0.56); line-height: 1.5; }
+  .product-feature .v { font-size: 12.5px; color: rgba(247,249,255,0.56); line-height: 1.5; }
 
   /* ---------- human section ---------- */
 
@@ -357,7 +360,7 @@
 
   .try-card {
     max-width: 600px; margin: 0 auto; background: var(--white); border-radius: 26px;
-    padding: 24px; box-shadow: 0 30px 60px -20px rgba(22,25,29,0.28);
+    padding: 24px; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.55), 0 0 0 1px rgba(63,107,255,0.14), 0 0 60px -16px rgba(63,107,255,0.3);
   }
   .try-frame {
     position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 4 / 3;
@@ -377,11 +380,11 @@
   .try-example-row .v { font-family: var(--display); font-weight: 700; font-size: 17px; color: var(--ink); }
   .btn-listen {
     align-self: flex-start; display: flex; align-items: center; gap: 9px;
-    font-family: var(--sans); font-weight: 600; font-size: 13px; color: var(--coral-deep);
-    background: rgba(31,157,138,0.12); border: none; border-radius: 100px; padding: 9px 16px 9px 12px; cursor: pointer;
+    font-family: var(--sans); font-weight: 600; font-size: 13px; color: var(--coral);
+    background: rgba(63,107,255,0.12); border: none; border-radius: 100px; padding: 9px 16px 9px 12px; cursor: pointer;
     transition: background 0.2s ease, transform 0.15s ease;
   }
-  .btn-listen:hover { background: rgba(31,157,138,0.2); transform: translateY(-1px); }
+  .btn-listen:hover { background: rgba(63,107,255,0.2); transform: translateY(-1px); }
   .btn-listen .mini-wave { display: flex; align-items: flex-end; gap: 2px; height: 11px; }
   .btn-listen .mini-wave i { width: 2px; background: currentColor; border-radius: 1px; height: 30%; }
   .btn-listen.speaking .mini-wave i { animation: waveBounce 0.7s ease-in-out infinite; }
@@ -400,7 +403,7 @@
   @media (min-width: 780px) { .rd-cols { flex-direction: row; gap: 44px; } .rd-col { flex: 1; } }
   .rd-col { background: var(--white); border-radius: 20px; padding: 22px; }
   .rd-col.roadmap { background: var(--bg-soft); }
-  .rd-col h4 { margin: 0 0 12px; font-family: var(--sans); font-weight: 700; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--coral-deep); }
+  .rd-col h4 { margin: 0 0 12px; font-family: var(--sans); font-weight: 700; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--coral); }
   .rd-col.roadmap h4 { color: var(--ink-faint); }
   .rd-item { padding: 11px 0; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-dim); line-height: 1.6; }
   .rd-item:first-child { border-top: none; }
@@ -415,13 +418,13 @@
 
   /* ---------- footer ---------- */
 
-  .footer { background: var(--plum); color: rgba(244,247,246,0.7); padding: 40px var(--gutter) calc(env(safe-area-inset-bottom, 0px) + 40px); border-top: 1px solid rgba(255,255,255,0.08); }
+  .footer { background: var(--plum); color: rgba(247,249,255,0.7); padding: 40px var(--gutter) calc(env(safe-area-inset-bottom, 0px) + 40px); border-top: 1px solid rgba(255,255,255,0.08); }
   .footer-top { max-width: 1180px; margin: 0 auto 22px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: center; }
   .footer-top .nav-wordmark { color: #fff; }
   .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
-  .footer-links a, .footer-links span { font-family: var(--sans); font-size: 13px; color: rgba(244,247,246,0.62); text-decoration: none; cursor: pointer; transition: color 0.2s ease; }
+  .footer-links a, .footer-links span { font-family: var(--sans); font-size: 13px; color: rgba(247,249,255,0.62); text-decoration: none; cursor: pointer; transition: color 0.2s ease; }
   .footer-links a:hover, .footer-links span:hover { color: var(--coral); }
-  .footer-tag { max-width: 48ch; margin: 0 auto; font-size: 12px; color: rgba(244,247,246,0.42); line-height: 1.7; }
+  .footer-tag { max-width: 48ch; margin: 0 auto; font-size: 12px; color: rgba(247,249,255,0.42); line-height: 1.7; }
 
   /* ---------- sticky mobile CTA ---------- */
 
@@ -510,7 +513,7 @@
   .controls-bar .iconbtn.ghost { height: 40px; padding: 0 14px; }
   .controls-bar .iconbtn[hidden] { visibility: hidden; }
 
-  .sheet-scrim { position: fixed; inset: 0; background: rgba(14,16,18,0.5); z-index: 9; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+  .sheet-scrim { position: fixed; inset: 0; background: rgba(4,6,10,0.6); z-index: 9; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
   .sheet-scrim.show { opacity: 1; pointer-events: auto; }
   .sheet {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
@@ -528,8 +531,8 @@
 
   .error-toast {
     position: absolute; left: 16px; right: 16px; bottom: calc(env(safe-area-inset-bottom, 0px) + 100px); z-index: 8;
-    background: rgba(28, 18, 18, 0.92); backdrop-filter: blur(10px); border: 1px solid rgba(255,122,89,0.35);
-    color: #cdeae4; font-size: 13px; line-height: 1.5; border-radius: 14px; padding: 12px 14px; display: none;
+    background: rgba(20, 12, 12, 0.92); backdrop-filter: blur(10px); border: 1px solid rgba(255,122,89,0.35);
+    color: #f7f9ff; font-size: 13px; line-height: 1.5; border-radius: 14px; padding: 12px 14px; display: none;
   }
   .error-toast.show { display: block; }
 </style>
@@ -545,7 +548,7 @@
     <nav class="nav on-dark" id="siteNav">
       <a class="nav-logo" href="#top" data-scroll>
         <svg class="nav-mark" viewBox="0 0 100 100" aria-hidden="true">
-          <rect width="100" height="100" rx="28" fill="#1f9d8a"/>
+          <rect width="100" height="100" rx="28" fill="#3f6bff"/>
           <g transform="translate(50 58)" fill="#ffffff">
             <rect x="-19" y="-4" width="38" height="30" rx="14"/>
             <rect x="-5" y="-40" width="9" height="30" rx="4.5" transform="rotate(-22 0 -10)"/>
@@ -589,14 +592,14 @@
                 <div class="demo-card-tag"><span class="dot"></span>Aperçu</div>
                 <div class="signer-illust">
                   <svg viewBox="0 0 200 200" aria-hidden="true">
-                    <circle cx="100" cy="70" r="34" fill="#16191d"/>
-                    <path d="M40 200 C40 148 66 122 100 122 C134 122 160 148 160 200 Z" fill="#16191d"/>
+                    <circle cx="100" cy="70" r="34" fill="#aab4d6"/>
+                    <path d="M40 200 C40 148 66 122 100 122 C134 122 160 148 160 200 Z" fill="#aab4d6"/>
                     <g transform="translate(148 90) rotate(-18)">
-                      <rect x="-19" y="-4" width="40" height="32" rx="15" fill="#1f9d8a"/>
-                      <rect x="-6" y="-42" width="10" height="32" rx="5" transform="rotate(-24 0 -10)" fill="#1f9d8a"/>
-                      <rect x="6" y="-46" width="9" height="34" rx="4.5" transform="rotate(-7 0 -10)" fill="#1f9d8a"/>
-                      <rect x="18" y="-43" width="9" height="32" rx="4.5" transform="rotate(11 0 -10)" fill="#1f9d8a"/>
-                      <rect x="29" y="-36" width="9" height="28" rx="4.5" transform="rotate(28 0 -10)" fill="#1f9d8a"/>
+                      <rect x="-19" y="-4" width="40" height="32" rx="15" fill="#3f6bff"/>
+                      <rect x="-6" y="-42" width="10" height="32" rx="5" transform="rotate(-24 0 -10)" fill="#3f6bff"/>
+                      <rect x="6" y="-46" width="9" height="34" rx="4.5" transform="rotate(-7 0 -10)" fill="#3f6bff"/>
+                      <rect x="18" y="-43" width="9" height="32" rx="4.5" transform="rotate(11 0 -10)" fill="#3f6bff"/>
+                      <rect x="29" y="-36" width="9" height="28" rx="4.5" transform="rotate(28 0 -10)" fill="#3f6bff"/>
                       <circle cx="-24" cy="-30" r="4" fill="#4caf7d"/>
                       <circle cx="-32" cy="-14" r="2.6" fill="#4caf7d"/>
                     </g>
@@ -617,7 +620,7 @@
         </div>
 
         <div class="hero-divider" aria-hidden="true">
-          <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C360,90 1080,-10 1440,40 L1440,80 L0,80 Z" fill="#eef4f3"/></svg>
+          <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C360,90 1080,-10 1440,40 L1440,80 L0,80 Z" fill="#060810"/></svg>
         </div>
       </section>
 
@@ -639,11 +642,11 @@
               <div class="flow-visual-frame">
                 <svg viewBox="0 0 100 100" aria-hidden="true">
                   <g transform="translate(50 58)">
-                    <rect x="-20" y="-6" width="40" height="34" rx="16" fill="#1f9d8a"/>
-                    <rect x="-6" y="-46" width="10" height="34" rx="5" transform="rotate(-24 0 -12)" fill="#1f9d8a"/>
-                    <rect x="6" y="-52" width="9" height="38" rx="4.5" transform="rotate(-8 0 -12)" fill="#1f9d8a"/>
-                    <rect x="18" y="-50" width="9" height="36" rx="4.5" transform="rotate(9 0 -12)" fill="#1f9d8a"/>
-                    <rect x="29" y="-42" width="9" height="30" rx="4.5" transform="rotate(25 0 -12)" fill="#1f9d8a"/>
+                    <rect x="-20" y="-6" width="40" height="34" rx="16" fill="#3f6bff"/>
+                    <rect x="-6" y="-46" width="10" height="34" rx="5" transform="rotate(-24 0 -12)" fill="#3f6bff"/>
+                    <rect x="6" y="-52" width="9" height="38" rx="4.5" transform="rotate(-8 0 -12)" fill="#3f6bff"/>
+                    <rect x="18" y="-50" width="9" height="36" rx="4.5" transform="rotate(9 0 -12)" fill="#3f6bff"/>
+                    <rect x="29" y="-42" width="9" height="30" rx="4.5" transform="rotate(25 0 -12)" fill="#3f6bff"/>
                   </g>
                 </svg>
               </div>
@@ -659,9 +662,9 @@
             <div class="flow-visual">
               <div class="flow-visual-frame">
                 <svg viewBox="0 0 120 90" aria-hidden="true">
-                  <rect x="6" y="10" width="108" height="70" rx="16" fill="#16191d"/>
-                  <rect x="22" y="32" width="56" height="8" rx="4" fill="#ffffff"/>
-                  <rect x="22" y="48" width="76" height="8" rx="4" fill="#1f9d8a"/>
+                  <rect x="6" y="10" width="108" height="70" rx="16" fill="#f7f9ff"/>
+                  <rect x="22" y="32" width="56" height="8" rx="4" fill="#c7ccdb"/>
+                  <rect x="22" y="48" width="76" height="8" rx="4" fill="#3f6bff"/>
                 </svg>
               </div>
             </div>
@@ -689,22 +692,22 @@
         </div>
         <div class="cases-grid">
           <div class="case-card big a" data-reveal>
-            <div class="case-illust"><svg viewBox="0 0 100 100"><path d="M50 20c-16 0-28 12-28 28 0 20 28 32 28 32s28-12 28-32c0-16-12-28-28-28z" fill="none" stroke="#157a6b" stroke-width="5"/><path d="M32 54l8 8 12-16 8 10 10-14" fill="none" stroke="#157a6b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="case-illust"><svg viewBox="0 0 100 100"><path d="M50 20c-16 0-28 12-28 28 0 20 28 32 28 32s28-12 28-32c0-16-12-28-28-28z" fill="none" stroke="#3f6bff" stroke-width="5"/><path d="M32 54l8 8 12-16 8 10 10-14" fill="none" stroke="#3f6bff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <span class="case-label">Santé</span>
             <h3>Des échanges plus clairs quand ils comptent le plus.</h3>
           </div>
           <div class="case-card small b" data-reveal>
-            <div class="case-illust"><svg viewBox="0 0 100 100"><rect x="18" y="26" width="64" height="42" rx="14" fill="none" stroke="#157a6b" stroke-width="5"/><path d="M34 68l-6 14 18-14" fill="#157a6b"/><circle cx="38" cy="47" r="4" fill="#157a6b"/><circle cx="50" cy="47" r="4" fill="#157a6b"/><circle cx="62" cy="47" r="4" fill="#157a6b"/></svg></div>
+            <div class="case-illust"><svg viewBox="0 0 100 100"><rect x="18" y="26" width="64" height="42" rx="14" fill="none" stroke="#3f6bff" stroke-width="5"/><path d="M34 68l-6 14 18-14" fill="#3f6bff"/><circle cx="38" cy="47" r="4" fill="#3f6bff"/><circle cx="50" cy="47" r="4" fill="#3f6bff"/><circle cx="62" cy="47" r="4" fill="#3f6bff"/></svg></div>
             <span class="case-label">Service à la clientèle</span>
             <h3>Se faire comprendre au comptoir, sans détour.</h3>
           </div>
           <div class="case-card small c" data-reveal>
-            <div class="case-illust"><svg viewBox="0 0 100 100"><path d="M50 34c-8-6-20-9-30-8v42c10-1 22 2 30 8" fill="none" stroke="#16191d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 34c8-6 20-9 30-8v42c-10-1-22 2-30 8" fill="none" stroke="#16191d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><line x1="50" y1="34" x2="50" y2="76" stroke="#16191d" stroke-width="5" stroke-linecap="round"/></svg></div>
+            <div class="case-illust"><svg viewBox="0 0 100 100"><path d="M50 34c-8-6-20-9-30-8v42c10-1 22 2 30 8" fill="none" stroke="#aab4d6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 34c8-6 20-9 30-8v42c-10-1-22 2-30 8" fill="none" stroke="#aab4d6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><line x1="50" y1="34" x2="50" y2="76" stroke="#aab4d6" stroke-width="5" stroke-linecap="round"/></svg></div>
             <span class="case-label">Éducation</span>
             <h3>Suivre un cours, poser une question, participer.</h3>
           </div>
           <div class="case-card big d" data-reveal>
-            <div class="case-illust"><svg viewBox="0 0 100 100"><rect x="14" y="24" width="46" height="32" rx="12" fill="none" stroke="#1f9d8a" stroke-width="5"/><path d="M24 56l-4 12 16-12"/><rect x="40" y="44" width="46" height="32" rx="12" fill="none" stroke="#1f9d8a" stroke-width="5"/><path d="M76 76l4 12-16-12"/></svg></div>
+            <div class="case-illust"><svg viewBox="0 0 100 100"><rect x="14" y="24" width="46" height="32" rx="12" fill="none" stroke="#3f6bff" stroke-width="5"/><path d="M24 56l-4 12 16-12"/><rect x="40" y="44" width="46" height="32" rx="12" fill="none" stroke="#3f6bff" stroke-width="5"/><path d="M76 76l4 12-16-12"/></svg></div>
             <span class="case-label">Conversation quotidienne</span>
             <h3>Dire oui, compter, saluer — sans avoir à parler à voix haute.</h3>
           </div>
@@ -738,13 +741,13 @@
           </div>
           <div class="human-illust" data-reveal>
             <svg viewBox="0 0 320 200" aria-hidden="true">
-              <circle cx="86" cy="66" r="30" fill="#16191d"/>
-              <path d="M30 200c0-46 24-70 56-70s56 24 56 70z" fill="#16191d"/>
-              <circle cx="234" cy="66" r="30" fill="#1f9d8a"/>
-              <path d="M178 200c0-46 24-70 56-70s56 24 56 70z" fill="#1f9d8a"/>
-              <circle cx="160" cy="86" r="10" fill="#4caf7d"/>
-              <circle cx="142" cy="70" r="5" fill="#4caf7d"/>
-              <circle cx="180" cy="68" r="4" fill="#4caf7d"/>
+              <circle cx="86" cy="66" r="30" fill="#3f6bff"/>
+              <path d="M30 200c0-46 24-70 56-70s56 24 56 70z" fill="#3f6bff"/>
+              <circle cx="234" cy="66" r="30" fill="#c6ff5e"/>
+              <path d="M178 200c0-46 24-70 56-70s56 24 56 70z" fill="#c6ff5e"/>
+              <circle cx="160" cy="86" r="10" fill="#f7f9ff"/>
+              <circle cx="142" cy="70" r="5" fill="#f7f9ff"/>
+              <circle cx="180" cy="68" r="4" fill="#f7f9ff"/>
             </svg>
           </div>
         </div>
@@ -761,14 +764,14 @@
           <div class="try-frame">
             <div class="signer-illust">
               <svg viewBox="0 0 200 200" aria-hidden="true">
-                <circle cx="100" cy="70" r="34" fill="#16191d"/>
-                <path d="M40 200 C40 148 66 122 100 122 C134 122 160 148 160 200 Z" fill="#16191d"/>
+                <circle cx="100" cy="70" r="34" fill="#aab4d6"/>
+                <path d="M40 200 C40 148 66 122 100 122 C134 122 160 148 160 200 Z" fill="#aab4d6"/>
                 <g transform="translate(148 90) rotate(-18)">
-                  <rect x="-19" y="-4" width="40" height="32" rx="15" fill="#1f9d8a"/>
-                  <rect x="-6" y="-42" width="10" height="32" rx="5" transform="rotate(-24 0 -10)" fill="#1f9d8a"/>
-                  <rect x="6" y="-46" width="9" height="34" rx="4.5" transform="rotate(-7 0 -10)" fill="#1f9d8a"/>
-                  <rect x="18" y="-43" width="9" height="32" rx="4.5" transform="rotate(11 0 -10)" fill="#1f9d8a"/>
-                  <rect x="29" y="-36" width="9" height="28" rx="4.5" transform="rotate(28 0 -10)" fill="#1f9d8a"/>
+                  <rect x="-19" y="-4" width="40" height="32" rx="15" fill="#3f6bff"/>
+                  <rect x="-6" y="-42" width="10" height="32" rx="5" transform="rotate(-24 0 -10)" fill="#3f6bff"/>
+                  <rect x="6" y="-46" width="9" height="34" rx="4.5" transform="rotate(-7 0 -10)" fill="#3f6bff"/>
+                  <rect x="18" y="-43" width="9" height="32" rx="4.5" transform="rotate(11 0 -10)" fill="#3f6bff"/>
+                  <rect x="29" y="-36" width="9" height="28" rx="4.5" transform="rotate(28 0 -10)" fill="#3f6bff"/>
                 </g>
               </svg>
             </div>
@@ -1154,14 +1157,14 @@
     }
 
     // Wave: open hand, swinging side to side.
-    if (shapeShare("open") >= 0.7) {
-      const { reversals, range } = countReversals(xs, avgSpan * 0.04);
+    if (shapeShare("open") >= 0.78) {
+      const { reversals, range } = countReversals(xs, avgSpan * 0.065);
       if (reversals >= 3 && range > avgSpan * 0.7) return "wave";
     }
 
     // Bravo: thumbs-up shape, shaking side to side.
-    if (shapeShare("thumbsUpShape") >= 0.7) {
-      const { reversals, range } = countReversals(xs, avgSpan * 0.04);
+    if (shapeShare("thumbsUpShape") >= 0.78) {
+      const { reversals, range } = countReversals(xs, avgSpan * 0.065);
       if (reversals >= 3 && range > avgSpan * 0.5) return "bravo";
     }
 
@@ -1172,14 +1175,14 @@
     // distance that opens and closes repeatedly, as in rubbing fingers
     // together. Non: same base shape again, but this time it's the whole
     // hand swinging side to side — a wagging index finger saying "no".
-    if (shapeShare("curlBase") >= 0.7) {
+    if (shapeShare("curlBase") >= 0.78) {
       const curls = motion.map((s) => s.curl);
       const { reversals: curlReversals } = countReversals(curls, 0.12);
       if (curlReversals >= 3) return "beckon";
       const pinches = motion.map((s) => s.pinchRatio);
       const { reversals: pinchReversals } = countReversals(pinches, 0.1);
       if (pinchReversals >= 3) return "argent";
-      const { reversals: xReversals, range: xRange } = countReversals(xs, avgSpan * 0.04);
+      const { reversals: xReversals, range: xRange } = countReversals(xs, avgSpan * 0.065);
       if (xReversals >= 3 && xRange > avgSpan * 0.5) return "non";
     }
 
@@ -1187,8 +1190,8 @@
     // "yes" (a nodding fist), the far more useful reading of that motion.
     // Vas-y: the same closed fist instead growing steadily larger, as it's
     // thrust toward the camera.
-    if (shapeShare("fistShape") >= 0.7) {
-      const { reversals, range } = countReversals(ys, avgSpan * 0.04);
+    if (shapeShare("fistShape") >= 0.78) {
+      const { reversals, range } = countReversals(ys, avgSpan * 0.065);
       if (reversals >= 3 && range > avgSpan * 0.5) return "oui";
       const thirdLen = Math.max(1, Math.ceil(motion.length / 3));
       const avgFirst = motion.slice(0, thirdLen).reduce((s, m) => s + m.span, 0) / thirdLen;
@@ -1201,20 +1204,20 @@
       // pantomime. Needs the optional face model; without it "faceNear" is
       // always false, this simply never matches, and a plain held fist is
       // reported as "fist" instead, exactly as before face tracking existed.
-      if (shapeShare("faceNear") >= 0.7 && range < avgSpan * 0.35 && rangeX < avgSpan * 0.35) return "pardon";
+      if (shapeShare("faceNear") >= 0.78 && range < avgSpan * 0.35 && rangeX < avgSpan * 0.35) return "pardon";
     }
 
     // Manger (eat): fingertips pinched together, moving up and down
     // repeatedly — bringing food to the mouth.
-    if (shapeShare("pinceShape") >= 0.7) {
-      const { reversals, range } = countReversals(ys, avgSpan * 0.04);
+    if (shapeShare("pinceShape") >= 0.78) {
+      const { reversals, range } = countReversals(ys, avgSpan * 0.065);
       if (reversals >= 3 && range > avgSpan * 0.5) return "manger";
     }
 
     // Merci: a flat hand, fingers held together, sweeping away in one clean
     // motion rather than wobbling back and forth — unlike "attention", which
     // is the same shape held still.
-    if (shapeShare("attentionShape") >= 0.7) {
+    if (shapeShare("attentionShape") >= 0.78) {
       const { net, straightness } = sweepStraightness();
       if (straightness > 0.75 && net > avgSpan * 0.9) return "merci";
     }
@@ -1222,8 +1225,8 @@
     // Du calme: open hand patting up and down repeatedly (checked after
     // wave/stop so a genuine side-to-side or push motion isn't mistaken for
     // this one — a real pat has far more vertical than horizontal travel).
-    if (shapeShare("open") >= 0.7) {
-      const { reversals: reversalsY, range: rangeY } = countReversals(ys, avgSpan * 0.04);
+    if (shapeShare("open") >= 0.78) {
+      const { reversals: reversalsY, range: rangeY } = countReversals(ys, avgSpan * 0.065);
       const rangeX = Math.max(...xs) - Math.min(...xs);
       if (reversalsY >= 3 && rangeY > avgSpan * 0.5 && rangeX < avgSpan * 0.5) return "calm";
     }
@@ -1231,7 +1234,7 @@
     // Stop/push: an open hand's apparent size grows steadily larger (it
     // moved toward the camera) while staying roughly in the same spot
     // horizontally.
-    if (shapeShare("open") >= 0.7) {
+    if (shapeShare("open") >= 0.78) {
       const thirdLen = Math.max(1, Math.ceil(motion.length / 3));
       const firstThird = motion.slice(0, thirdLen);
       const lastThird = motion.slice(-thirdLen);
@@ -1244,7 +1247,7 @@
     // Au revoir: the mirror image of "stop" — an open hand's apparent size
     // shrinking steadily (it moved away from the camera) while staying
     // roughly in the same spot horizontally.
-    if (shapeShare("open") >= 0.7) {
+    if (shapeShare("open") >= 0.78) {
       const thirdLen = Math.max(1, Math.ceil(motion.length / 3));
       const firstThird = motion.slice(0, thirdLen);
       const lastThird = motion.slice(-thirdLen);
@@ -1258,8 +1261,8 @@
     // fingers" pantomime for fear. A slightly higher reversal count than
     // wave/bravo asks for a quicker, smaller trembling motion rather than a
     // broad wave.
-    if (shapeShare("clawShape") >= 0.7) {
-      const { reversals, range } = countReversals(xs, avgSpan * 0.04);
+    if (shapeShare("clawShape") >= 0.78) {
+      const { reversals, range } = countReversals(xs, avgSpan * 0.065);
       if (reversals >= 4 && range > avgSpan * 0.3) return "peur";
     }
 
@@ -1319,6 +1322,9 @@
   let lastFaceCheckMs = 0;
   let lastFaceCtx = null;
   let faceTimingSamples = [];
+  let faceContextStreakKey = null;
+  let faceContextStreakCount = 0;
+  let lastDebouncedContextKey = null;
   const FACE_CHECK_INTERVAL_MS = 250;
   const FACE_TIMING_BUDGET_MS = 35;
   let modelReady = false;
@@ -1328,7 +1334,7 @@
   let debugOn = false;
   let lastVideoTime = -1;
   const history = [];
-  const HISTORY_LEN = 8;
+  const HISTORY_LEN = 10;
   const motion = [];
   const MOTION_WINDOW_MS = 900;
   let transcriptWords = [];
@@ -1513,6 +1519,9 @@
       lastFaceCheckMs = 0;
       lastFaceCtx = null;
       faceTimingSamples = [];
+      faceContextStreakKey = null;
+      faceContextStreakCount = 0;
+      lastDebouncedContextKey = null;
       rafId = requestAnimationFrame(loop);
     } catch (err) {
       mainBtn.disabled = false;
@@ -1548,6 +1557,9 @@
     lastFaceCheckMs = 0;
     lastFaceCtx = null;
     faceTimingSamples = [];
+    faceContextStreakKey = null;
+    faceContextStreakCount = 0;
+    lastDebouncedContextKey = null;
     overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
   }
 
@@ -1712,9 +1724,11 @@
     // slowdown that made the whole app feel unreliable, so this keeps the
     // extra cost rare and bounded instead of continuous.
     let faceCtx = null;
+    let debouncedContextKey = null;
     if (faceModelReady && faceLandmarker && (key === "one" || key === "fist")) {
       if (nowMs - lastFaceCheckMs < FACE_CHECK_INTERVAL_MS) {
         faceCtx = lastFaceCtx;
+        debouncedContextKey = lastDebouncedContextKey;
       } else {
         lastFaceCheckMs = nowMs;
         const t0 = performance.now();
@@ -1741,15 +1755,31 @@
           } else {
             faceCtx = null;
           }
+          // Debounce: only act on a face-context reading once it repeats on
+          // two consecutive real checks (~500ms apart) — a single noisy
+          // frame near a distance/eyebrow boundary can no longer flip
+          // "Un" into "Je"/"Tu"/"Quoi" and back on its own.
+          const rawKey = faceCtx ? faceCtx.contextKey : null;
+          if (rawKey === faceContextStreakKey) faceContextStreakCount++;
+          else { faceContextStreakKey = rawKey; faceContextStreakCount = 1; }
+          debouncedContextKey = faceContextStreakCount >= 2 ? faceContextStreakKey : null;
           lastFaceCtx = faceCtx;
+          lastDebouncedContextKey = debouncedContextKey;
         } catch (e) {
           // Best-effort: any runtime error permanently disables face
           // tracking rather than risk it happening on every frame from now on.
           faceModelReady = false;
           faceLandmarker = null;
           faceCtx = null;
+          debouncedContextKey = null;
         }
       }
+    } else {
+      // Shape isn't "one"/"fist" this frame (or face tracking is off) — reset
+      // the streak so a stale reading can't leak into a later, unrelated hold.
+      faceContextStreakKey = null;
+      faceContextStreakCount = 0;
+      lastDebouncedContextKey = null;
     }
 
     motion.push({
@@ -1763,7 +1793,7 @@
     let effectiveKey = detectDynamicGesture(motion) || key;
 
     // Face context refines a plain pointing "one" into "je"/"tu"/"quoi".
-    if (effectiveKey === "one" && faceCtx && faceCtx.contextKey) effectiveKey = faceCtx.contextKey;
+    if (effectiveKey === "one" && debouncedContextKey) effectiveKey = debouncedContextKey;
 
     if (debugOn) drawSkeleton(lm, flags);
 
@@ -1781,7 +1811,10 @@
     confBar.style.width = pct + "%";
     if (confPct) confPct.textContent = pct + "%";
 
-    const stable = history.length >= 5 && agree >= 0.7;
+    // Requires a longer, more consistent hold than before a word is
+    // confirmed and spoken — real hand tracking has natural jitter that a
+    // looser bar let through as brief, confident-looking misreads.
+    const stable = history.length >= 7 && agree >= 0.75;
     if (stable) {
       captionWord.classList.add("confident");
       captionLabel.classList.add("confident");
