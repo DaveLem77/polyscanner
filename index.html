@@ -1147,7 +1147,21 @@
       pinceShape,
       clawShape: !t && !i && !m && !r && !p && clawBand,
     };
-    return { key, flags, shapes };
+    // Raw numbers behind every threshold above, exposed so the live debug
+    // overlay (the "Repères" button) can print real values from a real
+    // camera instead of us continuing to guess constants blind — every
+    // number here is a ratio to handSpan (or, for the four finger ratios,
+    // to that same finger's own PIP-to-wrist distance) so it reads the same
+    // regardless of how close the hand is to the camera.
+    const debug = {
+      extI: extRatios[0], extM: extRatios[1], extR: extRatios[2], extP: extRatios[3],
+      thumbRatio: d(4, 5) / handSpan,
+      avgGapRatio: avgGap / handSpan,
+      pinchRatio: d(4, 8) / handSpan,
+      tipGapMaxRatio: tipGapMax / handSpan,
+      avgTipToWristRatio: avgTipToWrist / handSpan,
+    };
+    return { key, flags, shapes, debug };
   }
 
   // Counts direction reversals in a series of numbers, ignoring jitter
@@ -1749,6 +1763,32 @@
     });
   }
 
+  // Prints the real numbers behind the current classification, on top of
+  // the skeleton, whenever debug mode ("Repères") is on — so we can
+  // calibrate thresholds from real camera data instead of guessing. Every
+  // ratio is relative to hand size, so the numbers mean the same thing
+  // regardless of how close the hand is to the camera.
+  function drawDebugText(key, vote, pct, dbg) {
+    const lines = [
+      "cle (image): " + key + "   vote (stable): " + vote + " (" + pct + "%)",
+      "doigts (seuil 1.05 = tendu):  i=" + dbg.extI.toFixed(2) + "  m=" + dbg.extM.toFixed(2) + "  r=" + dbg.extR.toFixed(2) + "  p=" + dbg.extP.toFixed(2),
+      "pouce/main (seuil 0.55 = leve): " + dbg.thumbRatio.toFixed(2),
+      "ecart moyen doigts/main (attention/vulcain si < 0.20): " + dbg.avgGapRatio.toFixed(2),
+      "pouce-index/main (ok/tiny si < 0.40 / < 0.25): " + dbg.pinchRatio.toFixed(2),
+      "plus grand ecart bout-a-bout/main (pince si < 0.35): " + dbg.tipGapMaxRatio.toFixed(2),
+      "bouts vs poignet/main (pince si > 0.85): " + dbg.avgTipToWristRatio.toFixed(2),
+    ];
+    const x = 12, startY = 20, lineH = 16;
+    overlayCtx.font = "12px monospace";
+    overlayCtx.textBaseline = "top";
+    const widths = lines.map((l) => overlayCtx.measureText(l).width);
+    const boxW = Math.max(...widths) + 20;
+    overlayCtx.fillStyle = "rgba(0,0,0,0.62)";
+    overlayCtx.fillRect(x - 8, startY - 8, boxW, lines.length * lineH + 12);
+    overlayCtx.fillStyle = "#f7f9ff";
+    lines.forEach((l, idx) => overlayCtx.fillText(l, x, startY + idx * lineH));
+  }
+
   function loop() {
     rafId = requestAnimationFrame(loop);
     if (!handLandmarker || video.readyState < 2) return;
@@ -1776,7 +1816,7 @@
     const lm = result.landmarks[0];
     const vw = video.videoWidth, vh = video.videoHeight;
 
-    const { key, flags, shapes } = classifyGesture(lm, vw, vh);
+    const { key, flags, shapes, debug: geomDebug } = classifyGesture(lm, vw, vh);
 
     // Track palm position/size/shape over time (in pixels) so a wave, a
     // shaking thumbs-up, a beckoning finger, or a push toward the camera can
@@ -1868,8 +1908,6 @@
     // Face context refines a plain pointing "one" into "je"/"tu"/"quoi".
     if (effectiveKey === "one" && debouncedContextKey) effectiveKey = debouncedContextKey;
 
-    if (debugOn) drawSkeleton(lm, flags);
-
     history.push(effectiveKey);
     if (history.length > HISTORY_LEN) history.shift();
     const tally = {};
@@ -1878,6 +1916,8 @@
     for (const k in tally) if (tally[k] > voteN) { voteN = tally[k]; vote = k; }
     const agree = voteN / history.length;
     const pct = Math.round(agree * 100);
+
+    if (debugOn) { drawSkeleton(lm, flags); drawDebugText(key, vote, pct, geomDebug); }
 
     const g = GESTURES[vote] || GESTURES.fist;
     captionWord.textContent = g.code;
