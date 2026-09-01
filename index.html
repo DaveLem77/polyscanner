@@ -662,24 +662,27 @@
   .error-toast.show { display: block; }
 
   /* =======================================================================
-     LIVE CAMERA — restyle v4: real logo (media/logo.png, with the same
-     broken-image fallback as the nav) next to the wordmark; a small quiet
-     close control (#shutterBtn) beside the gradient "LSQ → Français"
-     pill on row one, replacing the earlier oversized glowing stop circle;
-     "EN DIRECT" + a stacked icon+label "Inverser" (#camToggle) on row
-     two; four gradient corner brackets framing the video; a lower dark
-     glassmorphic caption card — now with a slim mauve→rose gradient ring
-     — holding the eyebrow, the big word, a decorative idle waveform, and
-     a small tucked-in "i" control (#infoBtn, was the top-right
-     three-dot button) that still opens the same info sheet. Purely
-     visual: every element below is the SAME button/DOM node the detection
-     engine already wires up by id — only which container holds it and
-     how it looks changed (#controlsBar is kept, now empty, since the
-     engine toggles its display directly). Colors are hardcoded hex (not
-     the landing page's --s-* tokens) so this stays fully decoupled from
-     the marketing CSS. Old rules above (.iconbtn, .shutter, the
-     meter/status/transcript text) are left in place but unused rather
-     than deleted, since nothing here needs them removed to work. */
+     LIVE CAMERA — restyle v5: real logo (media/logo.png, with the same
+     broken-image fallback as the nav) next to the wordmark; the gradient
+     "LSQ → Français" pill alone on row one; "EN DIRECT" + a stacked
+     icon+label "Inverser" (#camToggle) on row two; four gradient corner
+     brackets framing the video; the big glowing gradient round button
+     (#shutterBtn) is BACK at the bottom, centered in #controlsBar, exactly
+     as originally requested — v4 had briefly replaced it with a small
+     quiet "X" beside the language pill, but that was reversed by request;
+     above it, a dark glassmorphic caption card — with a slim mauve→rose
+     gradient ring — holding the eyebrow, the big word, a decorative idle
+     waveform, and a small tucked-in "i" control (#infoBtn, was the
+     top-right three-dot button) that still opens the same info sheet.
+     Purely visual: every element below is the SAME button/DOM node the
+     detection engine already wires up by id — only which container holds
+     it and how it looks changed. Colors are hardcoded hex (not the
+     landing page's --s-* tokens) so this stays fully decoupled from the
+     marketing CSS. Old rules above (.iconbtn, .shutter, the
+     meter/status/transcript text) and .hud-close below (v4's small close
+     button, now unused since #shutterBtn moved back to #controlsBar) are
+     left in place but unused rather than deleted, since nothing here
+     needs them removed to work. */
 
   .caption-label, .status-text, .meter-row, .transcript-row { display: none; }
 
@@ -692,9 +695,10 @@
   .hud-brand-icon.is-broken { display: none; }
   .hud-brand-name { font-family: var(--display); font-weight: 800; font-size: 16px; color: #fff; letter-spacing: -0.01em; text-shadow: 0 1px 8px rgba(0,0,0,0.35); }
 
-  /* small, minimal close/stop control — replaces the old oversized glowing
-     circle; same #shutterBtn node and stopCamera() listener, just a much
-     quieter presentation. */
+  /* v4-only: a small, minimal close/stop control that briefly replaced the
+     big glowing circle. No longer used in the markup (#shutterBtn moved
+     back to #controlsBar as the round button below), kept only so nothing
+     needs deleting to work. */
   .hud-close {
     width: 30px; height: 30px; border-radius: 50%; flex: none; padding: 0; cursor: pointer;
     background: rgba(255,255,255,0.14); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -730,14 +734,14 @@
   .vf-corner { position: absolute; width: 30px; height: 30px; }
   .vf-corner.tl { top: calc(env(safe-area-inset-top, 0px) + 122px); left: 16px; border-top: 2.5px solid #E853D7; border-left: 2.5px solid #E853D7; border-top-left-radius: 14px; }
   .vf-corner.tr { top: calc(env(safe-area-inset-top, 0px) + 122px); right: 16px; border-top: 2.5px solid #5C6CFF; border-right: 2.5px solid #5C6CFF; border-top-right-radius: 14px; }
-  .vf-corner.bl { bottom: calc(env(safe-area-inset-bottom, 0px) + 210px); left: 16px; border-bottom: 2.5px solid #E853D7; border-left: 2.5px solid #E853D7; border-bottom-left-radius: 14px; }
-  .vf-corner.br { bottom: calc(env(safe-area-inset-bottom, 0px) + 210px); right: 16px; border-bottom: 2.5px solid #5C6CFF; border-right: 2.5px solid #5C6CFF; border-bottom-right-radius: 14px; }
+  .vf-corner.bl { bottom: calc(env(safe-area-inset-bottom, 0px) + 302px); left: 16px; border-bottom: 2.5px solid #E853D7; border-left: 2.5px solid #E853D7; border-bottom-left-radius: 14px; }
+  .vf-corner.br { bottom: calc(env(safe-area-inset-bottom, 0px) + 302px); right: 16px; border-bottom: 2.5px solid #5C6CFF; border-right: 2.5px solid #5C6CFF; border-bottom-right-radius: 14px; }
 
-  /* translation card now sits lower (the big stop button that used to
-     anchor it is gone), with a slim mauve→rose gradient border — the
-     "padding-box / border-box" double-background technique gives a true
-     gradient ring on a rounded corner with no extra wrapper element. */
-  .caption-wrap { bottom: calc(env(safe-area-inset-bottom, 0px) + 26px); padding: 0 18px; }
+  /* translation card sits above the big round button again, with a slim
+     mauve→rose gradient border — the "padding-box / border-box"
+     double-background technique gives a true gradient ring on a rounded
+     corner with no extra wrapper element. */
+  .caption-wrap { bottom: calc(env(safe-area-inset-bottom, 0px) + 118px); padding: 0 18px; }
   .caption-card {
     position: relative; width: 100%; max-width: 480px; margin: 0 auto; text-align: center;
     background:
@@ -773,10 +777,18 @@
   @keyframes waveBeat { 0%, 100% { transform: scaleY(0.45); } 50% { transform: scaleY(1); } }
   @media (prefers-reduced-motion: reduce) { .caption-wave span { animation: none; transform: scaleY(0.75); } }
 
-  /* #controlsBar is kept in the DOM (the engine toggles its display
-     directly) but now stays empty — the stop control moved up into the
-     topbar as .hud-close, so there is nothing left to show here. */
-  .controls-bar { bottom: calc(env(safe-area-inset-bottom, 0px) + 14px); z-index: 8; }
+  .controls-bar { bottom: calc(env(safe-area-inset-bottom, 0px) + 24px); z-index: 8; }
+
+  /* the big glowing round stop button — back by request, same #shutterBtn
+     node and stopCamera() listener the engine already wires up. */
+  .shutter-btn {
+    position: relative; width: 72px; height: 72px; border-radius: 50%; cursor: pointer; border: none; padding: 0;
+    background: linear-gradient(135deg, #7C4DFF 0%, #E853D7 55%, #FF8058 100%);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 8px rgba(180,90,230,0.12), 0 0 44px 6px rgba(180,90,230,0.45), 0 18px 40px -10px rgba(90,40,160,0.6);
+  }
+  .shutter-btn:active { transform: scale(0.95); }
+  .shutter-icon { width: 22px; height: 22px; border-radius: 7px; background: #fff; display: block; }
 
   /* small "i" info/settings control, tucked into the translation card's
      own corner instead of floating as a separate top-right icon — same
@@ -1076,9 +1088,6 @@
         <span class="hud-brand-name">Sensorielle</span>
       </div>
       <div class="topbar-row-right">
-        <button class="hud-close" id="shutterBtn" aria-label="Arrêter la caméra">
-          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-        </button>
         <div class="lang-pill">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2z"/></svg>
           <span>LSQ</span><span class="lang-arrow">→</span><span>Français</span>
@@ -1123,7 +1132,11 @@
     </div>
   </div>
 
-  <div class="controls-bar" id="controlsBar" style="display:none;"></div>
+  <div class="controls-bar" id="controlsBar" style="display:none;">
+    <button class="shutter-btn" id="shutterBtn" aria-label="Arrêter la caméra">
+      <span class="shutter-icon" aria-hidden="true"></span>
+    </button>
+  </div>
 
   <div class="error-toast" id="errorBox"></div>
 
@@ -1143,7 +1156,8 @@
     <button class="close" id="closeSheet">Compris</button>
   </div>
 </div>
-<script type="module">  import { HandLandmarker, FaceLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
+<script type="module">
+  import { HandLandmarker, FaceLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
 
   const stage = document.getElementById("stage");
   const video = document.getElementById("video");
@@ -2167,7 +2181,9 @@
       statusLine.textContent = "Stabilise ta main pour confirmer…";
     }
   }
-</script><script>
+</script>
+<script>
+
 (function landingUX() {
   const scrollEl = document.getElementById("landingScroll");
   const nav = document.getElementById("siteNav");
@@ -2300,7 +2316,9 @@
     });
   }
 })();
-</script><script>
+</script>
+<script>
+
 // ===========================================================================
 // Sensorielle — traduction par phrases (fenêtres de 5 secondes)
 // ===========================================================================
@@ -2347,7 +2365,7 @@ if (typeof document !== "undefined") {
 
     // ---- CONFIGURE ICI : colle l'URL de ton relais IA une fois déployé.
     // Exemple : "https://sensorielle-ai.tonpseudo.workers.dev/analyze"
-    const SENTENCE_AI_ENDPOINT = "sensorielleai.dlemieux730.workers.dev";
+    const SENTENCE_AI_ENDPOINT = "";
 
     const WINDOW_MS = 5000;
     const IDLE_TEXT = "Analyse en cours…";
@@ -2400,8 +2418,14 @@ if (typeof document !== "undefined") {
       }
     }
 
+    // La phrase construite toutes les 5 secondes DOIT toujours être
+    // entendue une fois prête : elle ne dépend jamais de isVoiceMuted(),
+    // qui ne sert qu'à couper la voix "mot par mot" du moteur (voir
+    // silenceInstantVoiceOnce ci-dessus). Si les deux partageaient la même
+    // condition, la phrase ne serait jamais lue puisque cette même fonction
+    // vient tout juste de mettre ce drapeau en mode "muet".
     function speakSentence(text) {
-      if (!("speechSynthesis" in window) || isVoiceMuted()) return;
+      if (!("speechSynthesis" in window)) return;
       speechSynthesis.cancel();
       const utter = new SpeechSynthesisUtterance(text);
       utter.lang = "fr-FR";
@@ -2450,4 +2474,5 @@ if (typeof document !== "undefined") {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = { localFallbackSentence };
 }
-</script></body></html>
+</script>
+</body></html>
