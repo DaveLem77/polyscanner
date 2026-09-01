@@ -662,27 +662,27 @@
   .error-toast.show { display: block; }
 
   /* =======================================================================
-     LIVE CAMERA — restyle v5: real logo (media/logo.png, with the same
-     broken-image fallback as the nav) next to the wordmark; the gradient
-     "LSQ → Français" pill alone on row one; "EN DIRECT" + a stacked
-     icon+label "Inverser" (#camToggle) on row two; four gradient corner
-     brackets framing the video; the big glowing gradient round button
-     (#shutterBtn) is BACK at the bottom, centered in #controlsBar, exactly
-     as originally requested — v4 had briefly replaced it with a small
-     quiet "X" beside the language pill, but that was reversed by request;
-     above it, a dark glassmorphic caption card — with a slim mauve→rose
-     gradient ring — holding the eyebrow, the big word, a decorative idle
-     waveform, and a small tucked-in "i" control (#infoBtn, was the
-     top-right three-dot button) that still opens the same info sheet.
-     Purely visual: every element below is the SAME button/DOM node the
-     detection engine already wires up by id — only which container holds
-     it and how it looks changed. Colors are hardcoded hex (not the
-     landing page's --s-* tokens) so this stays fully decoupled from the
-     marketing CSS. Old rules above (.iconbtn, .shutter, the
-     meter/status/transcript text) and .hud-close below (v4's small close
-     button, now unused since #shutterBtn moved back to #controlsBar) are
-     left in place but unused rather than deleted, since nothing here
-     needs them removed to work. */
+     LIVE CAMERA — restyle v6: pixel-matched to the reference screenshot the
+     user sent (a single row of just the "LSQ → Français" pill and the
+     "Inverser" control; four gradient corner brackets; the translation
+     text floating directly over the video with NO card/border/box behind
+     it — a plain gray "TRADUCTION EN COURS" label, the big white word, a
+     decorative waveform; the big glowing round stop button at the bottom).
+     This intentionally drops v4/v5's brand row (logo+wordmark), the
+     "EN DIRECT" pill, the gradient caption card, and the colored eyebrow
+     icon/text — none of those appear in the reference photo. #infoBtn
+     (opens the info sheet) has no equivalent in the reference photo either,
+     but it cannot simply disappear (it is the only way to reach that
+     sheet), so it is kept as a small, deliberately unobtrusive icon beside
+     the round button rather than floating on the video like before.
+     Purely visual otherwise: every element below is the SAME button/DOM
+     node the detection engine already wires up by id — only which
+     container holds it and how it looks changed. Colors are hardcoded hex
+     (not the landing page's --s-* tokens) so this stays fully decoupled
+     from the marketing CSS. Rules from older restyles that are no longer
+     referenced by the markup (.hud-brand, .hud-close, .live-pill, and the
+     old boxed .caption-card look) are left in place but unused rather than
+     deleted, since nothing here needs them removed to work. */
 
   .caption-label, .status-text, .meter-row, .transcript-row { display: none; }
 
@@ -695,10 +695,6 @@
   .hud-brand-icon.is-broken { display: none; }
   .hud-brand-name { font-family: var(--display); font-weight: 800; font-size: 16px; color: #fff; letter-spacing: -0.01em; text-shadow: 0 1px 8px rgba(0,0,0,0.35); }
 
-  /* v4-only: a small, minimal close/stop control that briefly replaced the
-     big glowing circle. No longer used in the markup (#shutterBtn moved
-     back to #controlsBar as the round button below), kept only so nothing
-     needs deleting to work. */
   .hud-close {
     width: 30px; height: 30px; border-radius: 50%; flex: none; padding: 0; cursor: pointer;
     background: rgba(255,255,255,0.14); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -707,15 +703,22 @@
   }
   .hud-close:active { transform: scale(0.94); }
 
+  /* dark, semi-transparent pill with a thin blue→purple→pink gradient ring
+     (padding-box / border-box double-background — see .caption-card note
+     from earlier rounds) instead of a solid gradient fill, matching the
+     reference photo. */
   .lang-pill {
     display: flex; align-items: center; gap: 6px; flex: none;
     font-family: var(--sans); font-weight: 700; font-size: 13.5px; color: #fff;
-    background: linear-gradient(100deg, #5B6EF5 0%, #B94FE4 55%, #F45E9A 100%);
+    background:
+      linear-gradient(rgba(18,16,32,0.55), rgba(18,16,32,0.55)) padding-box,
+      linear-gradient(100deg, #5B6EF5 0%, #B94FE4 55%, #F45E9A 100%) border-box;
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1.4px solid transparent;
     border-radius: 100px; padding: 9px 14px 9px 12px;
-    box-shadow: 0 8px 20px -8px rgba(140,60,200,0.7);
   }
-  .lang-pill svg { flex: none; }
-  .lang-pill .lang-arrow { color: rgba(255,255,255,0.85); font-weight: 600; }
+  .lang-pill svg { flex: none; color: #C9A8FF; }
+  .lang-pill .lang-arrow { color: rgba(255,255,255,0.6); font-weight: 600; }
 
   .live-pill {
     display: none; align-items: center; gap: 8px; width: auto; height: auto;
@@ -724,7 +727,6 @@
     border: 1px solid rgba(255,255,255,0.16);
     padding: 9px 14px 9px 11px; border-radius: 100px;
   }
-  .stage.live .live-pill { display: flex; }
   .live-pill .rec { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 8px 1px rgba(76,175,125,0.7); background: var(--good); }
 
   /* ---- viewfinder corner brackets — purely decorative, gated on the
@@ -732,35 +734,25 @@
   .viewfinder-frame { position: absolute; inset: 0; z-index: 5; pointer-events: none; opacity: 0; transition: opacity 0.3s ease; }
   .stage.live .viewfinder-frame { opacity: 1; }
   .vf-corner { position: absolute; width: 30px; height: 30px; }
-  .vf-corner.tl { top: calc(env(safe-area-inset-top, 0px) + 122px); left: 16px; border-top: 2.5px solid #E853D7; border-left: 2.5px solid #E853D7; border-top-left-radius: 14px; }
-  .vf-corner.tr { top: calc(env(safe-area-inset-top, 0px) + 122px); right: 16px; border-top: 2.5px solid #5C6CFF; border-right: 2.5px solid #5C6CFF; border-top-right-radius: 14px; }
-  .vf-corner.bl { bottom: calc(env(safe-area-inset-bottom, 0px) + 302px); left: 16px; border-bottom: 2.5px solid #E853D7; border-left: 2.5px solid #E853D7; border-bottom-left-radius: 14px; }
-  .vf-corner.br { bottom: calc(env(safe-area-inset-bottom, 0px) + 302px); right: 16px; border-bottom: 2.5px solid #5C6CFF; border-right: 2.5px solid #5C6CFF; border-bottom-right-radius: 14px; }
+  .vf-corner.tl { top: calc(env(safe-area-inset-top, 0px) + 78px); left: 16px; border-top: 2.5px solid #E853D7; border-left: 2.5px solid #E853D7; border-top-left-radius: 14px; }
+  .vf-corner.tr { top: calc(env(safe-area-inset-top, 0px) + 78px); right: 16px; border-top: 2.5px solid #5C6CFF; border-right: 2.5px solid #5C6CFF; border-top-right-radius: 14px; }
+  .vf-corner.bl { bottom: calc(env(safe-area-inset-bottom, 0px) + 280px); left: 16px; border-bottom: 2.5px solid #E853D7; border-left: 2.5px solid #E853D7; border-bottom-left-radius: 14px; }
+  .vf-corner.br { bottom: calc(env(safe-area-inset-bottom, 0px) + 280px); right: 16px; border-bottom: 2.5px solid #5C6CFF; border-right: 2.5px solid #5C6CFF; border-bottom-right-radius: 14px; }
 
-  /* translation card sits above the big round button again, with a slim
-     mauve→rose gradient border — the "padding-box / border-box"
-     double-background technique gives a true gradient ring on a rounded
-     corner with no extra wrapper element. */
+  /* the translation text now floats directly over the video — no card, no
+     border, no background — exactly like the reference photo. */
   .caption-wrap { bottom: calc(env(safe-area-inset-bottom, 0px) + 118px); padding: 0 18px; }
   .caption-card {
     position: relative; width: 100%; max-width: 480px; margin: 0 auto; text-align: center;
-    background:
-      linear-gradient(rgba(18,16,32,0.86), rgba(18,16,32,0.86)) padding-box,
-      linear-gradient(120deg, #9B6BFF, #F286D8) border-box;
-    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    border: 1.5px solid transparent;
-    box-shadow: 0 26px 60px -20px rgba(90,40,160,0.55), inset 0 1px 0 rgba(255,255,255,0.06);
-    border-radius: 26px; padding: 24px 24px 30px;
   }
   .caption-eyebrow {
-    display: flex; align-items: center; justify-content: center; gap: 6px; margin: 0 0 10px;
-    font-family: var(--sans); font-weight: 700; font-size: 11.5px; letter-spacing: 0.09em; text-transform: uppercase;
-    background: linear-gradient(100deg, #B285FF, #F286D8);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
+    margin: 0 0 8px;
+    font-family: var(--sans); font-weight: 700; font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase;
+    color: rgba(255,255,255,0.62);
   }
-  .caption-eyebrow svg { flex: none; color: #D89CFF; }
+  .caption-eyebrow svg { display: none; }
   .caption-card .caption-word {
-    text-shadow: none; max-width: none; transform: none; color: #fff;
+    text-shadow: 0 2px 18px rgba(0,0,0,0.55); max-width: none; transform: none; color: #fff;
     font-size: clamp(24px, 7.5vw, 34px); line-height: 1.25; font-weight: 800;
   }
 
@@ -777,29 +769,30 @@
   @keyframes waveBeat { 0%, 100% { transform: scaleY(0.45); } 50% { transform: scaleY(1); } }
   @media (prefers-reduced-motion: reduce) { .caption-wave span { animation: none; transform: scaleY(0.75); } }
 
-  .controls-bar { bottom: calc(env(safe-area-inset-bottom, 0px) + 24px); z-index: 8; }
+  .controls-bar { bottom: calc(env(safe-area-inset-bottom, 0px) + 24px); z-index: 8; position: absolute; }
 
-  /* the big glowing round stop button — back by request, same #shutterBtn
-     node and stopCamera() listener the engine already wires up. */
+  /* the big glowing round stop button, colored to match the reference
+     photo's blue→purple→pink gradient — same #shutterBtn node and
+     stopCamera() listener the engine already wires up. */
   .shutter-btn {
     position: relative; width: 72px; height: 72px; border-radius: 50%; cursor: pointer; border: none; padding: 0;
-    background: linear-gradient(135deg, #7C4DFF 0%, #E853D7 55%, #FF8058 100%);
+    background: linear-gradient(135deg, #5B6EF5 0%, #B94FE4 55%, #F45E9A 100%);
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 0 8px rgba(180,90,230,0.12), 0 0 44px 6px rgba(180,90,230,0.45), 0 18px 40px -10px rgba(90,40,160,0.6);
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.14), 0 0 40px 6px rgba(140,90,230,0.5), 0 18px 40px -10px rgba(90,40,160,0.6);
   }
   .shutter-btn:active { transform: scale(0.95); }
   .shutter-icon { width: 22px; height: 22px; border-radius: 7px; background: #fff; display: block; }
 
-  /* small "i" info/settings control, tucked into the translation card's
-     own corner instead of floating as a separate top-right icon — same
-     #infoBtn node, same click listener (opens the info sheet). */
+  /* #infoBtn has no equivalent in the reference photo, but it's the only
+     way to reach the info sheet, so it stays — tucked as a small, quiet
+     icon beside the round button rather than floating over the video. */
   .caption-info-btn {
-    position: absolute; right: 10px; bottom: 10px; z-index: 2;
-    width: 24px; height: 24px; border-radius: 50%; padding: 0; cursor: pointer;
-    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16);
-    display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.75);
+    position: absolute; right: 22px; top: 50%; transform: translateY(-50%); z-index: 2;
+    width: 26px; height: 26px; border-radius: 50%; padding: 0; cursor: pointer;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
+    display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.8);
   }
-  .caption-info-btn:active { transform: scale(0.92); }
+  .caption-info-btn:active { transform: translateY(-50%) scale(0.92); }
 
   .cam-flip-btn {
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
@@ -1083,19 +1076,10 @@
 
   <div class="topbar" id="topbar" style="display:none;">
     <div class="topbar-row">
-      <div class="hud-brand" aria-hidden="true">
-        <img class="hud-brand-icon" src="media/logo.png" alt="">
-        <span class="hud-brand-name">Sensorielle</span>
+      <div class="lang-pill">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2z"/></svg>
+        <span>LSQ</span><span class="lang-arrow">→</span><span>Français</span>
       </div>
-      <div class="topbar-row-right">
-        <div class="lang-pill">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2z"/></svg>
-          <span>LSQ</span><span class="lang-arrow">→</span><span>Français</span>
-        </div>
-      </div>
-    </div>
-    <div class="topbar-row">
-      <div class="live-pill"><span class="rec"></span><span>EN DIRECT</span></div>
       <button class="cam-flip-btn" id="camToggle" aria-label="Changer de caméra">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12a8 8 0 0113.66-5.66M20 12a8 8 0 01-13.66 5.66" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M17.5 3.5v3.5h-3.5M6.5 20.5v-3.5h3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span class="cam-flip-label">Inverser</span>
@@ -1112,10 +1096,7 @@
 
   <div class="caption-wrap" id="captionWrap" style="display:none;">
     <div class="caption-card">
-      <p class="caption-eyebrow">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2z"/></svg>
-        Traduction détectée
-      </p>
+      <p class="caption-eyebrow">Traduction en cours</p>
       <div class="caption-word" id="smartSentence">Analyse en cours…</div>
       <div class="caption-word" id="captionWord" style="display:none;">–</div>
       <div class="caption-label" id="captionLabel"></div>
@@ -1126,15 +1107,15 @@
       </div>
       <div class="status-text" id="statusLine">Montre une main à la caméra.</div>
       <div class="transcript-row" id="transcriptRow"><span class="transcript-empty">Les chiffres reconnus s'accumuleront ici…</span></div>
-      <button class="caption-info-btn" id="infoBtn" aria-label="Plus d'options">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></svg>
-      </button>
     </div>
   </div>
 
   <div class="controls-bar" id="controlsBar" style="display:none;">
     <button class="shutter-btn" id="shutterBtn" aria-label="Arrêter la caméra">
       <span class="shutter-icon" aria-hidden="true"></span>
+    </button>
+    <button class="caption-info-btn" id="infoBtn" aria-label="Plus d'options">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></svg>
     </button>
   </div>
 
@@ -2365,7 +2346,7 @@ if (typeof document !== "undefined") {
 
     // ---- CONFIGURE ICI : colle l'URL de ton relais IA une fois déployé.
     // Exemple : "https://sensorielle-ai.tonpseudo.workers.dev/analyze"
-    const SENTENCE_AI_ENDPOINT = "";
+    const SENTENCE_AI_ENDPOINT = "sensorielleai.dlemieux730.workers.dev";
 
     const WINDOW_MS = 5000;
     const IDLE_TEXT = "Analyse en cours…";
