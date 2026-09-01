@@ -598,24 +598,28 @@
 
   .caption-label, .status-text, .meter-row, .transcript-row { display: none; }
 
+  /* Light variant, per a second reference: plain dark-navy text instead of
+     glass pills, and a solid light card instead of the dark glowing one.
+     Hex values are hardcoded (not read from the HUD's own dark-mode
+     variables) since this look is intentionally a different, light
+     treatment — kept as plain values rather than reusing the landing
+     page's --s-* variables so this stays self-contained either way. */
   .topbar { gap: 10px; }
   .hud-x, .hud-more {
     width: 34px; height: 34px; border-radius: 50%; flex: none;
-    background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--hairline);
+    background: rgba(255,255,255,0.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(17,20,38,0.08); box-shadow: 0 2px 10px -2px rgba(17,20,38,0.18);
     display: flex; align-items: center; justify-content: center; cursor: pointer;
   }
   .hud-x:active, .hud-more:active { transform: scale(0.94); }
 
   .lang-pill {
-    display: flex; align-items: center; gap: 7px;
-    font-family: var(--sans); font-weight: 700; font-size: 13px; color: var(--text);
-    background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--hairline); border-radius: 100px; padding: 9px 16px;
-    text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--sans); font-weight: 700; font-size: 15px; color: #111426;
+    background: rgba(255,255,255,0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-radius: 100px; padding: 9px 16px;
   }
-  .lang-pill .lang-flag { color: var(--coral); font-size: 13px; }
-  .lang-pill .lang-arrow { color: var(--text-faint); font-weight: 500; }
+  .lang-pill .lang-arrow { color: rgba(17,20,38,0.55); font-weight: 500; }
 
   .hud-right { display: flex; align-items: center; gap: 8px; }
   .live-pill { padding: 0; border: none; background: none; backdrop-filter: none; width: 20px; height: 34px; justify-content: center; }
@@ -623,23 +627,14 @@
 
   .caption-wrap { bottom: calc(env(safe-area-inset-bottom, 0px) + 108px); padding: 0 16px; }
   .caption-card {
-    width: 100%; max-width: 480px; margin: 0 auto; text-align: left;
-    background: rgba(14,16,26,0.82); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(63,107,255,0.5);
-    box-shadow: 0 0 0 1px rgba(63,107,255,0.18), 0 0 26px 2px rgba(63,107,255,0.35), 0 20px 40px -16px rgba(0,0,0,0.6);
-    border-radius: 20px; padding: 16px 18px 18px;
+    width: 100%; max-width: 480px; margin: 0 auto; text-align: center;
+    background: rgba(250,249,247,0.96);
+    box-shadow: 0 20px 44px -16px rgba(17,20,38,0.3);
+    border-radius: 28px; padding: 30px 26px;
   }
-  .caption-card-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
-  .caption-kicker { font-family: var(--sans); font-weight: 600; font-size: 12px; color: var(--text-faint); }
-  .voice-btn {
-    flex: none; width: 30px; height: 30px; border-radius: 50%; border: none; cursor: pointer;
-    background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;
-  }
-  .voice-btn:not(.active) { opacity: 0.4; }
-  .voice-btn:active { transform: scale(0.94); }
   .caption-card .caption-word {
-    text-shadow: none; max-width: none; transform: none; color: var(--text);
-    font-size: clamp(22px, 7vw, 32px); line-height: 1.2;
+    text-shadow: none; max-width: none; transform: none; color: #111426;
+    font-size: clamp(24px, 7.5vw, 34px); line-height: 1.25; font-weight: 800;
   }
 
   .controls-bar { bottom: calc(env(safe-area-inset-bottom, 0px) + 26px); }
@@ -964,25 +959,19 @@
 
   <div class="topbar" id="topbar" style="display:none;">
     <button class="hud-x" id="shutterBtn" aria-label="Arrêter la caméra">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="#111426" stroke-width="1.7" stroke-linecap="round"/></svg>
     </button>
-    <div class="lang-pill"><span class="lang-flag">⚜</span><span>LSQ</span><span class="lang-arrow">→</span><span>Français</span></div>
+    <div class="lang-pill"><span>LSQ</span><span class="lang-arrow">→</span><span>Français</span></div>
     <div class="hud-right">
       <div class="live-pill"><span class="rec"></span></div>
       <button class="hud-more" id="infoBtn" aria-label="Plus d'options">
-        <svg width="16" height="4" viewBox="0 0 16 4" fill="none" aria-hidden="true"><circle cx="2" cy="2" r="1.7" fill="#fff"/><circle cx="8" cy="2" r="1.7" fill="#fff"/><circle cx="14" cy="2" r="1.7" fill="#fff"/></svg>
+        <svg width="16" height="4" viewBox="0 0 16 4" fill="none" aria-hidden="true"><circle cx="2" cy="2" r="1.7" fill="#111426"/><circle cx="8" cy="2" r="1.7" fill="#111426"/><circle cx="14" cy="2" r="1.7" fill="#111426"/></svg>
       </button>
     </div>
   </div>
 
   <div class="caption-wrap" id="captionWrap" style="display:none;">
     <div class="caption-card">
-      <div class="caption-card-row">
-        <span class="caption-kicker">Traduction en direct</span>
-        <button class="voice-btn active" id="voiceBtn" aria-label="Couper la voix">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9v6h4l5 5V4L8 9H4z" fill="#fff"/><path d="M16.2 8.8a5 5 0 010 6.4" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
-        </button>
-      </div>
       <div class="caption-word" id="captionWord">–</div>
       <div class="caption-label" id="captionLabel"></div>
       <div class="meter-row">
@@ -996,7 +985,7 @@
 
   <div class="controls-bar" id="controlsBar" style="display:none;">
     <button class="cam-flip-btn" id="camToggle" aria-label="Changer de caméra">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8h3.2L8.6 6h6.8L16.8 8H20a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V9a1 1 0 011-1z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 17.5a4.5 4.5 0 100-9" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><path d="M9.5 6.7l-2 1.8 2 1.8" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8h3.2L8.6 6h6.8L16.8 8H20a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V9a1 1 0 011-1z" stroke="#111426" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 17.5a4.5 4.5 0 100-9" stroke="#111426" stroke-width="1.6" stroke-linecap="round"/><path d="M9.5 6.7l-2 1.8 2 1.8" stroke="#111426" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
   </div>
 
@@ -1006,6 +995,7 @@
   <div class="sheet" id="infoSheet">
     <div class="handle"></div>
     <div class="sheet-toggles">
+      <button class="sheet-toggle-btn active" id="voiceBtn" aria-label="Couper la voix">Son</button>
       <button class="sheet-toggle-btn" id="debugBtn" aria-label="Afficher le suivi de la main">🔧 Repères techniques (diagnostic à l'écran)</button>
       <button class="sheet-toggle-btn" id="clearBtn" aria-label="Effacer la transcription">🗑 Effacer la transcription</button>
     </div>
