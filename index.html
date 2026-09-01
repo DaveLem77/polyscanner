@@ -1107,7 +1107,8 @@
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2z"/></svg>
         Traduction détectée
       </p>
-      <div class="caption-word" id="captionWord">–</div>
+      <div class="caption-word" id="smartSentence">Analyse en cours…</div>
+      <div class="caption-word" id="captionWord" style="display:none;">–</div>
       <div class="caption-label" id="captionLabel"></div>
       <div class="caption-wave" aria-hidden="true"><span style="--h:38;--d:0"></span><span style="--h:62;--d:1"></span><span style="--h:90;--d:2"></span><span style="--h:55;--d:3"></span><span style="--h:100;--d:4"></span><span style="--h:70;--d:5"></span><span style="--h:45;--d:6"></span><span style="--h:85;--d:0"></span><span style="--h:60;--d:1"></span><span style="--h:95;--d:2"></span><span style="--h:50;--d:3"></span><span style="--h:75;--d:4"></span><span style="--h:40;--d:5"></span><span style="--h:88;--d:6"></span><span style="--h:65;--d:0"></span><span style="--h:30;--d:1"></span><span style="--h:80;--d:2"></span><span style="--h:58;--d:3"></span><span style="--h:42;--d:4"></span><span style="--h:68;--d:5"></span></div>
       <div class="meter-row">
@@ -2299,4 +2300,154 @@
     });
   }
 })();
+</script><script>
+// ===========================================================================
+// Sensorielle — traduction par phrases (fenêtres de 5 secondes)
+// ===========================================================================
+// Ce script n'entre JAMAIS dans module_core_v2.js (le moteur de détection
+// reste intact) : il observe simplement ce que le moteur écrit déjà dans
+// #transcriptRow à chaque signe confirmé (un <span class="chip"> par mot),
+// accumule ces mots pendant 5 secondes, puis les envoie à une IA pour en
+// tirer UNE phrase française cohérente (en ignorant les signes isolés qui
+// sont probablement des erreurs de détection). La phrase est affichée dans
+// #smartSentence (un nouvel élément, séparé de #captionWord que le moteur
+// continue d'écrire normalement mais qui reste caché) puis lue à voix haute.
+// L'accumulation du prochain bloc de 5 secondes démarre immédiatement,
+// même pendant que la phrase précédente s'affiche et se fait lire.
+//
+// AUCUNE clé API ne vit ici ni nulle part sur ce site public : ce script
+// appelle un petit serveur relais que TU dois déployer toi-même (voir
+// ai-relay/README.md). Tant que SENTENCE_AI_ENDPOINT est vide ou
+// injoignable, une phrase de repli simple et honnête est construite
+// localement (sans IA) pour que la fonctionnalité marche quand même.
+// ===========================================================================
+
+// ---- Repli local, honnête, sans IA : enlève les répétitions immédiates
+// (le cas le plus courant de fausse détection — une pose tenue qui se
+// reconfirme elle-même) et présente le reste comme une simple liste,
+// jamais comme une phrase inventée de toutes pièces. Pure fonction, sans
+// dépendance au DOM, pour rester testable telle quelle depuis Node.
+function localFallbackSentence(words) {
+  const cleaned = [];
+  for (const w of words) {
+    if (cleaned[cleaned.length - 1] !== w) cleaned.push(w);
+  }
+  if (cleaned.length === 0) return null;
+  if (cleaned.length === 1) return cleaned[0] + ".";
+  return cleaned.slice(0, -1).join(", ") + " et " + cleaned[cleaned.length - 1] + ".";
+}
+
+if (typeof document !== "undefined") {
+  (function smartTranslate() {
+    const transcriptRow = document.getElementById("transcriptRow");
+    const smartSentence = document.getElementById("smartSentence");
+    const voiceBtn = document.getElementById("voiceBtn");
+    const stage = document.getElementById("stage");
+    if (!transcriptRow || !smartSentence || !stage) return;
+
+    // ---- CONFIGURE ICI : colle l'URL de ton relais IA une fois déployé.
+    // Exemple : "https://sensorielle-ai.tonpseudo.workers.dev/analyze"
+    const SENTENCE_AI_ENDPOINT = "sensorielleai.dlemieux730.workers.dev";
+
+    const WINDOW_MS = 5000;
+    const IDLE_TEXT = "Analyse en cours…";
+
+    let buffer = [];
+    let cycleTimer = null;
+
+    function isVoiceMuted() {
+      return !voiceBtn || voiceBtn.getAttribute("aria-label") === "Activer la voix";
+    }
+
+    // Le moteur lit chaque mot confirmé à voix haute instantanément, ce qui
+    // ferait doublon (et se couperait la parole) avec la phrase construite
+    // toutes les 5 secondes. On coupe cette voix "mot par mot" une seule
+    // fois par session caméra, via le même bouton "Son" qu'une personne
+    // pourrait taper elle-même — jamais en modifiant le moteur. Si la
+    // personne rallume le son manuellement ensuite, les deux peuvent se
+    // chevaucher à nouveau : compromis assumé, plus simple qu'invasif.
+    function silenceInstantVoiceOnce() {
+      if (isVoiceMuted() || !voiceBtn) return;
+      voiceBtn.click();
+    }
+
+    // Un <span class="chip"> apparaît dans #transcriptRow exactement une
+    // fois par signe confirmé par le moteur (jamais pour autre chose que
+    // ça, ou une remise à zéro où la liste redevient vide) — donc "une
+    // mutation avec au moins une puce" = "un nouveau mot vient d'être
+    // confirmé", et cette puce est toujours la dernière de la liste.
+    const observer = new MutationObserver(() => {
+      const chips = transcriptRow.querySelectorAll(".chip");
+      if (chips.length === 0) return;
+      const word = chips[chips.length - 1].textContent;
+      if (word) buffer.push(word);
+    });
+    observer.observe(transcriptRow, { childList: true });
+
+    async function buildSentence(words) {
+      if (!SENTENCE_AI_ENDPOINT) return localFallbackSentence(words);
+      try {
+        const res = await fetch(SENTENCE_AI_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ words }),
+        });
+        if (!res.ok) throw new Error("relais HTTP " + res.status);
+        const data = await res.json();
+        return (data && data.sentence) ? data.sentence : localFallbackSentence(words);
+      } catch (e) {
+        return localFallbackSentence(words);
+      }
+    }
+
+    function speakSentence(text) {
+      if (!("speechSynthesis" in window) || isVoiceMuted()) return;
+      speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "fr-FR";
+      speechSynthesis.speak(utter);
+    }
+
+    async function processWindow() {
+      const snapshot = buffer;
+      buffer = []; // la fenêtre suivante recommence à accumuler tout de
+                   // suite, même pendant que celle-ci analyse encore ou
+                   // fait lire sa phrase.
+      if (!stage.classList.contains("live") || snapshot.length === 0) return;
+      const sentence = await buildSentence(snapshot);
+      if (!sentence || !stage.classList.contains("live")) return; // caméra arrêtée entretemps
+      smartSentence.textContent = sentence;
+      speakSentence(sentence);
+    }
+
+    function startCycle() {
+      if (cycleTimer) return;
+      silenceInstantVoiceOnce();
+      buffer = [];
+      smartSentence.textContent = IDLE_TEXT;
+      cycleTimer = setInterval(processWindow, WINDOW_MS);
+    }
+
+    function stopCycle() {
+      if (!cycleTimer) return;
+      clearInterval(cycleTimer);
+      cycleTimer = null;
+      buffer = [];
+      smartSentence.textContent = IDLE_TEXT;
+    }
+
+    // La caméra bascule stage.classList "live" au démarrage/arrêt (déjà
+    // géré par le moteur) — on s'y accroche pour armer/désarmer le cycle
+    // sans jamais toucher au moteur lui-même.
+    const stageObserver = new MutationObserver(() => {
+      if (stage.classList.contains("live")) startCycle();
+      else stopCycle();
+    });
+    stageObserver.observe(stage, { attributes: true, attributeFilter: ["class"] });
+  })();
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { localFallbackSentence };
+}
 </script></body></html>
