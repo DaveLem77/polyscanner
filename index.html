@@ -583,6 +583,80 @@
     color: #f7f9ff; font-size: 13px; line-height: 1.5; border-radius: 14px; padding: 12px 14px; display: none;
   }
   .error-toast.show { display: block; }
+
+  /* =======================================================================
+     LIVE CAMERA — requested restyle to match a specific reference screen
+     (dark full-bleed camera, X / language-pill / live-dot top bar, a single
+     glowing floating translation card, one center flip button at the
+     bottom). Purely visual: every element below is the SAME button/DOM
+     node the detection engine already wires up by id — nothing in the
+     detection logic changes, only where these controls live and how they
+     look. Old rules above (.iconbtn, .shutter, .live-pill's old row, the
+     meter/status/transcript text) are left in place but unused rather than
+     deleted, since nothing here needs them removed to work.
+     ======================================================================= */
+
+  .caption-label, .status-text, .meter-row, .transcript-row { display: none; }
+
+  .topbar { gap: 10px; }
+  .hud-x, .hud-more {
+    width: 34px; height: 34px; border-radius: 50%; flex: none;
+    background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--hairline);
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .hud-x:active, .hud-more:active { transform: scale(0.94); }
+
+  .lang-pill {
+    display: flex; align-items: center; gap: 7px;
+    font-family: var(--sans); font-weight: 700; font-size: 13px; color: var(--text);
+    background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--hairline); border-radius: 100px; padding: 9px 16px;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+  }
+  .lang-pill .lang-flag { color: var(--coral); font-size: 13px; }
+  .lang-pill .lang-arrow { color: var(--text-faint); font-weight: 500; }
+
+  .hud-right { display: flex; align-items: center; gap: 8px; }
+  .live-pill { padding: 0; border: none; background: none; backdrop-filter: none; width: 20px; height: 34px; justify-content: center; }
+  .live-pill .rec { width: 9px; height: 9px; box-shadow: 0 0 8px 1px rgba(76,175,125,0.7); background: var(--good); }
+
+  .caption-wrap { bottom: calc(env(safe-area-inset-bottom, 0px) + 108px); padding: 0 16px; }
+  .caption-card {
+    width: 100%; max-width: 480px; margin: 0 auto; text-align: left;
+    background: rgba(14,16,26,0.82); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(63,107,255,0.5);
+    box-shadow: 0 0 0 1px rgba(63,107,255,0.18), 0 0 26px 2px rgba(63,107,255,0.35), 0 20px 40px -16px rgba(0,0,0,0.6);
+    border-radius: 20px; padding: 16px 18px 18px;
+  }
+  .caption-card-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+  .caption-kicker { font-family: var(--sans); font-weight: 600; font-size: 12px; color: var(--text-faint); }
+  .voice-btn {
+    flex: none; width: 30px; height: 30px; border-radius: 50%; border: none; cursor: pointer;
+    background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;
+  }
+  .voice-btn:not(.active) { opacity: 0.4; }
+  .voice-btn:active { transform: scale(0.94); }
+  .caption-card .caption-word {
+    text-shadow: none; max-width: none; transform: none; color: var(--text);
+    font-size: clamp(22px, 7vw, 32px); line-height: 1.2;
+  }
+
+  .controls-bar { bottom: calc(env(safe-area-inset-bottom, 0px) + 26px); }
+  .cam-flip-btn {
+    width: 54px; height: 54px; border-radius: 50%; cursor: pointer;
+    background: var(--glass-strong); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1.5px solid var(--hairline); display: flex; align-items: center; justify-content: center;
+  }
+  .cam-flip-btn:active { transform: scale(0.94); }
+
+  .sheet-toggles { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .sheet-toggle-btn {
+    width: 100%; text-align: left; padding: 13px 14px; border-radius: 12px; cursor: pointer;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--hairline); color: var(--text-dim);
+    font-family: var(--sans); font-weight: 600; font-size: 13.5px;
+  }
+  .sheet-toggle-btn.active { color: #fff; background: rgba(76,175,125,0.14); border-color: rgba(76,175,125,0.4); }
 </style>
 </head>
 <body>
@@ -889,29 +963,41 @@
   </div>
 
   <div class="topbar" id="topbar" style="display:none;">
-    <button class="iconbtn" id="infoBtn" aria-label="À propos">Info</button>
-    <div class="live-pill"><span class="rec"></span>EN DIRECT</div>
-    <div style="display:flex; gap:10px;">
-      <button class="iconbtn active" id="voiceBtn" aria-label="Couper la voix">Son</button>
-      <button class="iconbtn" id="debugBtn" aria-label="Afficher le suivi de la main">Repères</button>
+    <button class="hud-x" id="shutterBtn" aria-label="Arrêter la caméra">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>
+    </button>
+    <div class="lang-pill"><span class="lang-flag">⚜</span><span>LSQ</span><span class="lang-arrow">→</span><span>Français</span></div>
+    <div class="hud-right">
+      <div class="live-pill"><span class="rec"></span></div>
+      <button class="hud-more" id="infoBtn" aria-label="Plus d'options">
+        <svg width="16" height="4" viewBox="0 0 16 4" fill="none" aria-hidden="true"><circle cx="2" cy="2" r="1.7" fill="#fff"/><circle cx="8" cy="2" r="1.7" fill="#fff"/><circle cx="14" cy="2" r="1.7" fill="#fff"/></svg>
+      </button>
     </div>
   </div>
 
   <div class="caption-wrap" id="captionWrap" style="display:none;">
-    <div class="caption-word" id="captionWord">–</div>
-    <div class="caption-label" id="captionLabel"></div>
-    <div class="meter-row">
-      <div class="meterline"><span id="confBar"></span></div>
-      <span class="conf-pct" id="confPct">—</span>
+    <div class="caption-card">
+      <div class="caption-card-row">
+        <span class="caption-kicker">Traduction en direct</span>
+        <button class="voice-btn active" id="voiceBtn" aria-label="Couper la voix">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9v6h4l5 5V4L8 9H4z" fill="#fff"/><path d="M16.2 8.8a5 5 0 010 6.4" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="caption-word" id="captionWord">–</div>
+      <div class="caption-label" id="captionLabel"></div>
+      <div class="meter-row">
+        <div class="meterline"><span id="confBar"></span></div>
+        <span class="conf-pct" id="confPct">—</span>
+      </div>
+      <div class="status-text" id="statusLine">Montre une main à la caméra.</div>
+      <div class="transcript-row" id="transcriptRow"><span class="transcript-empty">Les chiffres reconnus s'accumuleront ici…</span></div>
     </div>
-    <div class="status-text" id="statusLine">Montre une main à la caméra.</div>
-    <div class="transcript-row" id="transcriptRow"><span class="transcript-empty">Les chiffres reconnus s'accumuleront ici…</span></div>
   </div>
 
   <div class="controls-bar" id="controlsBar" style="display:none;">
-    <button class="iconbtn ghost" id="camToggle" aria-label="Changer de caméra">Inverser</button>
-    <button class="shutter" id="shutterBtn" aria-label="Arrêter"></button>
-    <button class="iconbtn ghost" id="clearBtn" aria-label="Effacer">Effacer</button>
+    <button class="cam-flip-btn" id="camToggle" aria-label="Changer de caméra">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8h3.2L8.6 6h6.8L16.8 8H20a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V9a1 1 0 011-1z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 17.5a4.5 4.5 0 100-9" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><path d="M9.5 6.7l-2 1.8 2 1.8" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
   </div>
 
   <div class="error-toast" id="errorBox"></div>
@@ -919,6 +1005,10 @@
   <div class="sheet-scrim" id="sheetScrim"></div>
   <div class="sheet" id="infoSheet">
     <div class="handle"></div>
+    <div class="sheet-toggles">
+      <button class="sheet-toggle-btn" id="debugBtn" aria-label="Afficher le suivi de la main">🔧 Repères techniques (diagnostic à l'écran)</button>
+      <button class="sheet-toggle-btn" id="clearBtn" aria-label="Effacer la transcription">🗑 Effacer la transcription</button>
+    </div>
     <h2>Portée volontairement limitée</h2>
     <p>Ce prototype reconnaît des <b>gestes de la main courants et largement reconnus</b> (compter jusqu'à cinq, pouce levé, victoire, OK, etc.) — pas une langue des signes spécifique. Le vocabulaire d'une vraie langue des signes (LSQ, LSF, ASL…) demande des formes de main précises que je ne peux pas garantir exactes sans référence vérifiée, donc je ne l'affiche pas comme tel ici.</p>
     <p>Le suivi de main utilise un modèle de vision par ordinateur pré-entraîné (MediaPipe, par Google) chargé une seule fois au démarrage — ensuite, tout le traitement vidéo reste local, sur ton appareil. Chaque geste confirmé est aussi lu à voix haute (bouton « Son » en haut à droite pour couper le son).</p>
