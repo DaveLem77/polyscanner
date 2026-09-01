@@ -2344,9 +2344,8 @@ if (typeof document !== "undefined") {
     const stage = document.getElementById("stage");
     if (!transcriptRow || !smartSentence || !stage) return;
 
-    // ---- CONFIGURE ICI : colle l'URL de ton relais IA une fois déployé.
-    // Exemple : "https://sensorielle-ai.tonpseudo.workers.dev/analyze"
-    const SENTENCE_AI_ENDPOINT = "sensorielleai.dlemieux730.workers.dev";
+    // ---- URL de ton relais IA déployé sur Cloudflare Workers.
+    const SENTENCE_AI_ENDPOINT = "https://sensorielleai.dlemieux730.workers.dev/";
 
     const WINDOW_MS = 5000;
     const IDLE_TEXT = "Analyse en cours…";
