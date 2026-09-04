@@ -1955,24 +1955,57 @@
   // Always-on live tracking overlay: a soft skeleton that follows the
   // detected hand every frame, so the person can see the camera actively
   // reading their hand rather than wondering if anything is happening.
-  // Colors echo the app's own brand gradient (violet/pink) instead of a
-  // neutral debug gray, so it reads as a feature, not a dev tool.
+  // Understated on purpose — a thin gradient line and small joint dots,
+  // not a neon sci-fi HUD — with the brand gradient reserved for the
+  // fingertips currently read as "extended", so it still reads as a
+  // deliberate feature rather than plain debug wireframe.
   function drawSkeleton(lm, extendedFlags) {
     overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
     const rect = video.getBoundingClientRect();
     const stageRect = stage.getBoundingClientRect();
     const mirrored = stage.classList.contains("mirror");
+    const vw = video.videoWidth, vh = video.videoHeight;
+
+    // The video is displayed with object-fit: cover, which crops it to fill
+    // the box while keeping its own aspect ratio — landmarks are normalized
+    // against the FULL camera frame, not the visible cropped area, so this
+    // has to redo the same crop math or the dots drift off the real hand
+    // (worse the more the camera's aspect ratio differs from the screen's).
+    let renderW = rect.width, renderH = rect.height, cropX = 0, cropY = 0;
+    if (vw && vh && rect.width && rect.height) {
+      const videoAspect = vw / vh;
+      const boxAspect = rect.width / rect.height;
+      if (videoAspect > boxAspect) {
+        renderH = rect.height;
+        renderW = renderH * videoAspect;
+        cropX = (renderW - rect.width) / 2;
+      } else {
+        renderW = rect.width;
+        renderH = renderW / videoAspect;
+        cropY = (renderH - rect.height) / 2;
+      }
+    }
     const toScreen = (p) => {
-      let x = p.x * rect.width;
-      const y = p.y * rect.height + (rect.top - stageRect.top);
+      let x = p.x * renderW - cropX;
+      const y = p.y * renderH - cropY + (rect.top - stageRect.top);
       if (mirrored) x = rect.width - x;
       x += rect.left - stageRect.left;
       return [x, y];
     };
-    overlayCtx.lineWidth = 2.5;
-    overlayCtx.strokeStyle = "rgba(151,138,255,0.7)";
-    overlayCtx.shadowColor = "rgba(151,138,255,0.55)";
-    overlayCtx.shadowBlur = 5;
+
+    // A soft directional gradient (wrist -> middle fingertip) reads calmer
+    // than a flat saturated line, closer to a refined UI touch than an
+    // effect.
+    const [wx, wy] = toScreen(lm[0]);
+    const [mx, my] = toScreen(lm[12]);
+    const grad = overlayCtx.createLinearGradient(wx, wy, mx, my);
+    grad.addColorStop(0, "rgba(113,87,245,0.7)");
+    grad.addColorStop(1, "rgba(185,79,228,0.7)");
+
+    overlayCtx.lineWidth = 2;
+    overlayCtx.lineCap = "round";
+    overlayCtx.lineJoin = "round";
+    overlayCtx.strokeStyle = grad;
     overlayCtx.beginPath();
     for (const [a, b] of CONNECTIONS) {
       const [x1, y1] = toScreen(lm[a]);
@@ -1981,20 +2014,37 @@
       overlayCtx.lineTo(x2, y2);
     }
     overlayCtx.stroke();
-    overlayCtx.shadowBlur = 0;
+
     const tipIdx = [4, 8, 12, 16, 20];
     lm.forEach((p, i) => {
       const [x, y] = toScreen(p);
       const isTip = tipIdx.indexOf(i);
       const extended = isTip >= 0 ? extendedFlags[isTip] : false;
-      overlayCtx.shadowBlur = isTip >= 0 && extended ? 9 : 0;
-      overlayCtx.shadowColor = "rgba(232,83,215,0.8)";
+
+      if (isTip < 0) {
+        // plain knuckle: a small quiet dot, no fill glow
+        overlayCtx.beginPath();
+        overlayCtx.arc(x, y, 2.2, 0, Math.PI * 2);
+        overlayCtx.fillStyle = "rgba(255,255,255,0.65)";
+        overlayCtx.fill();
+        return;
+      }
       overlayCtx.beginPath();
-      overlayCtx.arc(x, y, isTip >= 0 ? 6 : 3, 0, Math.PI * 2);
-      overlayCtx.fillStyle = isTip >= 0 ? (extended ? "#E853D7" : "rgba(255,255,255,0.6)") : "rgba(190,180,255,0.8)";
-      overlayCtx.fill();
+      overlayCtx.arc(x, y, extended ? 5 : 4, 0, Math.PI * 2);
+      if (extended) {
+        overlayCtx.shadowColor = "rgba(185,79,228,0.5)";
+        overlayCtx.shadowBlur = 5;
+        overlayCtx.fillStyle = "#B94FE4";
+        overlayCtx.fill();
+        overlayCtx.shadowBlur = 0;
+      } else {
+        overlayCtx.fillStyle = "rgba(255,255,255,0.9)";
+        overlayCtx.fill();
+        overlayCtx.lineWidth = 1.3;
+        overlayCtx.strokeStyle = "rgba(113,87,245,0.65)";
+        overlayCtx.stroke();
+      }
     });
-    overlayCtx.shadowBlur = 0;
   }
 
   // Prints the real numbers behind the current classification, on top of
