@@ -2144,7 +2144,31 @@
   // calibrate thresholds from real camera data instead of guessing. Every
   // ratio is relative to hand size, so the numbers mean the same thing
   // regardless of how close the hand is to the camera.
-  function drawDebugText(key, vote, pct, dbg) {
+  // Same idea as classifyGesture's own debug numbers above, but for the
+  // MOTION side of things (detectDynamicGesture) — the part that couldn't
+  // be calibrated from static frame images alone, since it depends on the
+  // hand moving over the current window. Mirrors detectDynamicGesture's own
+  // math exactly (same shapeShare, same countReversals calls) so what's
+  // printed here is always what that function is actually seeing, not an
+  // approximation of it.
+  function motionDebugSummary(motionArr) {
+    if (!motionArr.length) return null;
+    const avgSpan = motionArr.reduce((s, m) => s + m.span, 0) / motionArr.length || 1;
+    const share = (f) => Math.round((100 * motionArr.reduce((n, s) => n + (s[f] ? 1 : 0), 0)) / motionArr.length);
+    const xs = motionArr.map((s) => s.x), ys = motionArr.map((s) => s.y);
+    const rx = countReversals(xs, avgSpan * 0.065);
+    const ry = countReversals(ys, avgSpan * 0.065);
+    return {
+      ms: motionArr.length ? Math.round(motionArr[motionArr.length - 1].t - motionArr[0].t) : 0,
+      n: motionArr.length,
+      open: share("open"), curlBase: share("curlBase"), pinceShape: share("pinceShape"),
+      fistShape: share("fistShape"), thumbsUpShape: share("thumbsUpShape"), attentionShape: share("attentionShape"),
+      xRev: rx.reversals, xRange: Math.round(rx.range), yRev: ry.reversals, yRange: Math.round(ry.range),
+      avgSpan: Math.round(avgSpan),
+    };
+  }
+
+  function drawDebugText(key, vote, pct, dbg, motionDbg) {
     const lines = [
       "cle (image): " + key + "   vote (stable): " + vote + " (" + pct + "%)",
       "doigts (seuil 1.05 = tendu):  i=" + dbg.extI.toFixed(2) + "  m=" + dbg.extM.toFixed(2) + "  r=" + dbg.extR.toFixed(2) + "  p=" + dbg.extP.toFixed(2),
@@ -2154,6 +2178,15 @@
       "plus grand ecart bout-a-bout/main (pince si < 0.35): " + dbg.tipGapMaxRatio.toFixed(2),
       "bouts vs poignet/main (pince si > 0.85): " + dbg.avgTipToWristRatio.toFixed(2),
     ];
+    if (motionDbg) {
+      lines.push(
+        "-- mouvement (fenetre " + motionDbg.ms + "ms / " + motionDbg.n + " images) --",
+        "% images: open=" + motionDbg.open + " curlBase=" + motionDbg.curlBase + " pince=" + motionDbg.pinceShape +
+          " poing=" + motionDbg.fistShape + " pouceLeve=" + motionDbg.thumbsUpShape + " attention=" + motionDbg.attentionShape + " (seuil 78 requis)",
+        "va-et-vient X: " + motionDbg.xRev + " changements, amplitude " + motionDbg.xRange + "px (seuil 2 chang. / " + Math.round(motionDbg.avgSpan * 0.5) + "-" + Math.round(motionDbg.avgSpan * 0.7) + "px)",
+        "va-et-vient Y: " + motionDbg.yRev + " changements, amplitude " + motionDbg.yRange + "px (seuil 2 chang. / " + Math.round(motionDbg.avgSpan * 0.5) + "px)"
+      );
+    }
     const x = 12, startY = 20, lineH = 16;
     overlayCtx.font = "12px monospace";
     overlayCtx.textBaseline = "top";
@@ -2341,7 +2374,7 @@
       }
     }
     if (currentFaceLm) drawFaceOverlay(currentFaceLm);
-    if (debugOn) drawDebugText(key, vote, pct, geomDebug);
+    if (debugOn) drawDebugText(key, vote, pct, geomDebug, motionDebugSummary(motion));
 
     const g = GESTURES[vote] || GESTURES.fist;
     captionWord.textContent = g.code;
@@ -2562,6 +2595,13 @@ if (typeof document !== "undefined") {
     // ---- URL de ton relais IA déployé sur Cloudflare Workers.
     const SENTENCE_AI_ENDPOINT = "https://sensorielleai.dlemieux730.workers.dev/";
 
+    // Mis à false le temps des tests de détection avec les vraies vidéos
+    // LSQ : la reformulation IA peut masquer ce que le moteur a vraiment
+    // reconnu, alors qu'on veut voir les mots bruts. Remettre à true (ou
+    // enlever cette condition) pour réactiver l'IA une fois la détection
+    // elle-même validée.
+    const AI_INTERPRETATION_ENABLED = false;
+
     const WINDOW_MS = 5000;
     const IDLE_TEXT = "Analyse en cours…";
 
@@ -2598,7 +2638,7 @@ if (typeof document !== "undefined") {
     observer.observe(transcriptRow, { childList: true });
 
     async function buildSentence(words) {
-      if (!SENTENCE_AI_ENDPOINT) return localFallbackSentence(words);
+      if (!AI_INTERPRETATION_ENABLED || !SENTENCE_AI_ENDPOINT) return localFallbackSentence(words);
       try {
         const res = await fetch(SENTENCE_AI_ENDPOINT, {
           method: "POST",
