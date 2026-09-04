@@ -2165,12 +2165,37 @@
     lines.forEach((l, idx) => overlayCtx.fillText(l, x, startY + idx * lineH));
   }
 
+  // If anything inside a frame throws, the exact same error would otherwise
+  // repeat on every single frame from then on — since every visible update
+  // (the caption, the confidence bar, the overlay) happens later in this
+  // same function, a per-frame crash freezes the display on whatever it
+  // last showed, forever, while requestAnimationFrame(loop) above keeps
+  // silently rescheduling in the background. Shown only once so it doesn't
+  // spam, with the real error message so it's actually diagnosable instead
+  // of just looking "stuck".
+  let loopErrorShown = false;
   function loop() {
     rafId = requestAnimationFrame(loop);
     if (!handLandmarker || video.readyState < 2) return;
     if (video.currentTime === lastVideoTime) return;
     lastVideoTime = video.currentTime;
 
+    try {
+      runLoopFrame();
+    } catch (err) {
+      console.error("Sensorielle: erreur pendant le suivi", err);
+      if (!loopErrorShown) {
+        loopErrorShown = true;
+        showError(
+          "Erreur pendant le suivi (l'image se fige sur ce qu'elle montrait) : " +
+          (err && err.message ? err.message : String(err)) +
+          ". Ouvre la console du navigateur (F12) pour voir le détail complet."
+        );
+      }
+    }
+  }
+
+  function runLoopFrame() {
     const now = performance.now();
     const result = handLandmarker.detectForVideo(video, now);
 
@@ -2350,6 +2375,8 @@
       statusLine.textContent = "Stabilise ta main pour confirmer…";
     }
   }
+
+
 </script>
 <script>
 
