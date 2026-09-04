@@ -1459,16 +1459,20 @@
       return { net, straightness: pathLength ? net / pathLength : 0 };
     }
 
-    // Wave: open hand, swinging side to side.
+    // Wave: open hand, swinging side to side. Needs two direction changes
+    // (a bit more than one clean there-and-back) rather than three — a real
+    // signer, filmed once for the LSQ dictionary, doing the motion just
+    // once still clears this, while a single incidental hand shake (0-1
+    // reversals) still doesn't.
     if (shapeShare("open") >= 0.78) {
       const { reversals, range } = countReversals(xs, avgSpan * 0.065);
-      if (reversals >= 3 && range > avgSpan * 0.7) return "wave";
+      if (reversals >= 2 && range > avgSpan * 0.7) return "wave";
     }
 
     // Bravo: thumbs-up shape, shaking side to side.
     if (shapeShare("thumbsUpShape") >= 0.78) {
       const { reversals, range } = countReversals(xs, avgSpan * 0.065);
-      if (reversals >= 3 && range > avgSpan * 0.5) return "bravo";
+      if (reversals >= 2 && range > avgSpan * 0.5) return "bravo";
     }
 
     // Viens (beckon): middle/ring/pinky stay curled while the index finger
@@ -1481,12 +1485,12 @@
     if (shapeShare("curlBase") >= 0.78) {
       const curls = motion.map((s) => s.curl);
       const { reversals: curlReversals } = countReversals(curls, 0.12);
-      if (curlReversals >= 3) return "beckon";
+      if (curlReversals >= 2) return "beckon";
       const pinches = motion.map((s) => s.pinchRatio);
       const { reversals: pinchReversals } = countReversals(pinches, 0.1);
-      if (pinchReversals >= 3) return "argent";
+      if (pinchReversals >= 2) return "argent";
       const { reversals: xReversals, range: xRange } = countReversals(xs, avgSpan * 0.065);
-      if (xReversals >= 3 && xRange > avgSpan * 0.5) return "non";
+      if (xReversals >= 2 && xRange > avgSpan * 0.5) return "non";
     }
 
     // Toc toc / Oui: a closed fist moving up and down repeatedly — read as
@@ -1495,7 +1499,7 @@
     // thrust toward the camera.
     if (shapeShare("fistShape") >= 0.78) {
       const { reversals, range } = countReversals(ys, avgSpan * 0.065);
-      if (reversals >= 3 && range > avgSpan * 0.5) return "oui";
+      if (reversals >= 2 && range > avgSpan * 0.5) return "oui";
       const thirdLen = Math.max(1, Math.ceil(motion.length / 3));
       const avgFirst = motion.slice(0, thirdLen).reduce((s, m) => s + m.span, 0) / thirdLen;
       const avgLast = motion.slice(-thirdLen).reduce((s, m) => s + m.span, 0) / thirdLen;
@@ -1510,11 +1514,13 @@
       if (shapeShare("faceNear") >= 0.78 && range < avgSpan * 0.35 && rangeX < avgSpan * 0.35) return "pardon";
     }
 
-    // Manger (eat): fingertips pinched together, moving up and down
-    // repeatedly — bringing food to the mouth.
+    // Manger (eat): fingertips pinched together, moving up and down —
+    // needs two direction changes rather than three, since the official
+    // LSQ dictionary clip brings the hand to the mouth once and back down,
+    // not several full up/down cycles.
     if (shapeShare("pinceShape") >= 0.78) {
       const { reversals, range } = countReversals(ys, avgSpan * 0.065);
-      if (reversals >= 3 && range > avgSpan * 0.5) return "manger";
+      if (reversals >= 2 && range > avgSpan * 0.5) return "manger";
     }
 
     // Merci: a flat hand, fingers held together, sweeping away in one clean
@@ -1531,7 +1537,7 @@
     if (shapeShare("open") >= 0.78) {
       const { reversals: reversalsY, range: rangeY } = countReversals(ys, avgSpan * 0.065);
       const rangeX = Math.max(...xs) - Math.min(...xs);
-      if (reversalsY >= 3 && rangeY > avgSpan * 0.5 && rangeX < avgSpan * 0.5) return "calm";
+      if (reversalsY >= 2 && rangeY > avgSpan * 0.5 && rangeX < avgSpan * 0.5) return "calm";
     }
 
     // Stop/push: an open hand's apparent size grows steadily larger (it
