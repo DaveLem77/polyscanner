@@ -1581,6 +1581,24 @@
     [5,9],[9,13],[13,17]
   ];
 
+  // Standard MediaPipe Face Mesh connection sets, for the live tracking
+  // overlay only (drawing, not classification) — same documented indices as
+  // classifyFaceContext below, plus the mouth outline since that's the
+  // other landmark set someone watching a face-reading feature expects to
+  // see, even though the classifier itself doesn't currently use it.
+  const FACE_LIPS_CONNECTIONS = [
+    [61,146],[146,91],[91,181],[181,84],[84,17],[17,314],[314,405],[405,321],[321,375],[375,291],
+    [61,185],[185,40],[40,39],[39,37],[37,0],[0,267],[267,269],[269,270],[270,409],[409,291],
+    [78,95],[95,88],[88,178],[178,87],[87,14],[14,317],[317,402],[402,318],[318,324],[324,308],
+    [78,191],[191,80],[80,81],[81,82],[82,13],[13,312],[312,311],[311,310],[310,415],[415,308]
+  ];
+  const FACE_LEFT_EYEBROW_CONNECTIONS = [[276,283],[283,282],[282,295],[295,285],[300,293],[293,334],[334,296],[296,336]];
+  const FACE_RIGHT_EYEBROW_CONNECTIONS = [[46,53],[53,52],[52,65],[65,55],[70,63],[63,105],[105,66],[66,107]];
+  // The exact points classifyFaceContext's math reads from — highlighted on
+  // the overlay so "what the app is actually looking at" is literally
+  // visible, not just implied by a mouth/eyebrow outline.
+  const FACE_USED_POINTS = [1, 33, 263, 105, 159, 334, 386];
+
   // Face-based context, layered on top of the plain hand-shape reading.
   // Standard MediaPipe Face Mesh landmark indices: 1 = nose tip, 33/263 =
   // outer eye corners (used only as a scale reference, via the distance
@@ -1620,8 +1638,11 @@
   let faceLandmarker = null;
   let faceModelReady = false;
   let browBaseline = null;
-  // Throttling/self-protection state for the optional face model — see the
-  // face-context block inside loop() for how these are used.
+  // Self-protection state for the optional face model — see the face
+  // detection block inside loop() for how these are used. Face detection
+  // itself now runs every frame (for the live overlay); FACE_CHECK_INTERVAL_MS
+  // below only paces how often the je/tu/quoi/pardon CLASSIFICATION
+  // re-evaluates and debounces, which is unrelated to detection cost.
   let lastFaceCheckMs = 0;
   let lastFaceCtx = null;
   let faceTimingSamples = [];
@@ -1629,14 +1650,12 @@
   let faceContextStreakCount = 0;
   let lastDebouncedContextKey = null;
   const FACE_CHECK_INTERVAL_MS = 250;
-  // Raised from 35ms/6 samples: that budget judged the face model on barely
-  // 1.5s of real use, and a secondary ML model sharing frame time with hand
-  // tracking can easily land in the 35-55ms range on an ordinary laptop/
-  // phone even when it's working fine — it was very plausibly disabling
-  // itself almost immediately on ordinary hardware, which would explain
-  // every face-based sign (je/tu/quoi/pardon) failing at once. Now it needs
-  // a longer, more representative sample (~3s of real checks) before making
-  // that permanent, session-wide call, and allows a bit more per-call time.
+  // A secondary ML model now sharing frame time with hand tracking on every
+  // single frame can easily land in the 35-55ms range on an ordinary
+  // laptop/phone even when it's working fine, so the budget stays generous;
+  // what changed is the sample window (~60-90 real per-frame checks, a
+  // couple of seconds of continuous use) so one slow frame right after the
+  // camera opens can't trip a permanent, session-wide disable.
   const FACE_TIMING_BUDGET_MS = 55;
   let modelReady = false;
   let modelFailed = false;
@@ -1726,7 +1745,7 @@
           HandLandmarker.createFromOptions(vision, {
             baseOptions: { modelAssetPath, delegate: "CPU" },
             runningMode: "VIDEO",
-            numHands: 1
+            numHands: 2
           }),
           STEP_TIMEOUT,
           "model"
@@ -1952,15 +1971,11 @@
     return count;
   }
 
-  // Always-on live tracking overlay: a soft skeleton that follows the
-  // detected hand every frame, so the person can see the camera actively
-  // reading their hand rather than wondering if anything is happening.
-  // Understated on purpose — a thin gradient line and small joint dots,
-  // not a neon sci-fi HUD — with the brand gradient reserved for the
-  // fingertips currently read as "extended", so it still reads as a
-  // deliberate feature rather than plain debug wireframe.
-  function drawSkeleton(lm, extendedFlags) {
-    overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
+  // Shared screen-space mapping for anything drawn on the overlay canvas —
+  // hands AND face all sit on the same video, cropped the same way, so they
+  // share one conversion instead of each re-deriving it (and risking the
+  // two drifting out of sync with each other).
+  function makeToScreen() {
     const rect = video.getBoundingClientRect();
     const stageRect = stage.getBoundingClientRect();
     const mirrored = stage.classList.contains("mirror");
@@ -1969,8 +1984,9 @@
     // The video is displayed with object-fit: cover, which crops it to fill
     // the box while keeping its own aspect ratio — landmarks are normalized
     // against the FULL camera frame, not the visible cropped area, so this
-    // has to redo the same crop math or the dots drift off the real hand
-    // (worse the more the camera's aspect ratio differs from the screen's).
+    // has to redo the same crop math or the overlay drifts off the real
+    // hand/face (worse the more the camera's aspect ratio differs from the
+    // screen's).
     let renderW = rect.width, renderH = rect.height, cropX = 0, cropY = 0;
     if (vw && vh && rect.width && rect.height) {
       const videoAspect = vw / vh;
@@ -1985,13 +2001,27 @@
         cropY = (renderH - rect.height) / 2;
       }
     }
-    const toScreen = (p) => {
+    return (p) => {
       let x = p.x * renderW - cropX;
       const y = p.y * renderH - cropY + (rect.top - stageRect.top);
       if (mirrored) x = rect.width - x;
       x += rect.left - stageRect.left;
       return [x, y];
     };
+  }
+
+  // Always-on live tracking overlay: a soft skeleton that follows every
+  // detected hand each frame, so the person can see the camera actively
+  // reading their hands rather than wondering if anything is happening.
+  // Understated on purpose — a thin gradient line and small joint dots,
+  // not a neon sci-fi HUD — with the brand gradient reserved for the
+  // fingertips currently read as "extended", so it still reads as a
+  // deliberate feature rather than plain debug wireframe. Does not clear
+  // the canvas itself — the caller clears once per frame and draws every
+  // hand (and the face) on top, so one hand's skeleton doesn't erase
+  // another's.
+  function drawSkeleton(lm, extendedFlags) {
+    const toScreen = makeToScreen();
 
     // A soft directional gradient (wrist -> middle fingertip) reads calmer
     // than a flat saturated line, closer to a refined UI touch than an
@@ -2045,6 +2075,52 @@
         overlayCtx.stroke();
       }
     });
+  }
+
+  // Same live-tracking language as drawSkeleton, applied to the face: the
+  // mouth and eyebrow outlines so a person can see the app is reading their
+  // expression too, plus a small highlight on the exact points
+  // classifyFaceContext's math actually reads (nose tip, the two outer eye
+  // corners used as a scale reference, and the eyebrow/eyelid pairs used
+  // for the "raised eyebrow" check) — so "what it's looking at" is visible,
+  // not just implied by an outline. Doesn't clear the canvas, same reason
+  // as drawSkeleton.
+  function drawFaceOverlay(faceLm) {
+    const toScreen = makeToScreen();
+
+    overlayCtx.lineWidth = 1.6;
+    overlayCtx.lineCap = "round";
+    overlayCtx.lineJoin = "round";
+    overlayCtx.strokeStyle = "rgba(151,138,255,0.6)";
+    overlayCtx.beginPath();
+    for (const [a, b] of FACE_LIPS_CONNECTIONS) {
+      const [x1, y1] = toScreen(faceLm[a]);
+      const [x2, y2] = toScreen(faceLm[b]);
+      overlayCtx.moveTo(x1, y1);
+      overlayCtx.lineTo(x2, y2);
+    }
+    overlayCtx.stroke();
+
+    overlayCtx.strokeStyle = "rgba(185,79,228,0.65)";
+    overlayCtx.beginPath();
+    for (const [a, b] of FACE_LEFT_EYEBROW_CONNECTIONS.concat(FACE_RIGHT_EYEBROW_CONNECTIONS)) {
+      const [x1, y1] = toScreen(faceLm[a]);
+      const [x2, y2] = toScreen(faceLm[b]);
+      overlayCtx.moveTo(x1, y1);
+      overlayCtx.lineTo(x2, y2);
+    }
+    overlayCtx.stroke();
+
+    for (const idx of FACE_USED_POINTS) {
+      const [x, y] = toScreen(faceLm[idx]);
+      overlayCtx.beginPath();
+      overlayCtx.arc(x, y, 3, 0, Math.PI * 2);
+      overlayCtx.shadowColor = "rgba(185,79,228,0.45)";
+      overlayCtx.shadowBlur = 4;
+      overlayCtx.fillStyle = "#B94FE4";
+      overlayCtx.fill();
+      overlayCtx.shadowBlur = 0;
+    }
   }
 
   // Prints the real numbers behind the current classification, on top of
@@ -2112,64 +2188,70 @@
     const pinchRatio = Math.hypot((lm[4].x - lm[8].x) * vw, (lm[4].y - lm[8].y) * vh) / handSpanPx;
     const nowMs = performance.now();
 
-    // Face context — only ever used to refine "one" (into je/tu/quoi) or
-    // "fist" (into pardon), so it only runs at all on those two shapes, and
-    // even then at most every FACE_CHECK_INTERVAL_MS (reusing the last
-    // reading in between) rather than on every animation frame. Hand
-    // tracking is the app's core function; a second CPU model competing for
-    // the same frame budget on every single frame is exactly the kind of
-    // slowdown that made the whole app feel unreliable, so this keeps the
-    // extra cost rare and bounded instead of continuous.
+    // Face detection itself now runs every frame — the person asked to see
+    // the camera reading their face live, at the same time as their
+    // hand(s), the same way the hand skeleton is always on. This is the
+    // one detection call (below), shared by the live overlay AND the
+    // existing "one"/"fist" context classification, so it isn't paid twice.
+    // The timing/self-disable safety net (further down) still protects
+    // slower devices exactly as before, it just now measures the real
+    // continuous cost instead of a throttled sample.
+    let currentFaceLm = null;
+    if (faceModelReady && faceLandmarker) {
+      const t0 = performance.now();
+      try {
+        const faceResult = faceLandmarker.detectForVideo(video, now);
+        faceTimingSamples.push(performance.now() - t0);
+        if (faceTimingSamples.length > 90) faceTimingSamples.shift();
+        if (faceTimingSamples.length >= 60) {
+          const avgMs = faceTimingSamples.reduce((a, b) => a + b, 0) / faceTimingSamples.length;
+          if (avgMs > FACE_TIMING_BUDGET_MS) {
+            // Measurably too slow on this device — turn face tracking off
+            // for the rest of the session rather than let it keep competing
+            // with hand detection on every frame. Falls back to plain
+            // "one"/"fist" (no face context, no face overlay) exactly as
+            // before this feature existed.
+            faceModelReady = false;
+            faceLandmarker = null;
+          }
+        }
+        if (faceResult.faceLandmarks && faceResult.faceLandmarks.length) {
+          currentFaceLm = faceResult.faceLandmarks[0];
+        }
+      } catch (e) {
+        // Best-effort: any runtime error permanently disables face tracking
+        // rather than risk it happening on every frame from now on.
+        faceModelReady = false;
+        faceLandmarker = null;
+        currentFaceLm = null;
+      }
+    }
+
+    // Face CONTEXT (refining "one" into je/tu/quoi, or "fist" into pardon)
+    // stays on its own slower cadence and 2-reading debounce, unchanged —
+    // that pacing is about classification stability, not detection cost,
+    // so it's kept even though detection itself is no longer throttled.
     let faceCtx = null;
     let debouncedContextKey = null;
-    if (faceModelReady && faceLandmarker && (key === "one" || key === "fist")) {
+    if (currentFaceLm && (key === "one" || key === "fist")) {
       if (nowMs - lastFaceCheckMs < FACE_CHECK_INTERVAL_MS) {
         faceCtx = lastFaceCtx;
         debouncedContextKey = lastDebouncedContextKey;
       } else {
         lastFaceCheckMs = nowMs;
-        const t0 = performance.now();
-        try {
-          const faceResult = faceLandmarker.detectForVideo(video, now);
-          faceTimingSamples.push(performance.now() - t0);
-          if (faceTimingSamples.length > 14) faceTimingSamples.shift();
-          if (faceTimingSamples.length >= 12) {
-            const avgMs = faceTimingSamples.reduce((a, b) => a + b, 0) / faceTimingSamples.length;
-            if (avgMs > FACE_TIMING_BUDGET_MS) {
-              // Measurably too slow on this device — turn face tracking off
-              // for the rest of the session rather than let it keep
-              // competing with hand detection every time it runs. Falls
-              // back to plain "one"/"fist" exactly as before it existed.
-              faceModelReady = false;
-              faceLandmarker = null;
-            }
-          }
-          if (faceResult.faceLandmarks && faceResult.faceLandmarks.length) {
-            const faceLm = faceResult.faceLandmarks[0];
-            faceCtx = classifyFaceContext(faceLm, palmX, palmY, vw, vh, browBaseline);
-            if (browBaseline === null) browBaseline = faceCtx.browRatio;
-            else if (!faceCtx.raised) browBaseline = browBaseline * 0.97 + faceCtx.browRatio * 0.03;
-          } else {
-            faceCtx = null;
-          }
-          // Debounce: only act on a face-context reading once it repeats on
-          // two consecutive real checks (~500ms apart) — a single noisy
-          // frame near a distance/eyebrow boundary can no longer flip
-          // "Un" into "Je"/"Tu"/"Quoi" and back on its own.
-          const rawKey = faceCtx ? faceCtx.contextKey : null;
-          if (rawKey === faceContextStreakKey) faceContextStreakCount++;
-          else { faceContextStreakKey = rawKey; faceContextStreakCount = 1; }
-          debouncedContextKey = faceContextStreakCount >= 2 ? faceContextStreakKey : null;
-          lastFaceCtx = faceCtx;
-          lastDebouncedContextKey = debouncedContextKey;
-        } catch (e) {
-          // Best-effort: any runtime error permanently disables face
-          // tracking rather than risk it happening on every frame from now on.
-          faceModelReady = false;
-          faceLandmarker = null;
-          faceCtx = null;
-          debouncedContextKey = null;
-        }
+        faceCtx = classifyFaceContext(currentFaceLm, palmX, palmY, vw, vh, browBaseline);
+        if (browBaseline === null) browBaseline = faceCtx.browRatio;
+        else if (!faceCtx.raised) browBaseline = browBaseline * 0.97 + faceCtx.browRatio * 0.03;
+        // Debounce: only act on a face-context reading once it repeats on
+        // two consecutive real checks (~250ms apart) — a single noisy
+        // frame near a distance/eyebrow boundary can no longer flip
+        // "Un" into "Je"/"Tu"/"Quoi" and back on its own.
+        const rawKey = faceCtx.contextKey;
+        if (rawKey === faceContextStreakKey) faceContextStreakCount++;
+        else { faceContextStreakKey = rawKey; faceContextStreakCount = 1; }
+        debouncedContextKey = faceContextStreakCount >= 2 ? faceContextStreakKey : null;
+        lastFaceCtx = faceCtx;
+        lastDebouncedContextKey = debouncedContextKey;
       }
     } else {
       // Shape isn't "one"/"fist" this frame (or face tracking is off) — reset
@@ -2201,7 +2283,23 @@
     const agree = voteN / history.length;
     const pct = Math.round(agree * 100);
 
+    // One clear per frame, then every tracked hand plus the face are drawn
+    // on top of each other — only classification reads exclusively from
+    // the first hand (lm/key above, unchanged), so recognizing signs still
+    // works exactly as before even though a second hand is now also shown.
+    overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
     drawSkeleton(lm, flags);
+    if (result.landmarks.length > 1) {
+      try {
+        const lm2 = result.landmarks[1];
+        const { flags: flags2 } = classifyGesture(lm2, vw, vh);
+        drawSkeleton(lm2, flags2);
+      } catch (e) {
+        // Purely visual — a bad frame for the second hand should never
+        // interrupt tracking of the first.
+      }
+    }
+    if (currentFaceLm) drawFaceOverlay(currentFaceLm);
     if (debugOn) drawDebugText(key, vote, pct, geomDebug);
 
     const g = GESTURES[vote] || GESTURES.fist;
