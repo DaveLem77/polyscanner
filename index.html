@@ -1672,7 +1672,17 @@
   const history = [];
   const HISTORY_LEN = 10;
   const motion = [];
-  const MOTION_WINDOW_MS = 900;
+  // How much recent hand motion detectDynamicGesture gets to look at. Was
+  // 900ms — tuned for someone deliberately shaking a gesture fast at the
+  // camera — but comparing against real LSQ dictionary videos (frame by
+  // frame) showed a natural, single, real-speed sign like "non" or "manger"
+  // actually takes 1.5-2.5s from the hand starting to move to it settling
+  // back down. At 900ms the window could never hold both halves of that
+  // motion (the rise AND the fall) at the same time, so the up/down or
+  // side/side reversal those gestures look for could never be seen at all,
+  // no matter how the reversal-count threshold below was tuned. 2600ms
+  // comfortably covers one real repetition with some buffer to spare.
+  const MOTION_WINDOW_MS = 2600;
   let transcriptWords = [];
   let lastCommitted = null;
   let lastCommitTime = 0;
