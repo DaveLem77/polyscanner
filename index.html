@@ -1459,20 +1459,26 @@
       return { net, straightness: pathLength ? net / pathLength : 0 };
     }
 
-    // Wave: open hand, swinging side to side. Needs two direction changes
-    // (a bit more than one clean there-and-back) rather than three — a real
-    // signer, filmed once for the LSQ dictionary, doing the motion just
-    // once still clears this, while a single incidental hand shake (0-1
-    // reversals) still doesn't.
+    // Wave: open hand, swinging side to side.
+    //
+    // (Tried loosening this to 2 reversals, plus a much wider motion
+    // window, so a real sign performed once — as in the LSQ dictionary
+    // videos — would be enough. Reverted: with the window that much wider,
+    // ordinary arm sway while just HOLDING a static shape steady for a
+    // couple of seconds was enough to rack up 2 reversals past the range
+    // check on its own, which meant nothing — not even a plain still
+    // "Cinq" — could ever reach the confidence needed to confirm at all.
+    // Getting single-repetition signs recognized needs a more targeted fix
+    // than a global threshold change; see MOTION_WINDOW_MS below.)
     if (shapeShare("open") >= 0.78) {
       const { reversals, range } = countReversals(xs, avgSpan * 0.065);
-      if (reversals >= 2 && range > avgSpan * 0.7) return "wave";
+      if (reversals >= 3 && range > avgSpan * 0.7) return "wave";
     }
 
     // Bravo: thumbs-up shape, shaking side to side.
     if (shapeShare("thumbsUpShape") >= 0.78) {
       const { reversals, range } = countReversals(xs, avgSpan * 0.065);
-      if (reversals >= 2 && range > avgSpan * 0.5) return "bravo";
+      if (reversals >= 3 && range > avgSpan * 0.5) return "bravo";
     }
 
     // Viens (beckon): middle/ring/pinky stay curled while the index finger
@@ -1485,12 +1491,12 @@
     if (shapeShare("curlBase") >= 0.78) {
       const curls = motion.map((s) => s.curl);
       const { reversals: curlReversals } = countReversals(curls, 0.12);
-      if (curlReversals >= 2) return "beckon";
+      if (curlReversals >= 3) return "beckon";
       const pinches = motion.map((s) => s.pinchRatio);
       const { reversals: pinchReversals } = countReversals(pinches, 0.1);
-      if (pinchReversals >= 2) return "argent";
+      if (pinchReversals >= 3) return "argent";
       const { reversals: xReversals, range: xRange } = countReversals(xs, avgSpan * 0.065);
-      if (xReversals >= 2 && xRange > avgSpan * 0.5) return "non";
+      if (xReversals >= 3 && xRange > avgSpan * 0.5) return "non";
     }
 
     // Toc toc / Oui: a closed fist moving up and down repeatedly — read as
@@ -1499,7 +1505,7 @@
     // thrust toward the camera.
     if (shapeShare("fistShape") >= 0.78) {
       const { reversals, range } = countReversals(ys, avgSpan * 0.065);
-      if (reversals >= 2 && range > avgSpan * 0.5) return "oui";
+      if (reversals >= 3 && range > avgSpan * 0.5) return "oui";
       const thirdLen = Math.max(1, Math.ceil(motion.length / 3));
       const avgFirst = motion.slice(0, thirdLen).reduce((s, m) => s + m.span, 0) / thirdLen;
       const avgLast = motion.slice(-thirdLen).reduce((s, m) => s + m.span, 0) / thirdLen;
@@ -1514,13 +1520,11 @@
       if (shapeShare("faceNear") >= 0.78 && range < avgSpan * 0.35 && rangeX < avgSpan * 0.35) return "pardon";
     }
 
-    // Manger (eat): fingertips pinched together, moving up and down —
-    // needs two direction changes rather than three, since the official
-    // LSQ dictionary clip brings the hand to the mouth once and back down,
-    // not several full up/down cycles.
+    // Manger (eat): fingertips pinched together, moving up and down
+    // repeatedly — bringing food to the mouth.
     if (shapeShare("pinceShape") >= 0.78) {
       const { reversals, range } = countReversals(ys, avgSpan * 0.065);
-      if (reversals >= 2 && range > avgSpan * 0.5) return "manger";
+      if (reversals >= 3 && range > avgSpan * 0.5) return "manger";
     }
 
     // Merci: a flat hand, fingers held together, sweeping away in one clean
@@ -1537,7 +1541,7 @@
     if (shapeShare("open") >= 0.78) {
       const { reversals: reversalsY, range: rangeY } = countReversals(ys, avgSpan * 0.065);
       const rangeX = Math.max(...xs) - Math.min(...xs);
-      if (reversalsY >= 2 && rangeY > avgSpan * 0.5 && rangeX < avgSpan * 0.5) return "calm";
+      if (reversalsY >= 3 && rangeY > avgSpan * 0.5 && rangeX < avgSpan * 0.5) return "calm";
     }
 
     // Stop/push: an open hand's apparent size grows steadily larger (it
@@ -1672,17 +1676,22 @@
   const history = [];
   const HISTORY_LEN = 10;
   const motion = [];
-  // How much recent hand motion detectDynamicGesture gets to look at. Was
-  // 900ms — tuned for someone deliberately shaking a gesture fast at the
-  // camera — but comparing against real LSQ dictionary videos (frame by
-  // frame) showed a natural, single, real-speed sign like "non" or "manger"
-  // actually takes 1.5-2.5s from the hand starting to move to it settling
-  // back down. At 900ms the window could never hold both halves of that
-  // motion (the rise AND the fall) at the same time, so the up/down or
-  // side/side reversal those gestures look for could never be seen at all,
-  // no matter how the reversal-count threshold below was tuned. 2600ms
-  // comfortably covers one real repetition with some buffer to spare.
-  const MOTION_WINDOW_MS = 2600;
+  // How much recent hand motion detectDynamicGesture gets to look at.
+  //
+  // Tried widening this from 900ms to 2600ms, reasoning that a natural,
+  // single, real-speed "non" or "manger" (per the real LSQ dictionary
+  // videos) takes 1.5-2.5s and needs the window to hold the full rise AND
+  // fall at once. Reverted: a wider window gives ordinary arm sway — from
+  // just holding ANY shape steady, not only these two — far more time to
+  // rack up a big enough position swing to look like a deliberate motion,
+  // which broke basic recognition across the board (not even a plain still
+  // "Cinq" could stabilize anymore). 900ms is the last value that measurably
+  // worked reliably; getting single-repetition signs recognized needs a
+  // more targeted fix (e.g. requiring real velocity, not just position
+  // range, so slow drift can't pass as a wave/wag) rather than a global
+  // window/threshold change — flagged for a follow-up once we can watch
+  // the live "Repères" numbers on a real test instead of guessing blind.
+  const MOTION_WINDOW_MS = 900;
   let transcriptWords = [];
   let lastCommitted = null;
   let lastCommitTime = 0;
