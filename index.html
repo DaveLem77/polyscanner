@@ -382,6 +382,30 @@
   .btn-primary .btn-arrow { display: inline-block; transition: transform 0.2s ease; }
   .btn-primary:hover .btn-arrow { transform: translateX(4px); }
 
+  /* Soft pulsing glow on the hero's main call-to-action only — a gentle
+     "breathing" aura, not a distraction. Paused on hover (the hover state
+     already animates) and removed entirely for reduced-motion users. */
+  .hero-actions .btn-primary { position: relative; animation: ctaPulse 2.6s ease-in-out infinite; }
+  .hero-actions .btn-primary::after {
+    content: ""; position: absolute; inset: -7px; border-radius: calc(var(--r-lg) + 7px);
+    background: var(--s-gradient); opacity: 0.4; filter: blur(16px); z-index: -1;
+    animation: ctaAura 2.6s ease-in-out infinite;
+  }
+  @keyframes ctaPulse {
+    0%, 100% { box-shadow: var(--s-shadow-glow); }
+    50% { box-shadow: 0 18px 46px -6px rgba(124,77,255,0.68); }
+  }
+  @keyframes ctaAura {
+    0%, 100% { opacity: 0.32; transform: scale(0.97); }
+    50% { opacity: 0.62; transform: scale(1.05); }
+  }
+  .hero-actions .btn-primary:hover { animation-play-state: paused; }
+  .hero-actions .btn-primary:hover::after { animation-play-state: paused; opacity: 0.5; }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-actions .btn-primary { animation: none; }
+    .hero-actions .btn-primary::after { animation: none; opacity: 0.35; }
+  }
+
   .btn-add-sign {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     font-family: var(--sans); font-weight: 700; font-size: 15px; color: var(--s-violet-deep);
@@ -541,25 +565,27 @@
      liste. Révélé en cascade légère via [data-reveal] + un délai par
      puce (--i, en inline style), jamais un blocage de page. ---------- */
 
-  .vocab-section { text-align: center; background: var(--s-bg-alt); }
-  .vocab-cloud { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 10px; max-width: 780px; margin: 36px auto 0; }
+  /* Quiet by design: one neutral chip style, no pastel wash cycling, tight
+     spacing — a calm reference list, not a decoration. Section padding is
+     also trimmed down from the site's default (this list can be long and
+     doesn't need the same breathing room as a hero or a feature section). */
+  .vocab-section { text-align: center; background: var(--s-bg-alt); padding-top: 48px; padding-bottom: 52px; }
+  .vocab-section .section-head { margin-bottom: 22px; }
+  .vocab-section .section-head h2 { font-size: clamp(1.3rem, 1.15rem + 0.9vw, 1.7rem); }
+  .vocab-cloud { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; max-width: 640px; margin: 0 auto; }
   .vocab-chip {
-    font-family: var(--sans); font-weight: 700; font-size: 13.5px; color: var(--s-ink);
-    background: var(--s-surface); border: 1px solid var(--s-line); border-radius: 100px;
-    padding: 10px 18px; box-shadow: var(--s-shadow-soft);
-    opacity: 0; transform: translateY(8px) scale(0.94);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    font-family: var(--sans); font-weight: 600; font-size: 12px; color: var(--s-ink-dim);
+    background: var(--s-surface); border: 1px solid var(--s-line); border-radius: 7px;
+    padding: 5px 10px; line-height: 1.4;
+    opacity: 0; transform: translateY(4px);
+    transition: border-color 0.15s ease, color 0.15s ease;
   }
   .vocab-cloud.is-visible .vocab-chip {
-    animation: vocabChipIn 0.5s cubic-bezier(.16,.8,.2,1) forwards;
-    animation-delay: calc(var(--i, 0) * 22ms);
+    animation: vocabChipIn 0.35s ease forwards;
+    animation-delay: calc(var(--i, 0) * 10ms);
   }
   @keyframes vocabChipIn { to { opacity: 1; transform: none; } }
-  .vocab-chip:hover { transform: translateY(-3px); box-shadow: var(--s-shadow-md); }
-  .vocab-cloud.is-visible .vocab-chip:hover { transform: translateY(-3px); }
-  .vocab-chip:nth-child(5n+1) { background: var(--s-violet-wash); border-color: transparent; }
-  .vocab-chip:nth-child(5n+3) { background: var(--s-pink-wash); border-color: transparent; }
-  .vocab-chip:nth-child(5n+5) { background: var(--s-orange-wash); border-color: transparent; }
+  .vocab-chip:hover { border-color: var(--s-violet); color: var(--s-ink); }
   @media (prefers-reduced-motion: reduce) {
     .vocab-chip { opacity: 1; transform: none; }
     .vocab-cloud.is-visible .vocab-chip { animation: none; }
@@ -729,15 +755,9 @@
   }
   .live-pill .rec { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 8px 1px rgba(76,175,125,0.7); background: var(--good); }
 
-  /* ---- viewfinder corner brackets — purely decorative, gated on the
-     engine's own .stage.live class, never intercepts clicks. ---- */
-  .viewfinder-frame { position: absolute; inset: 0; z-index: 5; pointer-events: none; opacity: 0; transition: opacity 0.3s ease; }
-  .stage.live .viewfinder-frame { opacity: 1; }
-  .vf-corner { position: absolute; width: 30px; height: 30px; }
-  .vf-corner.tl { top: calc(env(safe-area-inset-top, 0px) + 78px); left: 16px; border-top: 2.5px solid #E853D7; border-left: 2.5px solid #E853D7; border-top-left-radius: 14px; }
-  .vf-corner.tr { top: calc(env(safe-area-inset-top, 0px) + 78px); right: 16px; border-top: 2.5px solid #5C6CFF; border-right: 2.5px solid #5C6CFF; border-top-right-radius: 14px; }
-  .vf-corner.bl { bottom: calc(env(safe-area-inset-bottom, 0px) + 280px); left: 16px; border-bottom: 2.5px solid #E853D7; border-left: 2.5px solid #E853D7; border-bottom-left-radius: 14px; }
-  .vf-corner.br { bottom: calc(env(safe-area-inset-bottom, 0px) + 280px); right: 16px; border-bottom: 2.5px solid #5C6CFF; border-right: 2.5px solid #5C6CFF; border-bottom-right-radius: 14px; }
+  /* the viewfinder corner brackets are gone — the live hand-tracking
+     overlay (drawn on #overlay, in module_core_v2.js) is the "you can see
+     it capturing" cue now, so the decorative corners were redundant. */
 
   /* the translation text now floats directly over the video — no card, no
      border, no background — exactly like the reference photo. */
@@ -862,7 +882,7 @@
             <ul class="hero-trust" aria-label="Points clés">
               <li><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.14"/><path d="M7.5 12.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Temps réel</span></li>
               <li><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.14"/><path d="M7.5 12.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Précis et sécurisé</span></li>
-              <li><span><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c-1.5 2-1.8 4-1 6-1.6-1-3.4-.9-4.6.4-1.1 1.2-1 3 .3 4.4-1.7.1-3 1.4-3 3.1 0 1.8 1.5 3.1 3.3 3.1.9 0 1.7-.3 2.3-.9-.2.6-.3 1.3-.3 1.9h6c0-.6-.1-1.3-.3-1.9.6.6 1.4.9 2.3.9 1.8 0 3.3-1.3 3.3-3.1 0-1.7-1.3-3-3-3.1 1.3-1.4 1.4-3.2.3-4.4-1.2-1.3-3-1.4-4.6-.4.8-2 .5-4-1-6z"/></svg> Conçu au Québec</span></li>
+              <li><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.14"/><path d="M7.5 12.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Conçu au Québec</span></li>
             </ul>
             <div class="hero-actions">
               <a class="btn-primary js-live-cta" href="#essayer" data-scroll><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8.5A1.5 1.5 0 015.5 7h2.4l1-1.6A1.5 1.5 0 0110.2 4.7h3.6a1.5 1.5 0 011.3.8L16 7h2.5A1.5 1.5 0 0120 8.5v9A1.5 1.5 0 0118.5 19h-13A1.5 1.5 0 014 17.5v-9z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.4" stroke="currentColor" stroke-width="1.7"/></svg> Essayer la traduction <span class="btn-arrow">→</span></a>
@@ -1085,13 +1105,6 @@
         <span class="cam-flip-label">Inverser</span>
       </button>
     </div>
-  </div>
-
-  <div class="viewfinder-frame" aria-hidden="true">
-    <span class="vf-corner tl"></span>
-    <span class="vf-corner tr"></span>
-    <span class="vf-corner bl"></span>
-    <span class="vf-corner br"></span>
   </div>
 
   <div class="caption-wrap" id="captionWrap" style="display:none;">
@@ -1811,6 +1824,7 @@
       } catch (e) {}
 
       resizeOverlay();
+      overlay.hidden = false;
       history.length = 0;
       motion.length = 0;
       browBaseline = null;
@@ -1883,8 +1897,6 @@
   debugBtn.addEventListener("click", () => {
     debugOn = !debugOn;
     debugBtn.classList.toggle("active", debugOn);
-    overlay.hidden = !debugOn;
-    if (!debugOn) overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
   });
   voiceBtn.addEventListener("click", () => {
     voiceOn = !voiceOn;
@@ -1940,6 +1952,11 @@
     return count;
   }
 
+  // Always-on live tracking overlay: a soft skeleton that follows the
+  // detected hand every frame, so the person can see the camera actively
+  // reading their hand rather than wondering if anything is happening.
+  // Colors echo the app's own brand gradient (violet/pink) instead of a
+  // neutral debug gray, so it reads as a feature, not a dev tool.
   function drawSkeleton(lm, extendedFlags) {
     overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
     const rect = video.getBoundingClientRect();
@@ -1953,7 +1970,9 @@
       return [x, y];
     };
     overlayCtx.lineWidth = 2.5;
-    overlayCtx.strokeStyle = "rgba(160,180,200,0.55)";
+    overlayCtx.strokeStyle = "rgba(151,138,255,0.7)";
+    overlayCtx.shadowColor = "rgba(151,138,255,0.55)";
+    overlayCtx.shadowBlur = 5;
     overlayCtx.beginPath();
     for (const [a, b] of CONNECTIONS) {
       const [x1, y1] = toScreen(lm[a]);
@@ -1962,16 +1981,20 @@
       overlayCtx.lineTo(x2, y2);
     }
     overlayCtx.stroke();
+    overlayCtx.shadowBlur = 0;
     const tipIdx = [4, 8, 12, 16, 20];
     lm.forEach((p, i) => {
       const [x, y] = toScreen(p);
       const isTip = tipIdx.indexOf(i);
       const extended = isTip >= 0 ? extendedFlags[isTip] : false;
+      overlayCtx.shadowBlur = isTip >= 0 && extended ? 9 : 0;
+      overlayCtx.shadowColor = "rgba(232,83,215,0.8)";
       overlayCtx.beginPath();
-      overlayCtx.arc(x, y, isTip >= 0 ? 5.5 : 3, 0, Math.PI * 2);
-      overlayCtx.fillStyle = isTip >= 0 ? (extended ? "#c99a52" : "rgba(238,241,244,0.5)") : "rgba(160,180,200,0.85)";
+      overlayCtx.arc(x, y, isTip >= 0 ? 6 : 3, 0, Math.PI * 2);
+      overlayCtx.fillStyle = isTip >= 0 ? (extended ? "#E853D7" : "rgba(255,255,255,0.6)") : "rgba(190,180,255,0.8)";
       overlayCtx.fill();
     });
+    overlayCtx.shadowBlur = 0;
   }
 
   // Prints the real numbers behind the current classification, on top of
@@ -2020,7 +2043,7 @@
       if (confPct) confPct.textContent = "—";
       confBar.style.background = "var(--bad)";
       statusLine.textContent = "Montre une main à la caméra, doigts bien écartés.";
-      if (debugOn) overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
+      overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
       return;
     }
 
@@ -2128,7 +2151,8 @@
     const agree = voteN / history.length;
     const pct = Math.round(agree * 100);
 
-    if (debugOn) { drawSkeleton(lm, flags); drawDebugText(key, vote, pct, geomDebug); }
+    drawSkeleton(lm, flags);
+    if (debugOn) drawDebugText(key, vote, pct, geomDebug);
 
     const g = GESTURES[vote] || GESTURES.fist;
     captionWord.textContent = g.code;
